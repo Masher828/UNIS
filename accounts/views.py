@@ -1,0 +1,87 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
+from .models import Details
+from django.contrib import auth
+import psycopg2
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+
+
+# Create your views here.
+def login(request):
+    if request.method == 'POST':
+            print(User.objects.all())
+
+            user = auth.authenticate(username = request.POST['username'], password = request.POST['password'])
+            print(user)
+            if user is not None:
+                auth.login(request,user)
+                print(user.id)
+                for obj in Details.objects.all():
+                    print(obj.id)
+                return redirect('chats:chat_home')
+
+            else:
+                return render(request,'accounts/signin.html',{'error':'user does not exist'})
+    else:
+        return render(request,'accounts/signin.html')
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect('index')
+
+def signup(request):
+    if request.method == 'POST':
+        print("post")
+        print(request.POST)
+        if request.POST['password1'] == request.POST['password2']:
+            print("password verified")
+            user = auth.authenticate(username = request.POST['username'], password = request.POST['password1'])
+            if not user is None:
+                return(request,'accounts/signup.html',{'error':'user already exists'})
+
+            else:
+                    user = User.objects.create_user(username=request.POST['username'],first_name = request.POST['firstname'],email=request.POST['email'], last_name = request.POST['lastname'], password=request.POST['password1'])
+                    detail = Details()
+                    detail.user = user
+                    detail.Profile_pic = request.FILES['Profile_pic']
+                    detail.status = "Available"
+                    connection = psycopg2.connect(user = "postgres",
+                                                      password = "I*p96U#o4eID^Ubc$R*Y",
+                                                      host = "localhost",
+                                                      port = "5433")
+                    connection.autocommit = True
+                    create_database_query = "CREATE DATABASE {};".format(request.POST['username'])
+                    cursor= connection.cursor()
+                    cursor.execute(create_database_query)
+                    cursor.close()
+                    connection.close()
+                    connection = psycopg2.connect(user = "postgres",
+                                                      password = "I*p96U#o4eID^Ubc$R*Y",
+                                                      host = "localhost",
+                                                      port = "5433",
+                                                      database = request.POST['username'])
+                    connection.autocommit = True
+                    create_table_query = '''CREATE TABLE contacts(contact_id INT); '''
+                    cursor= connection.cursor()
+                    cursor.execute(create_table_query)
+                    connection.commit()
+                    cursor.close()
+                    connection.close()
+                    detail.save()
+                    return redirect('chats:chat_home')
+        else:
+            return(request,'accounts/signup.html',{'error':'Passwords should match'})
+    else:
+        return render(request,'accounts/signup.html')
+
+
+
+def addcontact(request):
+    if request.method == "POST":
+        id1 = request.POST['id1']
+        account_id1 = get_object_or_404(Details, pk=request.user.id)
+        account_id2 = get_object_or_404(Details, pk=id1)
+        print(account_id1.username)
+        print(account_id2.username)

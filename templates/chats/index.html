@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<title>UnisChat</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
+
+
+
+</head>
+<body style="overflow: hidden;">
+<div class="row ">
+
+	<div class="col-sm-1" style="background-color: #29242a; height: 100vh; padding: 0px;">
+
+
+		<div style="width: 100%; height: 20vh; text-align: center;align-items: center; padding: 15%;">
+			<img class="img-fluid" src="{% static 'assets/logolight.png' %}">
+
+		</div>
+		<div style="width: 100%; height: 60vh; text-align: center;align-items: center; padding: 12%;">
+			<br>
+
+
+
+						<span class="iconify text-muted align-middle " data-icon="ant-design:user-add-outlined"  data-inline="false" onclick="collapprofile()" style="height: 5vh; width: 40%; margin: 25%; cursor: pointer; " data-toggle="tooltip" data-placement="right" title="Add User or Search User"></span>
+						<span class="iconify text-muted align-middle " data-icon="bx:bx-message-detail" data-inline="false" onclick="collapchats()" style="height: 5vh; width: 40%; margin: 25%; cursor: pointer;" data-toggle="tooltip" data-placement="right" title="Chats"></span>
+						<span class="iconify text-muted align-middle " data-icon="fa-solid:user-friends" data-inline="false" onclick="collapcontacts()" style="height: 5vh; width: 40%; margin: 25%; cursor: pointer;" data-toggle="tooltip" data-placement="right" title="My Contacts"></span>
+						<span class="iconify text-muted align-middle " data-icon="bx:bxs-user-circle" data-inline="false" onclick="collapaccount()" style="height: 5vh; width: 40%; margin: 25%; cursor: pointer;" data-toggle="tooltip" data-placement="right" title="My Account"></span>
+
+
+
+		</div>
+		<div style="width: 100%; height: 20vh; text-align: center;align-items: center; padding: 12%;">
+			<span class="iconify text-light align-middle " data-icon="carbon:settings" data-inline="false" style="height: 5vh; width: 40%;"></span>
+		</div>
+
+
+
+
+
+
+
+	</div>
+	<div class="col-sm-3  " style="background-color: #2f2a30; height: 100vh; overflow-y: auto;" id="contactbox">
+		<div class="collapse multi-collapse" id="multiCollapseExample1">
+		<h2 class="text-light" style="margin-top: 3%;">Chats</h2><br>
+
+		 <!-- Search -->
+                                    <form class="mb-6">
+                                        <div class="input-group">
+                                            <input type="text" style="background-color: #2d3238; color: #889dad; border: none; " class="form-control form-control-lg " placeholder="Search for messages or users..." aria-label="Search for messages or users...">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-lg btn-ico btn-secondary btn-minimal" type="submit" style="background-color: #2d3238; border: none;">
+                                                    <span class="iconify" data-icon="fe-search" data-inline="false" ></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+          <!-- Search -->
+
+           <!-- Chat link -->
+
+                                        <a class="text-reset nav-link p-0 mb-6" >
+                                            <div class="card card-active-listener" style="background-color: #29242a; margin-top: 4%; border: none;">
+                                                <div class="card-body">
+
+                                                    <div class="media">
+
+
+                                                            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/03/Download-free-Deadpool-Wallpaper-HD.jpg" alt="..." class=" " id="contactimg" style="border: none; object-fit: cover; cursor: pointer;" onclick="expandside()">
+
+
+
+                                                        <div class="media-body overflow-hidden">
+                                                            <div class="d-flex align-items-center mb-1">
+                                                                <h6 class="text-truncate mb-0 mr-auto text-light">Anna Bridges</h6>
+                                                                <p class="small text-muted text-nowrap ml-4">10:42 am <font class="onlinestaus"><B>.</B></font></p>
+                                                            </div>
+                                                            <div class="text-truncate text-muted" style="text-overflow: ellipsis;">HI there i am using whatsapppppppppppppppppppppp</div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </a>
+              <!-- Chat link -->
+
+              	<!-- Chat link -->
+
+                                        <a class="text-reset nav-link p-0 mb-6" >
+                                            <div class="card card-active-listener" style="background-color: #29242a; margin-top: 4%; border: none;">
+                                                <div class="card-body">
+
+                                                    <div class="media">
+
+
+                                                            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/03/Download-free-Deadpool-Wallpaper-HD.jpg" alt="..." class=" " id="contactimg" style="border: none; object-fit: cover;">
+
+
+
+                                                        <div class="media-body overflow-hidden">
+                                                            <div class="d-flex align-items-center mb-1">
+                                                                <h6 class="text-truncate mb-0 mr-auto text-light">Anna Bridges</h6>
+                                                                <p class="small text-muted text-nowrap ml-4">10:42 am</p>
+                                                            </div>
+                                                            <div class="text-truncate text-muted">is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </a>
+              <!-- Chat link -->
+
+              <!-- Chat link -->
+
+                                        <a class="text-reset nav-link p-0 mb-6" >
+                                            <div class="card card-active-listener" style="background-color: #29242a; margin-top: 4%; border: none;">
+                                                <div class="card-body">
+
+                                                    <div class="media">
+
+
+                                                            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/03/Download-free-Deadpool-Wallpaper-HD.jpg" alt="..." class=" " id="contactimg" style="border: none; object-fit: cover;">
+
+
+
+                                                        <div class="media-body overflow-hidden">
+                                                            <div class="d-flex align-items-center mb-1">
+                                                                <h6 class="text-truncate mb-0 mr-auto text-light">Anna Bridges</h6>
+                                                                <p class="small text-muted text-nowrap ml-4">10:42 am</p>
+                                                            </div>
+                                                            <div class="text-truncate text-muted">is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </a>
+              <!-- Chat link -->
+
+              <!-- Chat link -->
+
+                                        <a class="text-reset nav-link p-0 mb-6" >
+                                            <div class="card card-active-listener" style="background-color: #29242a; margin-top: 4%; border: none;">
+                                                <div class="card-body">
+
+                                                    <div class="media">
+
+
+                                                            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/03/Download-free-Deadpool-Wallpaper-HD.jpg" alt="..." class=" " id="contactimg" style="border: none; object-fit: cover;">
+
+
+
+                                                        <div class="media-body overflow-hidden">
+                                                            <div class="d-flex align-items-center mb-1">
+                                                                <h6 class="text-truncate mb-0 mr-auto text-light">Anna Bridges</h6>
+                                                                <p class="small text-muted text-nowrap ml-4">10:42 am</p>
+                                                            </div>
+                                                            <div class="text-truncate text-muted">is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </a>
+              <!-- Chat link -->
+
+              <!-- Chat link -->
+
+                                        <a class="text-reset nav-link p-0 mb-6" >
+                                            <div class="card card-active-listener" style="background-color: #29242a; margin-top: 4%; border: none;">
+                                                <div class="card-body">
+
+                                                    <div class="media">
+
+
+                                                            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/03/Download-free-Deadpool-Wallpaper-HD.jpg" alt="..." class=" " id="contactimg" style="border: none; object-fit: cover;">
+
+
+
+                                                        <div class="media-body overflow-hidden">
+                                                            <div class="d-flex align-items-center mb-1">
+                                                                <h6 class="text-truncate mb-0 mr-auto text-light">Anna Bridges</h6>
+                                                                <p class="small text-muted text-nowrap ml-4">10:42 am</p>
+                                                            </div>
+                                                            <div class="text-truncate text-muted">is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </a>
+              <!-- Chat link -->
+
+              <!-- Chat link -->
+
+                                        <a class="text-reset nav-link p-0 mb-6" >
+                                            <div class="card card-active-listener" style="background-color: #29242a; margin-top: 4%; border: none;">
+                                                <div class="card-body">
+
+                                                    <div class="media">
+
+
+                                                            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/03/Download-free-Deadpool-Wallpaper-HD.jpg" alt="..." class=" " id="contactimg" style="border: none; object-fit: cover;">
+
+
+
+                                                        <div class="media-body overflow-hidden">
+                                                            <div class="d-flex align-items-center mb-1">
+                                                                <h6 class="text-truncate mb-0 mr-auto text-light">Anna Bridges</h6>
+                                                                <p class="small text-muted text-nowrap ml-4">10:42 am</p>
+                                                            </div>
+                                                            <div class="text-truncate text-muted">is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </a>
+              <!-- Chat link -->
+
+              <!-- Chat link -->
+
+                                        <a class="text-reset nav-link p-0 mb-6" >
+                                            <div class="card card-active-listener" style="background-color: #29242a; margin-top: 4%; border: none;">
+                                                <div class="card-body">
+
+                                                    <div class="media">
+
+
+                                                            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/03/Download-free-Deadpool-Wallpaper-HD.jpg" alt="..." class=" " id="contactimg" style="border: none; object-fit: cover;">
+
+
+
+                                                        <div class="media-body overflow-hidden">
+                                                            <div class="d-flex align-items-center mb-1">
+                                                                <h6 class="text-truncate mb-0 mr-auto text-light">Anna Bridges</h6>
+                                                                <p class="small text-muted text-nowrap ml-4">10:42 am</p>
+                                                            </div>
+                                                            <div class="text-truncate text-muted">is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </a>
+              <!-- Chat link -->
+
+              <!-- Chat link -->
+
+                                        <a class="text-reset nav-link p-0 mb-6" >
+                                            <div class="card card-active-listener" style="background-color: #29242a; margin-top: 4%; border: none;">
+                                                <div class="card-body">
+
+                                                    <div class="media">
+
+
+                                                            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/03/Download-free-Deadpool-Wallpaper-HD.jpg" alt="..." class=" " id="contactimg" style="border: none; object-fit: cover;">
+
+
+
+                                                        <div class="media-body overflow-hidden">
+                                                            <div class="d-flex align-items-center mb-1">
+                                                                <h6 class="text-truncate mb-0 mr-auto text-light">Anna Bridges</h6>
+                                                                <p class="small text-muted text-nowrap ml-4">10:42 am</p>
+                                                            </div>
+                                                            <div class="text-truncate text-muted">is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </a>
+              <!-- Chat link -->
+
+              <!-- Chat link -->
+
+                                        <a class="text-reset nav-link p-0 mb-6" >
+                                            <div class="card card-active-listener" style="background-color: #29242a; margin-top: 4%; border: none;">
+                                                <div class="card-body">
+
+                                                    <div class="media">
+
+
+                                                            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/03/Download-free-Deadpool-Wallpaper-HD.jpg" alt="..." class=" " id="contactimg" style="border: none; object-fit: cover;">
+
+
+
+                                                        <div class="media-body overflow-hidden">
+                                                            <div class="d-flex align-items-center mb-1">
+                                                                <h6 class="text-truncate mb-0 mr-auto text-light">Anna Bridges</h6>
+                                                                <p class="small text-muted text-nowrap ml-4">10:42 am</p>
+                                                            </div>
+                                                            <div class="text-truncate text-muted">is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </a>
+              <!-- Chat link -->
+
+								</div>
+
+
+
+
+							<div class="collapse multi-collapse" id="multiCollapseExample2">
+						      <!--add user or search-->
+						      <h5 style="color: white; margin-top: 2%">Search a user</h5><br>
+						      	<br>
+						      <!-- Search -->
+                                    <form class="mb-6">
+                                        <div class="input-group">
+                                            <input type="text" style="background-color: #2d3238; color: #889dad; border: none; " class="form-control form-control-lg " placeholder="Search for messages or users..." aria-label="User name here" id="texttoaddfrnd">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-lg btn-ico btn-secondary btn-minimal"  style="background-color: #2d3238; border: none;" onclick="btntoaddfrnd()">
+                                                    <span class="iconify" data-icon="fe-search" data-inline="false" ></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+         						 <!-- Search -->
+
+         						 	<br><br>
+
+
+
+         						 	<div class="container-fluid" style="width: 100%; height: auto; align-items: center;text-align: center;" id="addfrndresult">
+											<!--middle-->
+
+
+												<!--cards-->
+												<div class="card mb-6 " style="background-color: #29242a;">
+							                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
+							                                            	<img src="https://assets.materialup.com/uploads/13ce0637-32b0-4ed0-96fe-5214075a4e2c/preview.png" id="chatinsideimagecoveruser">
+																			<br><br>
+																			<h3 style="color: white;">Tacaz</h3>
+																			<h6 class="text text-muted" style="">I am gonna save the world!</h6>
+							                                          </div>
+							                       </div>
+							                      <!--cards-->
+
+												<!--cards-->
+												<div class="card mb-6 " style="background-color: #29242a;">
+							                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
+							                                            <ul class="list-group list-group-flush "  style="background-color: #29242a;">
+							                                                <li class="list-group-item px-0 py-6" style="background-color: #29242a;">
+							                                                    <div class="media align-items-center" style="background-color: #29242a;">
+							                                                        <div class="media-body shadow p-3" style=" text-align: left;">
+							                                                            <p class="small text-muted mb-0">User Name</p>
+							                                                            <p class="text text-muted">Iron667</p>
+							                                                        </div>
+							                                                       <span class="iconify text-muted" data-icon="bx:bxs-user-circle" data-inline="false"  style="margin-right: 3%;"></span>
+							                                                    </div>
+							                                                </li>
+							                                              </ul>
+							                                             </div>
+							                       </div>
+							                      <!--cards--><br>
+							                      <button type="button" class="btn btn-success align-self-center">Add Friend</button>
+							          </div>
+
+
+
+
+
+						      	<!--add user or search-->
+
+
+						    </div>
+
+
+
+						    <div class="collapse multi-collapse" id="multiCollapseExample3">
+
+						       <h5 style="color: white; margin-top: 2%">My Account</h5><br>
+
+						       		<div class="container-fluid" style="width: 100%; height: auto; align-items: center;text-align: center;">
+											<!--middle-->
+
+
+												<!--cards-->
+												<div class="card mb-6 " style="background-color: #29242a;">
+							                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
+							                                            	<img src="https://assets.materialup.com/uploads/13ce0637-32b0-4ed0-96fe-5214075a4e2c/preview.png" id="chatinsideimagecoveruser">
+																			<br><br>
+																			<h3 style="color: white;">Tacaz</h3>
+																			<h6 class="text text-muted" style="">I am gonna save the world!</h6>
+							                                          </div>
+							                       </div>
+							                      <!--cards-->
+
+												<!--cards-->
+												<div class="card mb-6 " style="background-color: #29242a;">
+							                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
+							                                            <ul class="list-group list-group-flush "  style="background-color: #29242a;">
+							                                                <li class="list-group-item px-0 py-6" style="background-color: #29242a;">
+							                                                    <div class="media align-items-center" style="background-color: #29242a;">
+							                                                        <div class="media-body shadow p-3" style=" text-align: left;">
+							                                                            <p class="small text-muted mb-0">User Name</p>
+							                                                            <p class="text text-muted">Iron667</p>
+							                                                        </div>
+							                                                       <span class="iconify text-muted" data-icon="bx:bxs-user-circle" data-inline="false"  style="margin-right: 3%;"></span>
+							                                                    </div>
+							                                                </li>
+							                                              </ul>
+							                                             </div>
+							                       </div>
+							                      <!--cards-->
+
+
+												<!--cards-->
+												<div class="card mb-6 " style="background-color: #29242a;">
+							                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
+							                                            <ul class="list-group list-group-flush "  style="background-color: #29242a;">
+							                                                <li class="list-group-item px-0 py-6" style="background-color: #29242a;">
+							                                                    <div class="media align-items-center" style="background-color: #29242a;">
+							                                                        <div class="media-body shadow p-3" style=" text-align: left;">
+							                                                            <p class="small text-muted mb-0">Email</p>
+							                                                            <p class="text text-muted">IamIronman@gmail.com</p>
+							                                                        </div>
+							                                                       <span class="iconify text-muted" data-icon="ic:baseline-alternate-email" data-inline="false"  style="margin-right: 3%;"></span>
+							                                                    </div>
+							                                                </li>
+							                                              </ul>
+							                                             </div>
+							                       </div>
+							                      <!--cards-->
+
+							                      <!--cards-->
+												<div class="card mb-6 " style="background-color: #29242a;">
+							                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
+							                                            <ul class="list-group list-group-flush "  style="background-color: #29242a;">
+							                                                <li class="list-group-item px-0 py-6" style="background-color: #29242a;">
+							                                                    <div class="media align-items-center" style="background-color: #29242a;">
+							                                                        <div class="media-body shadow p-3" style=" text-align: left;">
+							                                                            <p class="small text-muted mb-0">Date Joined</p>
+							                                                            <p class="text text-muted">6/12/2019</p>
+							                                                        </div>
+							                                                       <span class="iconify text-muted" data-icon="clarity:date-solid" data-inline="false"  style="margin-right: 3%;"></span>
+							                                                    </div>
+							                                                </li>
+							                                              </ul>
+							                                             </div>
+							                       </div>
+							                      <!--cards--><br>
+							                      <button type="button" class="btn btn-danger align-self-center">Logout</button><br>
+
+
+										</div>
+
+						    </div>
+
+
+						<div class="collapse multi-collapse" id="multiCollapseExample4">
+							<h5 style="color: white; margin-top: 2%">Friends</h5><br>
+							<!--mycontacts-->
+							<!-- Friend -->
+                                                <div class="card mb-6" style="margin-top: 5%; margin-bottom: 5% ;background-color :#29242a;">
+                                                    <div class="card-body" style="background-color :#29242a; ">
+
+                                                        <div class="media" style="background-color :#29242a;text-align: left;">
+
+
+                                                            <div class="avatar " style="background-color :#29242a;">
+                                                                <img class="avatar-img" src="https://pm1.narvii.com/5814/5f252d73fb055d424d6cc34db5517bbda3c4beaa_hq.jpg" alt="Brian Dawson" id="contactimg" onclick="expandside()">
+                                                            </div>
+
+
+                                                            <div class="media-body" style="background-color :#29242a; ">
+                                                                <h6 class="mb-0 text-light">Brian Dawson</h6>
+                                                                <small class="text-muted">Available</small>
+                                                            </div>
+
+                                                            <div class="align-self-center ml-auto" style="background-color :#29242a;">
+                                                                <div class="custom-control custom-checkbox"  style="background-color :#29242a;">
+						                                                                    <!-- Message: dropdown -->
+						                                                <div class="dropdown" style="background-color :#29242a;">
+						                                                    <a class="text-muted opacity-60 ml-3" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						                                                        <span class="iconify text-muted" data-icon="eva:more-vertical-fill" data-inline="false"></span>
+						                                                    </a>
+
+						                                                    <div class="dropdown-menu" style="background-color: #2f2a30;" >
+						                                                        <a class="dropdown-item d-flex align-items-center" href="#" style="color :white; background-color: #2f2a30;">
+						                                                            Delete <span class="ml-auto fe-trash-2"></span>
+						                                                        </a>
+						                                                    </div>
+						                                                </div>
+                                                <!-- Message: dropdown -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <!-- Label -->
+                                                    <label class="stretched-label" for="id-user-2"></label>
+                                                </div>
+                                  <!-- Friend -->
+
+
+
+
+
+
+
+							<!--mycontacts-->
+						</div>
+	</div>
+	<div class="col-sm-8" style="background-color: #29242a; height: 100vh; padding: 0px; " id="middiv">
+		<div class="container-fluid " style="width: 100%; height: 9vh;  border: solid; border-color: #2f2a30; border-top-style: none; border-left-style: none; border-right-style: none; padding: 1%; ">
+			<!--chat header-->
+
+
+
+
+                                                    <div class="media">
+
+
+                                                            <img src="https://www.pixelstalk.net/wp-content/uploads/2016/03/Download-free-Deadpool-Wallpaper-HD.jpg" alt="..." class=" " id="contactimgheader" style="border: none; object-fit: cover;">
+
+
+
+                                                        <div class="media-body overflow-hidden">
+                                                            <div class="d-flex align-items-center mb-1">
+                                                                <h6 class="text-truncate mb-0 mr-auto text-light">Anna Bridges <span style="color: green; font-size: 20px;">.</span></h6>
+
+                                                            </div>
+                                                            <div class="text-truncate text-muted">Status</div>
+                                                        </div>
+                                                    </div>
+
+
+
+
+			<!--chat header ends-->
+		</div>
+
+
+			<div  style="height: 80vh;  width: 97%; overflow-y: auto; " id="chatwindow">
+
+
+			 <!-- Message right -->
+			 					<div style="width: 100%;">
+                                <div class="message message-right" style="width: 60%; margin-top: 1.5% ;margin-bottom: 1.5%; ">
+                                    <!-- Avatar -->
+
+                                        <img class="avatar-img" src="https://i.ytimg.com/vi/_nGpPFtkLR0/hqdefault.jpg" alt="" id="contactimgright">
+
+                                    <!-- Message: body -->
+                                    <div class="message-body">
+
+                                        <!-- Message: row -->
+                                        <div class="message-row">
+                                            <div class="d-flex align-items-center justify-content-end">
+
+                                            	<!-- Message: dropdown -->
+                                                <div class="dropdown" >
+                                                    <a class="text-muted opacity-60 ml-3" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <span class="iconify text-muted" data-icon="eva:more-vertical-fill" data-inline="false"></span>
+                                                    </a>
+
+                                                    <div class="dropdown-menu" style="background-color: #2f2a30;" >
+                                                        <a class="dropdown-item d-flex align-items-center" href="#" style="color :white; background-color: #2f2a30;">
+                                                            Delete <span class="ml-auto fe-trash-2"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: dropdown -->
+
+
+                                                <!-- Message: content -->
+                                                <div class="message-content bg-primary text-white">
+                                                    <div>I'm going to meet a friend of mine at the department store. Yeah, I have to buy some presents for my parents.</div>
+
+                                                    <div class="mt-1">
+                                                        <small class="opacity-65">8 mins ago</small>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: content -->
+
+
+
+                                            </div>
+                                        </div>
+                                        <!-- Message: row -->
+
+                                    </div>
+                                    <!-- Message: body -->
+                                </div></div>
+                 <!-- Message  right end-->
+
+
+
+
+                   <!-- Message left -->
+                   				<div style="width: 100%;">
+                                <div class="message" id="msgleft" style="width: 55%; margin-top: 1.5% ;margin-bottom: 1.5%;">
+                                    <!-- Avatar -->
+
+                                        <img class="avatar-img" src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/gettyimages-1140826482.jpg" alt="" id="contactimgleft">
+
+
+                                    <!-- Message: body -->
+                                    <div class="message-body">
+
+                                        <!-- Message: row -->
+                                        <div class="message-row">
+                                            <div class="d-flex align-items-center">
+
+                                                <!-- Message: content -->
+                                                <div class="message-content bg-light" style="border-radius: 12px 12px 12px 0px; min-width: 50%; ">
+                                                    <h6 class="mb-2">Anna Bridges</h6>
+                                                    <div>I'm going to meet</div>
+
+                                                    <div class="mt-1">
+                                                        <small class="opacity-65">8 mins ago</small>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: content -->
+                                                <!-- Message: dropdown -->
+                                                <div class="dropdown" >
+                                                    <a class="text-muted opacity-60 ml-3" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <span class="iconify text-muted" data-icon="eva:more-vertical-fill" data-inline="false"></span>
+                                                    </a>
+
+                                                    <div class="dropdown-menu" style="background-color: #2f2a30;" >
+                                                        <a class="dropdown-item d-flex align-items-center" href="#" style="color :white; background-color: #2f2a30;">
+                                                            Delete <span class="ml-auto fe-trash-2"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: dropdown -->
+
+
+
+                                            </div>
+                                        </div>
+                                        <!-- Message: row -->
+
+                                    </div>
+                                    <!-- Message: body -->
+                                </div>
+                                <!-- Message -->
+
+            				</div>
+
+            		<!-- Message left ends-->
+
+
+							<!-- Message right -->
+			 					<div style="width: 100%;">
+                                <div class="message message-right" style="width: 60%; margin-top: 1.5% ;margin-bottom: 1.5%; ">
+                                    <!-- Avatar -->
+
+                                        <img class="avatar-img" src="https://i.ytimg.com/vi/_nGpPFtkLR0/hqdefault.jpg" alt="" id="contactimgright">
+
+                                    <!-- Message: body -->
+                                    <div class="message-body">
+
+                                        <!-- Message: row -->
+                                        <div class="message-row">
+                                            <div class="d-flex align-items-center justify-content-end">
+
+                                            	<!-- Message: dropdown -->
+                                                <div class="dropdown" >
+                                                    <a class="text-muted opacity-60 ml-3" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <span class="iconify text-muted" data-icon="eva:more-vertical-fill" data-inline="false"></span>
+                                                    </a>
+
+                                                    <div class="dropdown-menu" style="background-color: #2f2a30;" >
+                                                        <a class="dropdown-item d-flex align-items-center" href="#" style="color :white; background-color: #2f2a30;">
+                                                            Delete <span class="ml-auto fe-trash-2"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: dropdown -->
+
+                                                <!-- Message: content -->
+                                                <div class="message-content bg-primary text-white" style="min-width: 50%; ">
+                                                    <div>I'm going to meet </div>
+
+                                                    <div class="mt-1">
+                                                        <small class="opacity-65">8 mins ago</small>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: content -->
+
+
+
+                                            </div>
+                                        </div>
+                                        <!-- Message: row -->
+
+                                    </div>
+                                    <!-- Message: body -->
+                                </div></div>
+                 <!-- Message  right end-->
+
+
+
+
+                   <!-- Message Image left -->
+                   				<div style="width: 100%;">
+                                <div class="message" id="msgleft" style="width: 55%; margin-top: 1.5% ;margin-bottom: 1.5%;">
+                                    <!-- Avatar -->
+
+                                        <img class="avatar-img" src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/gettyimages-1140826482.jpg" alt="" id="contactimgleft">
+
+
+                                    <!-- Message: body -->
+                                    <div class="message-body">
+
+                                        <!-- Message: row -->
+                                        <div class="message-row">
+                                            <div class="d-flex align-items-center">
+
+
+
+                                                <!-- Message: content -->
+                                                <div class="message-content bg-light" style="border-radius: 12px 12px 12px 0px;">
+                                                    <h6 class="mb-2">Anna Bridges</h6>
+                                                    <div><img src="https://cdna.artstation.com/p/assets/images/images/017/955/070/4k/jackson-caspersz-ironman-snap.jpg" id="chatinsideimage" ></div>
+
+                                                    <div class="mt-1">
+                                                        <small class="opacity-65">8 mins ago</small>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: content -->
+                                                <!-- Message: dropdown -->
+                                                <div class="dropdown" >
+                                                    <a class="text-muted opacity-60 ml-3" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <span class="iconify text-muted" data-icon="eva:more-vertical-fill" data-inline="false"></span>
+                                                    </a>
+
+                                                    <div class="dropdown-menu" style="background-color: #2f2a30;" >
+                                                        <a class="dropdown-item d-flex align-items-center" href="#" style="color :white; background-color: #2f2a30;">
+                                                            Delete <span class="ml-auto fe-trash-2"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: dropdown -->
+
+
+
+                                            </div>
+                                        </div>
+                                        <!-- Message: row -->
+
+                                    </div>
+                                    <!-- Message: body -->
+                                </div>
+                                <!-- Message -->
+
+            				</div>
+
+            		<!-- Message left ends-->
+					<!-- Message Image right -->
+			 					<div style="width: 100%;">
+                                <div class="message message-right" style="width: 60%; margin-top: 1.5% ;margin-bottom: 1.5%; ">
+                                    <!-- Avatar -->
+
+                                        <img class="avatar-img" src="https://i.ytimg.com/vi/_nGpPFtkLR0/hqdefault.jpg" alt="" id="contactimgright">
+
+                                    <!-- Message: body -->
+                                    <div class="message-body">
+
+                                        <!-- Message: row -->
+                                        <div class="message-row">
+                                            <div class="d-flex align-items-center justify-content-end">
+
+                                            	 <!-- Message: dropdown -->
+                                                <div class="dropdown" >
+                                                    <a class="text-muted opacity-60 ml-3" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <span class="iconify text-muted" data-icon="eva:more-vertical-fill" data-inline="false"></span>
+                                                    </a>
+
+                                                    <div class="dropdown-menu" style="background-color: #2f2a30;" >
+                                                        <a class="dropdown-item d-flex align-items-center" href="#" style="color :white; background-color: #2f2a30;">
+                                                            Delete <span class="ml-auto fe-trash-2"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: dropdown -->
+                                                <!-- Message: content -->
+                                                <div class="message-content bg-primary text-white">
+                                                    <div><img src="https://cdna.artstation.com/p/assets/images/images/017/955/070/4k/jackson-caspersz-ironman-snap.jpg" id="chatinsideimage2" ></div>
+
+                                                    <div class="mt-1">
+                                                        <small class="opacity-65">8 mins ago</small>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: content -->
+
+
+
+                                            </div>
+                                        </div>
+                                        <!-- Message: row -->
+
+                                    </div>
+                                    <!-- Message: body -->
+                                </div></div>
+                 <!-- Message  right end-->
+
+
+
+
+                   <!-- Message left -->
+                   				<div style="width: 100%;">
+                                <div class="message" id="msgleft" style="width: 55%; margin-top: 1.5% ;margin-bottom: 1.5%;">
+                                    <!-- Avatar -->
+
+                                        <img class="avatar-img" src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/gettyimages-1140826482.jpg" alt="" id="contactimgleft">
+
+
+                                    <!-- Message: body -->
+                                    <div class="message-body">
+
+                                        <!-- Message: row -->
+                                        <div class="message-row">
+                                            <div class="d-flex align-items-center">
+
+                                                <!-- Message: content -->
+                                                <div class="message-content bg-light" style="border-radius: 12px 12px 12px 0px;">
+                                                    <h6 class="mb-2">Anna Bridges</h6>
+                                                    <div>I'm going to meet a friend of mine at the department store. I have to buy some presents for my parents.</div>
+
+                                                    <div class="mt-1">
+                                                        <small class="opacity-65">8 mins ago</small>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: content -->
+                                              <!-- Message: dropdown -->
+                                                <div class="dropdown" >
+                                                    <a class="text-muted opacity-60 ml-3" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <span class="iconify text-muted" data-icon="eva:more-vertical-fill" data-inline="false"></span>
+                                                    </a>
+
+                                                    <div class="dropdown-menu" style="background-color: #2f2a30;" >
+                                                        <a class="dropdown-item d-flex align-items-center" href="#" style="color :white; background-color: #2f2a30;">
+                                                            Delete <span class="ml-auto fe-trash-2"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <!-- Message: dropdown -->
+
+
+                                            </div>
+                                        </div>
+                                        <!-- Message: row -->
+
+                                    </div>
+                                    <!-- Message: body -->
+                                </div>
+                                <!-- Message -->
+
+            				</div>
+
+            		<!-- Message left ends-->
+
+
+
+
+
+
+
+
+			</div>
+
+
+			<div class="container-fluid" style="width: 100%;  border: solid; border-color: #2f2a30; border-bottom-style: none; border-left-style: none; border-right-style: none;position:absolute;bottom:0px; background-color: #29242a;" id="chatcompose">
+
+
+
+
+				<!-- Chat: Footer -->
+                        <div class="chat-footer border-top py-4 py-lg-6 px-lg-8">
+                            <div class="container-xxl">
+
+                                <form id="chat-id-2-form" action="assets/php/upload.php" data-emoji-form="">
+                                    <div class="form-row align-items-center">
+                                        <div class="col">
+                                            <div class="input-group">
+
+                                                <!-- Textarea -->
+                                                <textarea onkeydown="resizeDivs()" id="chat" class="form-control bg-transparent border-0" placeholder="Type your message..." rows="1" data-emoji-input="" data-autosize="true" style="position:relative;bottom:0px; border-color: transparent; color: #8fa8b1; "></textarea>
+
+                                                <!-- Emoji button -->
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-ico btn-secondary btn-minimal bg-transparent border-0" type="button" data-emoji-btn="">
+                                                        <img src="{% static 'assets/smile.svg' %}" data-inject-svg="" alt="" style="color: red;">
+                                                    </button>
+                                                </div>
+
+                                                <!-- Upload button -->
+                                                <div class="input-group-append">
+                                                    <button id="chat-upload-btn-2" class="btn btn-ico btn-secondary btn-minimal bg-transparent border-0 dropzone-button-js" type="button">
+                                                        <img src="{% static 'assets/paperclip.svg' %}" data-inject-svg="" alt="">
+                                                    </button>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Submit button -->
+                                        <div class="col-auto">
+                                            <button class="btn btn-ico btn-primary rounded-circle" type="submit" id="sendchat">
+                                                <span class="iconify" data-icon="cil:send" data-inline="false"></span>
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+                        <!-- Chat: Footer -->
+			</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!--sidecontact menu-->
+	<div class="col-sm-0" style=" height: 100vh; background-color: #29242a; padding: 0px; border: solid; border-color: #2f2a30; border-top-style: none; border-bottom-style: none; border-right-style: none; " id="sidediv">
+			<div class="container-fluid " style="width: 100%; height: 9vh;  border: solid; border-color: #2f2a30; border-top-style: none; border-left-style: none; border-right-style: none; padding: 1%; ">
+
+                   <!--top-->
+                   <span class="iconify text-muted" data-icon="icomoon-free:cross" data-inline="false" onclick="expandside()" style="margin: 5%; cursor: pointer;"></span>
+			</div>
+			<div class="container-fluid" style="width: 100%; height: auto; align-items: center;text-align: center;">
+				<!--middle-->
+				<input type="text" name="" value="0" id="sidemenuopen" style="visibility: hidden;">
+				<img src="https://cdna.artstation.com/p/assets/images/images/017/955/070/4k/jackson-caspersz-ironman-snap.jpg" id="chatinsideimagecover">
+				<br>
+				<h3 style="color: white;">Iron Man</h3>
+				<h6 class="text text-muted" style="">I am gonna save the world!</h6>
+
+
+					<!--cards-->
+					<div class="card mb-6 " style="background-color: #29242a;">
+                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
+                                            <ul class="list-group list-group-flush "  style="background-color: #29242a;">
+                                                <li class="list-group-item px-0 py-6" style="background-color: #29242a;">
+                                                    <div class="media align-items-center" style="background-color: #29242a;">
+                                                        <div class="media-body shadow p-3" style=" text-align: left;">
+                                                            <p class="small text-muted mb-0">User Name</p>
+                                                            <p class="text text-muted">Iron667</p>
+                                                        </div>
+                                                       <span class="iconify text-muted" data-icon="bx:bxs-user-circle" data-inline="false"  style="margin-right: 3%;"></span>
+                                                    </div>
+                                                </li>
+                                              </ul>
+                                             </div>
+                       </div>
+                      <!--cards-->
+
+
+					<!--cards-->
+					<div class="card mb-6 " style="background-color: #29242a;">
+                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
+                                            <ul class="list-group list-group-flush "  style="background-color: #29242a;">
+                                                <li class="list-group-item px-0 py-6" style="background-color: #29242a;">
+                                                    <div class="media align-items-center" style="background-color: #29242a;">
+                                                        <div class="media-body shadow p-3" style=" text-align: left;">
+                                                            <p class="small text-muted mb-0">Email</p>
+                                                            <p class="text text-muted">IamIronman@gmail.com</p>
+                                                        </div>
+                                                       <span class="iconify text-muted" data-icon="ic:baseline-alternate-email" data-inline="false"  style="margin-right: 3%;"></span>
+                                                    </div>
+                                                </li>
+                                              </ul>
+                                             </div>
+                       </div>
+                      <!--cards-->
+
+                      <!--cards-->
+					<div class="card mb-6 " style="background-color: #29242a;">
+                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
+                                            <ul class="list-group list-group-flush "  style="background-color: #29242a;">
+                                                <li class="list-group-item px-0 py-6" style="background-color: #29242a;">
+                                                    <div class="media align-items-center" style="background-color: #29242a;">
+                                                        <div class="media-body shadow p-3" style=" text-align: left;">
+                                                            <p class="small text-muted mb-0">Date Joined</p>
+                                                            <p class="text text-muted">6/12/2019</p>
+                                                        </div>
+                                                       <span class="iconify text-muted" data-icon="clarity:date-solid" data-inline="false"  style="margin-right: 3%;"></span>
+                                                    </div>
+                                                </li>
+                                              </ul>
+                                             </div>
+                       </div>
+                      <!--cards-->
+
+
+			</div>
+
+
+
+
+	</div>
+
+<!--sidecontact menu ends-->
+
+
+</div>
+
+
+
+
+
+
+
+
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<script  src="{% static 'myscript.js' %}"></script>
+
+
+</html>
