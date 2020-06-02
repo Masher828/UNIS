@@ -4,6 +4,12 @@ $(window).on('load', function() {
 
 autosize(document.getElementById("chat"));
 $('#chatwindow').scrollTop($('#chatwindow')[0].scrollHeight);
+document.getElementById("startimage").src= document.getElementById("chatinsideimagecoveruser").src;
+var tt="Hi, "+document.getElementById("notaname").innerHTML;
+document.getElementById("notaname2").innerHTML= tt;
+startcollapse();
+
+
 
 });
 
@@ -324,5 +330,23 @@ function addfrndfromsearchres(){
 
 
 
+
+}
+
+
+
+
+
+//launch startcollapse
+function startcollapse(){
+  	$('#startcollapse').collapse('show');
+    	$('#maincollapse').collapse('hide');
+
+
+}
+
+function chatcollapse(){
+    $('#maincollapse').collapse('show');
+  $('#startcollapse').collapse('hide');
 
 }

@@ -64,7 +64,7 @@
            <!-- Chat link -->
 
                                         <a class="text-reset nav-link p-0 mb-6" >
-                                            <div class="card card-active-listener" style="background-color: #29242a; margin-top: 4%; border: none;">
+                                            <div class="card card-active-listener" style="background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;" onclick="chatcollapse()">
                                                 <div class="card-body">
 
                                                     <div class="media">
@@ -413,7 +413,7 @@
 							                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
 							                                            	<img src="{{img}}" id="chatinsideimagecoveruser">
 																			<br><br>
-																			<h3 style="color: white;">{{name}}</h3>
+																			<h3 style="color: white;" id="notaname">{{name}}</h3>
 																			<h6 class="text text-muted" style="">{{status}}</h6>
 							                                          </div>
 							                       </div>
@@ -537,6 +537,7 @@
 						</div>
 	</div>
 	<div class="col-sm-8" style="background-color: #29242a; height: 100vh; padding: 0px; " id="middiv">
+		<div class="collapse multi-collapse" id="maincollapse">
 		<div class="container-fluid " style="width: 100%; height: 9vh;  border: solid; border-color: #2f2a30; border-top-style: none; border-left-style: none; border-right-style: none; padding: 1%; ">
 			<!--chat header-->
 
@@ -948,7 +949,24 @@
                         </div>
                         <!-- Chat: Footer -->
 			</div>
+</div>
 
+
+
+
+
+
+<div class="collapse multi-collapse" id="startcollapse" style="height: 100vh;  width: 100%; align-items: center; vertical-align:middle;">
+	<div class="container-fluid" style="height: 100vh; width: 100%; align-items : center; text-align: center; vertical-align:middle;">
+										<div class="container" style="margin-top: 20%; height: 40vh; width: 50%; ">
+											<img src="https://i.ytimg.com/vi/ttVoVr2F75k/maxresdefault.jpg" class="img-fluid" style="border-radius:50%; height: 20vh; width: 30%;" id="startimage">
+											<br><br>
+												<h4 class="align-middle text-light" id="notaname2" >hi</h4>
+												<h5 class="align-middle text-muted">Select any chat to start convo!</h5>
+										</div>
+
+	</div>
+</div>
 
 </div>
 
