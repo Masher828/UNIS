@@ -231,7 +231,7 @@ var temp=document.getElementById("texttoaddfrnd").value;
 if(tags.includes(temp))
 	{    var ind= tags.indexOf(temp);
       var ind1=tagsid[ind];
-
+       document.getElementById("hiddenresid").value=ind1;
     //ajax call for getting desired search images
 
     $.ajax({
@@ -246,11 +246,13 @@ if(tags.includes(temp))
             var img= data['img'];
             var uname= data['uname'];
             var status=data['status'];
+            //var id=data['id'];
 
             document.getElementById("chatinsideimagecoveruser").src=img;
             document.getElementById("searchresname").innerHTML=temp;
             document.getElementById("searchresuname").innerHTML=uname;
             document.getElementById("searchresstatus").innerHTML=status;
+          //  document.getElementById("hiddenresid").value=id;
             document.getElementById("addfrndresult").style.visibility = "visible";
 
 
@@ -275,6 +277,50 @@ document.getElementById("addfrndresult").style.visibility = "hidden";
 	alert("Not a valid User");
 }
 
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//adding frnd from addfrnd button
+function addfrndfromsearchres(){
+  var admin=document.getElementById("adminusername").value;
+  var touser=document.getElementById("hiddenresid").value;
+
+  //alert(topass);
+
+      $.ajax({
+            type:"POST",
+            cache: false,
+            url: "adduser/",
+            datatype: "html",
+            data:{id1 : admin,id2: touser},
+            success: function(result) {
+            // data = JSON.parse(data)
+              //var temp = data['name'];
+              alert(result);
+
+            }
+
+        /* #tthe ags is the id of the input element
+        source: tags is the list of available tags*/
+
+
+            });
 
 
 
