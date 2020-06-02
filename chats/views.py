@@ -48,8 +48,34 @@ def get_user_details(request):
     out_data['status'] = details.status
     return HttpResponse(json.dumps(out_data))
 
+@csrf_exempt
+@login_required()
+def get_friends(request):
+    if request.method == "POST":
+        connection = psycopg2.connect(user = "postgres",
+                                              password = "I*p96U#o4eID^Ubc$R*Y",
+                                              host = "localhost",
+                                              port = "5433",
+                                              database = "unis_{}".format(request.user.username))
+        # connection_other_user.autocommit = True
+        select_friends_query = '''SELECT contact_id FROM contacts;'''
+        cursor= connection.cursor()
+        cursor.execute(select_friends_query)
+        friends={'len':0,'id':[],'status':[],'profile_pic':[],'name':[]}
+        for row in cursor.fetchall():
+            detail_friend_obj = get_object_or_404(Details,pk=row[0])
+            friends['id'].append(row[0])
+            friends['status'].append(detail_friend_obj.status)
+            friends['profile_pic'].append(detail_friend_obj.Profile_pic.url)
+            friends['name'].append(detail_friend_obj.user.first_name + " "+ detail_friend_obj.user.last_name)
+        cursor.close()
+        connection.close()
+        friends['len']=len(friends['id'])
+        return HttpResponse(json.dumps(friends))
+
 
 @csrf_exempt
+@login_required()
 def addcontact(request):
     if request.method == "POST":
             #id1 -> logged in user
@@ -91,6 +117,8 @@ def addcontact(request):
             return HttpResponse("done")
         except Exception as error :
             return HttpResponse(error)
+    else:
+        return HttpResponse("hi") #Return page not found error
 
 
 

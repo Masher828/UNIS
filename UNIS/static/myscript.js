@@ -4,7 +4,7 @@ $(window).on('load', function() {
 
 autosize(document.getElementById("chat"));
 $('#chatwindow').scrollTop($('#chatwindow')[0].scrollHeight);
-document.getElementById("startimage").src= document.getElementById("chatinsideimagecoveruser").src;
+document.getElementById("startimage").src= document.getElementById("chatinsideimagecoveruser2").src;
 var tt="Hi, "+document.getElementById("notaname").innerHTML;
 document.getElementById("notaname2").innerHTML= tt;
 startcollapse();
@@ -155,6 +155,7 @@ function collapchats(){
   		$('#multiCollapseExample4').collapse('hide');
 }
 function collapcontacts(){
+  loadmyfrndsintocollapse4();
 	$('#multiCollapseExample4').collapse('show');
 	$('#multiCollapseExample1').collapse('hide');
 	$('#multiCollapseExample2').collapse('hide');
@@ -348,5 +349,63 @@ function startcollapse(){
 function chatcollapse(){
     $('#maincollapse').collapse('show');
   $('#startcollapse').collapse('hide');
+
+}
+
+
+
+
+function loadmyfrndsintocollapse4(){
+  var admin=document.getElementById("adminusername").value;
+  $.ajax({
+        type:"POST",
+        cache: false,
+        url: "get_friends/",
+        datatype: "html",
+        data:{id1 : admin},
+        success: function(data) {
+        data = JSON.parse(data)
+        var size=data['len'];
+
+        for (var i = 0;i <size; i++)
+        {
+          var name = (data['name'][i]);
+          var id1= (data['id'][i]);
+          var status = (data['status'][i]);
+          var profile = (data['profile_pic'][i]);
+
+          $("#multiCollapseExample4").append("<!-- Friend --><div class='card mb-6' style='margin-top: 5%; margin-bottom: 5% ;background-color :#29242a;'><div class='card-body' style='background-color :#29242a; '><div class='media' style='background-color :#29242a;text-align: left;'><div class='avatar ' style='background-color :#29242a;'><img class='avatar-img' src="+profile+" alt='Brian Dawson' id='contactimg' onclick='expandside()'></div><div class='media-body' style='background-color :#29242a; '><h6 class='mb-0 text-light'>"+name+"</h6><small class='text-muted'>"+status+"</small></div><div class='align-self-center ml-auto' style='background-color :#29242a;'><div class='custom-control custom-checkbox' style='background-color :#29242a;'><!-- Message: dropdown --><div class='dropdown' style='background-color :#29242a;'><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' href='#' style='color :white; background-color: #2f2a30;'  onclick='deletefriend("+id1+")'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div></div></div><!-- Label --><label class='stretched-label' for='id-user-2'></label></div><!-- Friend -->");
+        }
+
+
+
+
+
+}
+
+});
+
+}
+
+
+
+
+//deleting friend
+function deletefriend(id){
+
+
+
+alert(id);
+
+
+
+
+
+
+
+
+
+
+
 
 }
