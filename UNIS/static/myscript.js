@@ -1,6 +1,6 @@
 $(window).on('load', function() {
 
-//alert("hello");
+
 
 autosize(document.getElementById("chat"));
 $('#chatwindow').scrollTop($('#chatwindow')[0].scrollHeight);
@@ -132,6 +132,7 @@ function collapprofile(){
   		$('#multiCollapseExample1').collapse('hide');
   		$('#multiCollapseExample3').collapse('hide');
   		$('#multiCollapseExample4').collapse('hide');
+      loadusersintovar();
 }
 
 function collapaccount(){
@@ -156,57 +157,124 @@ function collapcontacts(){
 
 }
 
-var glist=[];
-//autocomplete on adding frnds
-$( function() {
-    var tags = [
-    "Delhi",
-    "Ahemdabad",
-    "Punjab",
-    "Uttar Pradesh",
-    "Himachal Pradesh",
-    "Karnatka",
-    "Kerela",
-    "Maharashtra",
-    "Gujrat",
-    "Rajasthan",
-    "Bihar",
-    "Tamil Nadu",
-    "Haryana"
-
-
-      /* Making a list of available tags */
-
-
-    ];
-    glist=tags;
-    $( "#texttoaddfrnd" ).autocomplete({
-      source: tags
-
-/* #tthe ags is the id of the input element
-source: tags is the list of available tags*/
-
-
-    });
-  } );
-
 
 
 
 
 
 //btntoaddfrnd
+
+
+
+
+
+
+
+
+
+
+  var tags = [];
+  var tagsid=[];
+//ajax for fetching user deatilson add frnd
+
+//wait for page load to initialize script
+function loadusersintovar(){
+      tags=[];
+      tagsid=[];
+      globallist=[];
+
+      // AJAX
+      $.ajax({
+
+            cache: false,
+            url: "get_user/",
+            datatype: "html",
+            data:'',
+            success: function(data) {
+            data = JSON.parse(data)
+            var size=data['len'];
+
+            for (var i = 0;i <size; i++)
+            {
+                var temp = data['username'][i];
+                var tempid = data['id'][i]
+                //alert(temp);
+
+                tags.push(temp);
+                tagsid.push(tempid);
+            }
+
+            $( "#texttoaddfrnd" ).autocomplete({
+              source: tags
+
+        /* #tthe ags is the id of the input element
+        source: tags is the list of available tags*/
+
+
+            });
+
+
+    }
+
+  });}
+
+
+
+//ajax ends
+var globallist=tags;
+
+
 function btntoaddfrnd(){
 
 var temp=document.getElementById("texttoaddfrnd").value;
 
-if(glist.includes(temp))
-	{document.getElementById("addfrndresult").style.visibility = "visible";}
-else{
-	document.getElementById("addfrndresult").style.visibility = "hidden";
-	alert("Not a valid User");
+if(tags.includes(temp))
+	{    var ind= tags.indexOf(temp);
+      var ind1=tagsid[ind];
+
+    //ajax call for getting desired search images
+
+    $.ajax({
+          type:"POST",
+          cache: false,
+          url: "get_user_details/",
+          datatype: "html",
+          data:{id : ind1},
+          success: function(data) {
+           data = JSON.parse(data)
+            var temp = data['name'];
+            var img= data['img'];
+            var uname= data['uname'];
+            var status=data['status'];
+
+            document.getElementById("chatinsideimagecoveruser").src=img;
+            document.getElementById("searchresname").innerHTML=temp;
+            document.getElementById("searchresuname").innerHTML=uname;
+            document.getElementById("searchresstatus").innerHTML=status;
+            document.getElementById("addfrndresult").style.visibility = "visible";
+
+
+          }
+
+      /* #tthe ags is the id of the input element
+      source: tags is the list of available tags*/
+
+
+          });
+
+
+
+    //call ends
+
+
+
 
 }
+else{
+document.getElementById("addfrndresult").style.visibility = "hidden";
+	alert("Not a valid User");
+}
+
 
 
 

@@ -348,46 +348,48 @@
 
 
 
-         						 	<div class="container-fluid" style="width: 100%; height: auto; align-items: center;text-align: center;" id="addfrndresult">
-											<!--middle-->
+											<div class="container-fluid" style="width: 100%; height: auto; align-items: center;text-align: center;" id="addfrndresult">
+ 											<!--middle-->
 
 
-												<!--cards-->
-												<div class="card mb-6 " style="background-color: #29242a;">
-							                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
-							                                            	<img src="https://assets.materialup.com/uploads/13ce0637-32b0-4ed0-96fe-5214075a4e2c/preview.png" id="chatinsideimagecoveruser">
-																			<br><br>
-																			<h3 style="color: white;">Tacaz</h3>
-																			<h6 class="text text-muted" style="">I am gonna save the world!</h6>
-							                                          </div>
-							                       </div>
-							                      <!--cards-->
+ 												<!--cards-->
+ 												<div class="card mb-6 " style="background-color: #29242a;">
+ 							                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
+ 							                                            	<img src="https://assets.materialup.com/uploads/13ce0637-32b0-4ed0-96fe-5214075a4e2c/preview.png" id="chatinsideimagecoveruser">
+ 																			<br><br>
+ 																			<h3 style="color: white;" id="searchresname">Tacaz</h3>
+ 																			<h6 class="text text-muted" style="" id="searchresstatus">I am gonna save the world!</h6>
+ 							                                          </div>
+ 							                       </div>
+ 							                      <!--cards-->
 
-												<!--cards-->
-												<div class="card mb-6 " style="background-color: #29242a;">
-							                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
-							                                            <ul class="list-group list-group-flush "  style="background-color: #29242a;">
-							                                                <li class="list-group-item px-0 py-6" style="background-color: #29242a;">
-							                                                    <div class="media align-items-center" style="background-color: #29242a;">
-							                                                        <div class="media-body shadow p-3" style=" text-align: left;">
-							                                                            <p class="small text-muted mb-0">User Name</p>
-							                                                            <p class="text text-muted">Iron667</p>
-							                                                        </div>
-							                                                       <span class="iconify text-muted" data-icon="bx:bxs-user-circle" data-inline="false"  style="margin-right: 3%;"></span>
-							                                                    </div>
-							                                                </li>
-							                                              </ul>
-							                                             </div>
-							                       </div>
-							                      <!--cards--><br>
-							                      <button type="button" class="btn btn-success align-self-center">Add Friend</button>
-							          </div>
+ 												<!--cards-->
+ 												<div class="card mb-6 " style="background-color: #29242a;">
+ 							                                        <div class="card-body " style="background-color: #29242a; padding: 0px;">
+ 							                                            <ul class="list-group list-group-flush "  style="background-color: #29242a;">
+ 							                                                <li class="list-group-item px-0 py-6" style="background-color: #29242a;">
+ 							                                                    <div class="media align-items-center" style="background-color: #29242a;">
+ 							                                                        <div class="media-body shadow p-3" style=" text-align: left;">
+ 							                                                            <p class="small text-muted mb-0">User Name</p>
+ 							                                                            <p class="text text-muted" id="searchresuname">Iron667</p>
+ 							                                                        </div>
+ 							                                                       <span class="iconify text-muted" data-icon="bx:bxs-user-circle" data-inline="false"  style="margin-right: 3%;"></span>
+ 							                                                    </div>
+ 							                                                </li>
+ 							                                              </ul>
+ 							                                             </div>
+ 							                       </div>
+ 							                      <!--cards--><br>
+ 							                      <button type="button" class="btn btn-success align-self-center">Add Friend</button>
+ 							          </div>
 
 
 
 
 
 						      	<!--add user or search-->
+
+
 
 
 						    </div>
@@ -467,7 +469,7 @@
 							                                             </div>
 							                       </div>
 							                      <!--cards--><br>
-							                      <button type="button" class="btn btn-danger align-self-center">Logout</button><br>
+																		<a href="{% url 'accounts:logout' %}"><button type="button" class="btn btn-danger align-self-center" >Logout</button></a> <br>
 
 
 										</div>

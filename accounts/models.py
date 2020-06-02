@@ -7,4 +7,5 @@ class Details(models.Model):
     Profile_pic = models.ImageField(upload_to = 'profile_picture/')
     status = models.TextField(default = "Available")
     created_at = models.DateTimeField(default = datetime.now())
-    
+    isOnline = models.CharField(max_length = 20, default="false")
+    lastseen = models.CharField(max_length = 50, default='not available')

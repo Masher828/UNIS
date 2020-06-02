@@ -17,8 +17,8 @@ def login(request):
             if user is not None:
                 auth.login(request,user)
                 print(user.id)
-                for obj in Details.objects.all():
-                    print(obj.id)
+                # for obj in Details.objects.all():
+                #     print(obj.user.username)
                 return redirect('chats:chat_home')
 
             else:
@@ -27,6 +27,11 @@ def login(request):
         return render(request,'accounts/signin.html')
 
 
+
+
+
+
+@login_required()
 def logout(request):
     auth.logout(request)
     return redirect('index')
@@ -52,7 +57,7 @@ def signup(request):
                                                       host = "localhost",
                                                       port = "5433")
                     connection.autocommit = True
-                    create_database_query = "CREATE DATABASE {};".format(request.POST['username'])
+                    create_database_query = "CREATE DATABASE unis_{};".format(request.POST['username'])
                     cursor= connection.cursor()
                     cursor.execute(create_database_query)
                     cursor.close()
@@ -61,9 +66,9 @@ def signup(request):
                                                       password = "I*p96U#o4eID^Ubc$R*Y",
                                                       host = "localhost",
                                                       port = "5433",
-                                                      database = request.POST['username'])
+                                                      database = "unis_{}".format(request.POST['username']))
                     connection.autocommit = True
-                    create_table_query = '''CREATE TABLE contacts(contact_id INT); '''
+                    create_table_query = '''CREATE TABLE contacts(contact_id INT, last_chat VARCHAR(60), isRead VARCHAR(6), isTyping VARCHAR(6), unread_count INT); '''
                     cursor= connection.cursor()
                     cursor.execute(create_table_query)
                     connection.commit()
@@ -75,13 +80,3 @@ def signup(request):
             return(request,'accounts/signup.html',{'error':'Passwords should match'})
     else:
         return render(request,'accounts/signup.html')
-
-
-
-def addcontact(request):
-    if request.method == "POST":
-        id1 = request.POST['id1']
-        account_id1 = get_object_or_404(Details, pk=request.user.id)
-        account_id2 = get_object_or_404(Details, pk=id1)
-        print(account_id1.username)
-        print(account_id2.username)
