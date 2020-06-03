@@ -106,19 +106,17 @@ $(document).ready(function(){
 
 
 //side menu
-function expandside(name){
+function expandside(profile,name,status,username,email,date){
 
 
 var x=document.getElementById("sidemenuopen").value;
 if(x==0){
-  alert(name[0]);
-
-//  document.getElementById("chatinsideimagecover").src=profile;
-//  document.getElementById("clkonuserid").innerHTML=name;
-  // document.getElementById("clkonuserstatus").innerHTML=status;
-  // document.getElementById("clkonuserusername").innerHTML=username;
-  // document.getElementById("clkonuseremail").innerHTML=email;
-  // document.getElementById("clkonuserdate").innerHTML=date;
+ document.getElementById("chatinsideimagecover").src=profile;
+ document.getElementById("clkonuserid").innerHTML=name;
+  document.getElementById("clkonuserstatus").innerHTML=status;
+  document.getElementById("clkonuserusername").innerHTML=username;
+  document.getElementById("clkonuseremail").innerHTML=email;
+  document.getElementById("clkonuserdate").innerHTML=date;
 	$("#middiv").removeClass("col-sm-8");
    $("#middiv").addClass("col-sm-6");
 	$("#sidediv").addClass("col-sm-2");
@@ -355,9 +353,10 @@ function startcollapse(){
 
 }
 
-function chatcollapse(){
+function chatcollapse(id){
     $('#maincollapse').collapse('show');
   $('#startcollapse').collapse('hide');
+  alert(id);
 
 }
 
@@ -444,7 +443,7 @@ function loadchatintomultiCollapseExample1(){
           var date = (data['date'][i]);
           var profile = (data['profile_pic'][i]);
           var ar=[uname];
-          $("#multiCollapseExample1").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse()'><div class='card-body'><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside.apply(this,"+ar+")'><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div class='text-truncate text-muted' style='text-overflow: ellipsis;'>HI there i am using whatsapppppppppppppppppppppp</div></div></div></div></div></a><!-- Chat link -->");
+          $("#multiCollapseExample1").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse("+id1+")'><div class='card-body'><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside("+"`"+profile+"`"+","+"`"+name+"`"+","+"`"+status+"`"+","+"`"+uname+"`"+","+"`"+email+"`"+","+"`"+date+"`"+")'><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div class='text-truncate text-muted' style='text-overflow: ellipsis;'>HI there i am using whatsapppppppppppppppppppppp</div></div></div></div></div></a><!-- Chat link -->");
         //}
       }
 
