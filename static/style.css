@@ -100,6 +100,13 @@ border-radius: 50%;
 margin-top: 10%;
 }
 
+#chatinsideimagecoveruser2{
+
+height: 30vh;
+width: 80%;
+border-radius: 50%;
+margin-top: 10%;
+}
 
 .ui-autocomplete {
     position: absolute;
@@ -154,6 +161,8 @@ margin-top: 10%;
 #addfrndresult{
 	visibility: hidden;
 }
+
+
 
 ::-webkit-scrollbar {
     display: none;

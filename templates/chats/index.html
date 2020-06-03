@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>UnisChat</title>
+	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 	<script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
@@ -34,7 +35,7 @@
 
 		</div>
 		<div style="width: 100%; height: 20vh; text-align: center;align-items: center; padding: 12%;">
-			<span class="iconify text-light align-middle " data-icon="carbon:settings" data-inline="false" style="height: 5vh; width: 40%;"></span>
+			<span class="iconify text-light align-middle " data-icon="carbon:settings" data-inline="false" style="height: 5vh; width: 40%; cursor: pointer;" data-toggle="modal" data-target="#exampleModalCenter"></span>
 		</div>
 
 
@@ -1021,7 +1022,56 @@
 
 
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content" style="background-color:#2f2a30;">
+<div class="modal-header" style="background-color:#2f2a30;">
+<h5 class="modal-title text-light" id="exampleModalLongTitle" >Settings</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body" style="background-color:#29242a;">
+<h5 class="text-light">Logged in as {{name}}</h5><a href="{% url 'accounts:logout' %}"><button type="button" class="btn btn-danger align-self-center" >Logout</button></a> <br> <hr> <br>
 
+<table class="table table-dark">
+
+  <tbody>
+    <tr>
+    <td>Name :</td>
+      <td><input type="text" placeholder="{{name}}" > </td>
+
+    </tr>
+    <tr>
+
+      <td>Status :</td>
+      <td>Thornton</td>
+
+    </tr>
+    <tr>
+
+      <td>Display Pic :</td>
+      <td>the Bird</td>
+
+    </tr>
+		<tr>
+
+      <td>Password :</td>
+      <td>the Bird</td>
+
+    </tr>
+  </tbody>
+</table>
+
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<button type="button" class="btn btn-primary">Save changes</button>
+</div>
+</div>
+</div>
+</div>
 
 
 
