@@ -8,4 +8,5 @@ urlpatterns = [
     path('get_user_details/',views.get_user_details,name ="get_user_details"),
     path('adduser/',views.addcontact, name = "addcontact"),
     path('get_friends/',views.get_friends,name = "get_friends"),
+    path('get_chat_list/',views.get_chat_list,name="get_chat_list"),
 ]

@@ -11,8 +11,8 @@ from django.contrib.auth.decorators import login_required
 def login(request):
     if request.method == 'POST':
             print(User.objects.all())
-
-            user = auth.authenticate(username = request.POST['username'], password = request.POST['password'])
+            username_lowercase = request.POST['username'].lower()
+            user = auth.authenticate(username = username_lowercase, password = request.POST['password'])
             print(user)
             if user is not None:
                 auth.login(request,user)
@@ -47,7 +47,9 @@ def signup(request):
                 return(request,'accounts/signup.html',{'error':'user already exists'})
 
             else:
-                    user = User.objects.create_user(username=request.POST['username'],first_name = request.POST['firstname'],email=request.POST['email'], last_name = request.POST['lastname'], password=request.POST['password1'])
+                    lower_case_username = request.POST['username'].lower()
+                    print(lower_case_username)
+                    user = User.objects.create_user(username=lower_case_username,first_name = request.POST['firstname'],email=request.POST['email'], last_name = request.POST['lastname'], password=request.POST['password1'])
                     detail = Details()
                     detail.user = user
                     detail.Profile_pic = request.FILES['Profile_pic']
@@ -57,7 +59,7 @@ def signup(request):
                                                       host = "localhost",
                                                       port = "5433")
                     connection.autocommit = True
-                    create_database_query = "CREATE DATABASE unis_{};".format(request.POST['username'])
+                    create_database_query = "CREATE DATABASE unis_{};".format(lower_case_username)
                     cursor= connection.cursor()
                     cursor.execute(create_database_query)
                     cursor.close()
@@ -66,9 +68,9 @@ def signup(request):
                                                       password = "I*p96U#o4eID^Ubc$R*Y",
                                                       host = "localhost",
                                                       port = "5433",
-                                                      database = "unis_{}".format(request.POST['username']))
+                                                      database = "unis_{}".format(lower_case_username))
                     connection.autocommit = True
-                    create_table_query = '''CREATE TABLE contacts(contact_id INT, last_chat VARCHAR(60), isRead VARCHAR(6), isTyping VARCHAR(6), unread_count INT); '''
+                    create_table_query = '''CREATE TABLE contacts(contact_id INT PRIMARY KEY, last_chat VARCHAR(60), isRead VARCHAR(6), isTyping VARCHAR(6), unread_count INT); '''
                     cursor= connection.cursor()
                     cursor.execute(create_table_query)
                     connection.commit()

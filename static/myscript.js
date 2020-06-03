@@ -106,13 +106,23 @@ $(document).ready(function(){
 
 
 //side menu
-function expandside(){
+function expandside(image,name,username,email,status,date){
 
 
 var x=document.getElementById("sidemenuopen").value;
 if(x==0){
 	$("#middiv").removeClass("col-sm-8");
    $("#middiv").addClass("col-sm-6");
+
+
+document.getElementById("chatinsideimagecover").src=image;
+document.getElementById("clkonuserid").innerHTML=name;
+document.getElementById("clkonuserstatus").innerHTML=status;
+document.getElementById("clkonuserusername").innerHTML=username;
+document.getElementById("clkonuseremail").innerHTML=email;
+document.getElementById("clkonuserdate").innerHTML=date;
+
+
 
 	$("#sidediv").addClass("col-sm-2");
 	document.getElementById("sidemenuopen").value=1;
@@ -149,10 +159,12 @@ function collapaccount(){
 }
 
 function collapchats(){
+    loadchatintomultiCollapseExample1();
   		$('#multiCollapseExample1').collapse('show');
   		$('#multiCollapseExample2').collapse('hide');
   		$('#multiCollapseExample3').collapse('hide');
   		$('#multiCollapseExample4').collapse('hide');
+
 }
 function collapcontacts(){
   loadmyfrndsintocollapse4();
@@ -353,7 +365,7 @@ function chatcollapse(){
 }
 
 
-
+var dataofloadedfriends="";
 
 function loadmyfrndsintocollapse4(){
   var admin=document.getElementById("adminusername").value;
@@ -364,19 +376,21 @@ function loadmyfrndsintocollapse4(){
         datatype: "html",
         data:{id1 : admin},
         success: function(data) {
+          tempdata = data;
         data = JSON.parse(data)
         var size=data['len'];
-
+        if(dataofloadedfriends!=tempdata)
+        {dataofloadedfriends=tempdata;
         for (var i = 0;i <size; i++)
         {
-          var name = (data['name'][i]);
+          var name = (data['fname'][i] + " "+ data['lname'][i]);
           var id1= (data['id'][i]);
           var status = (data['status'][i]);
           var profile = (data['profile_pic'][i]);
 
           $("#multiCollapseExample4").append("<!-- Friend --><div class='card mb-6' style='margin-top: 5%; margin-bottom: 5% ;background-color :#29242a;'><div class='card-body' style='background-color :#29242a; '><div class='media' style='background-color :#29242a;text-align: left;'><div class='avatar ' style='background-color :#29242a;'><img class='avatar-img' src="+profile+" alt='Brian Dawson' id='contactimg' onclick='expandside()'></div><div class='media-body' style='background-color :#29242a; '><h6 class='mb-0 text-light'>"+name+"</h6><small class='text-muted'>"+status+"</small></div><div class='align-self-center ml-auto' style='background-color :#29242a;'><div class='custom-control custom-checkbox' style='background-color :#29242a;'><!-- Message: dropdown --><div class='dropdown' style='background-color :#29242a;'><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' href='#' style='color :white; background-color: #2f2a30;'  onclick='deletefriend("+id1+")'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div></div></div><!-- Label --><label class='stretched-label' for='id-user-2'></label></div><!-- Friend -->");
         }
-
+      }
 
 
 
@@ -389,7 +403,6 @@ function loadmyfrndsintocollapse4(){
 
 
 
-
 //deleting friend
 function deletefriend(id){
 
@@ -398,14 +411,51 @@ function deletefriend(id){
 alert(id);
 
 
+}
 
 
 
 
 
 
+var chatofloadedfrnds="";
+
+//load chats into chat menu
+function loadchatintomultiCollapseExample1(){
+
+
+  var admin=document.getElementById("adminusername").value;
+  $.ajax({
+        type:"POST",
+        cache: false,
+        url: "get_chat_list/",
+        datatype: "html",
+        data:{id : admin},
+        success: function(data) {
+          tempdata = data;
+        data = JSON.parse(data)
+        var size=data['len'];
+      //  if(chatofloadedfrnds!=tempdata)
+        {chatofloadedfrnds=tempdata;
+        for (var i = 0;i <size; i++)
+        {
+          var name = (data['fname'][i] + " "+ data['lname'][i]);
+          var id1= (data['id'][i]);
+          var status = (data['status0'][i]);
+          var email = (data['email'][i]);
+          var uname = (data['uname'][i]);
+          var date = (data['date'][i]);
+          var profile = (data['profile_pic'][i]);
+
+          $("#multiCollapseExample1").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse()'><div class='card-body'><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside(profile,name,uname,email,status,date)'><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div class='text-truncate text-muted' style='text-overflow: ellipsis;'>HI there i am using whatsapppppppppppppppppppppp</div></div></div></div></div></a><!-- Chat link -->");
+        //}
+      }
 
 
 
+
+}
+
+});
 
 }
