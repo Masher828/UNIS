@@ -280,11 +280,18 @@ function startcollapse(){
 
 
 }
+global_sendtouser = 0;
 
 function chatcollapse(id){
+
+    global_sendtouser = id;
+    showchatofthatuser(id);
     $('#maincollapse').collapse('show');
   $('#startcollapse').collapse('hide');
-  loadmainchatsbyid(id);
+  //alert("called");
+
+
+  //alert(global_sendtouser);
 
 }
 
@@ -392,23 +399,17 @@ function loadchatintomultiCollapseExample1(){
 
 
 
-
-//load message
-function loadmainchatsbyid(secondid){
-var admin=document.getElementById("adminusername").value;
-alert("was loading messages");
-}
-
-
-
-
 //send message
+
+
 $(document).ready(function(){
     //listen for form submission
     $('#sendchat').on('click', function(e){
+      var admin=document.getElementById("adminusername").value;
       var text=document.getElementById("chat").value;
+      var secondid = global_sendtouser;
       e.preventDefault();
-
+    //  alert(secondid);
 
       // AJAX
       $.ajax({
@@ -427,3 +428,52 @@ $(document).ready(function(){
         });
     });
   });
+
+
+
+
+
+
+
+
+
+//load chats of  that user
+function showchatofthatuser(secondid){
+  var admin=document.getElementById("adminusername").value;
+
+  $.ajax({
+        type:"POST",
+        cache: false,
+        url: "get_friends_chat/",
+        datatype: "html",
+        data:{userid : admin,friendid:secondid},
+        success: function(data) {
+          var tempdata = data;
+        data = JSON.parse(data)
+        var size=data['len'];
+               for (var i = 0;i <size; i++)
+        {
+        //  var name = (data['fname'][i] + " "+ data['lname'][i]);
+            var messageid = (data['email'][i]);
+            var message = (data['email'][i]);
+            var messageimageurl = (data['email'][i]);
+            var isimage = (data['email'][i]);
+            var is_read = (data['email'][i]);
+            var timestamp = (data['email'][i]);
+            var friendname = (data['email'][i]);
+            var friendprofilepic = (data['email'][i]);
+            
+        }
+
+
+
+
+
+}
+
+});
+
+
+
+
+}
