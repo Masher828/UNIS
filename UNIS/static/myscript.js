@@ -435,20 +435,13 @@ $(document).ready(function(){
 
 
 
-<<<<<<< HEAD
-
-=======
 var chatloadedtiinow="";
->>>>>>> origin/manish
 
 //load chats of  that user
 function showchatofthatuser(secondid){
   var admin=document.getElementById("adminusername").value;
 
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/manish
   $.ajax({
         type:"POST",
         cache: false,
@@ -456,25 +449,6 @@ function showchatofthatuser(secondid){
         datatype: "html",
         data:{userid : admin,friendid:secondid},
         success: function(data) {
-<<<<<<< HEAD
-          var tempdata = data;
-        data = JSON.parse(data)
-        var size=data['len'];
-               for (var i = 0;i <size; i++)
-        {
-        //  var name = (data['fname'][i] + " "+ data['lname'][i]);
-            var messageid = (data['email'][i]);
-            var message = (data['email'][i]);
-            var messageimageurl = (data['email'][i]);
-            var isimage = (data['email'][i]);
-            var is_read = (data['email'][i]);
-            var timestamp = (data['email'][i]);
-            var friendname = (data['email'][i]);
-            var friendprofilepic = (data['email'][i]);
-            
-        }
-
-=======
           var check= data;
         data = JSON.parse(data)
 
@@ -512,7 +486,6 @@ function showchatofthatuser(secondid){
 
         }
       }
->>>>>>> origin/manish
 
 
 
