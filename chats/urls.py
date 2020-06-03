@@ -9,4 +9,6 @@ urlpatterns = [
     path('adduser/',views.addcontact, name = "addcontact"),
     path('get_friends/',views.get_friends,name = "get_friends"),
     path('get_chat_list/',views.get_chat_list,name="get_chat_list"),
+    path('get_friends_chat/',views.get_friends_chat, name ="get_friends_chat"),
+    path("send_message/",views.send_message, name = "send_message"),
 ]

@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import psycopg2
 global userlist
+import datetime
 
 
 
@@ -173,3 +174,82 @@ def get_chat_list(request):
         cursor.close()
         connection.close()
         return HttpResponse(json.dumps(friends))
+
+
+@csrf_exempt
+@login_required()
+def send_message(request):
+    if request.method == "POST":
+
+        current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(current_time)
+        current_time=str(current_time)
+        logged_in_user_id = request.POST['userid']
+
+        friend_user_id = request.POST['frienduserid']
+        message = request.POST['message']
+
+
+        logged_in_user_details_object = get_object_or_404(Details,pk=logged_in_user_id)
+        friend_details_object = get_object_or_404(Details, pk = friend_user_id)
+        table_name = logged_in_user_details_object.user.username +"_chat_"+friend_details_object.user.username
+        connection = psycopg2.connect(user = "postgres",
+                                              password = "I*p96U#o4eID^Ubc$R*Y",
+                                              host = "localhost",
+                                              port = "5433",
+                                              database = "unis_{}".format(logged_in_user_details_object.user.username))
+        connection.autocommit = True
+
+        insert_message_query = '''INSERT INTO {0} (sender_id , body, ts, is_image, image_url_id, is_read)  VALUES(%s,%s,%s,%s,%s,%s);'''.format(table_name)
+        data = (logged_in_user_id,message,current_time,'false','-1','false')
+        cursor= connection.cursor()
+
+        cursor.execute("SET timezone = 'Asia/Kolkata';")
+        cursor.execute("SET CLIENT_ENCODING = 'utf8'")
+        connection.commit()
+
+        cursor.execute(insert_message_query,data)
+        connection.commit()
+        cursor.close()
+        connection.close()
+        table_name = friend_details_object.user.username +"_chat_"+logged_in_user_details_object.user.username
+        connection = psycopg2.connect(user = "postgres",
+                                              password = "I*p96U#o4eID^Ubc$R*Y",
+                                              host = "localhost",
+                                              port = "5433",
+                                              database = "unis_{}".format(friend_details_object.user.username))
+        insert_message_query = '''INSERT INTO {0} (sender_id , body, ts, is_image, image_url_id, is_read)  VALUES(%s,%s,%s,%s,%s,%s);'''.format(table_name)
+        data = (friend_user_id,message,current_time,'false','-1','false')
+        cursor= connection.cursor()
+
+        cursor.execute("SET timezone = 'Asia/Kolkata';")
+        cursor.execute("SET CLIENT_ENCODING = 'utf8'")
+        connection.commit()
+
+        cursor.execute(insert_message_query,data)
+        connection.commit()
+        cursor.close()
+        connection.close()
+        return HttpResponse('done')
+
+
+
+
+@csrf_exempt
+@login_required()
+def get_friends_chat(request):
+    if request.method == "POST":
+        logged_in_user_id = request.POST['userid']
+        friend_user_id = request.POST['frienduserid']
+        logged_in_user_details_object = get_object_or_404(Details,pk=logged_in_user_id)
+        friend_details_object = get_object_or_404(Details, pk = friend_user_id)
+        table_name = logged_in_user_details_object.user.username +"_chat_"+friend_details_object.user.username
+        connection = psycopg2.connect(user = "postgres",
+                                              password = "I*p96U#o4eID^Ubc$R*Y",
+                                              host = "localhost",
+                                              port = "5433",
+                                              database = "unis_{}".format(logged_in_user_details_object.user.username))
+        select_friends_query = '''SELECT sender_id,body,ts,is_image,image_url_id,is_read FROM {};'''.format(table_name)
+        cursor= connection.cursor()
+        cursor.execute(select_friends_query)
+        return HttpResponse("TO BE ADDED")

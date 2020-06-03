@@ -29,79 +29,7 @@ function resizeDivs() {
 
 
 
-//ajax test
 
-
-  $(document).ready(function(){
-
-     $("#runcode").click(function(){
-
-          // $("#output").html("Loading ......");
-   });
-
-  });
-//wait for page load to initialize script
-$(document).ready(function(){
-    //listen for form submission
-    $('#runcode').on('click', function(e){
-
-      e.preventDefault();
-
-      // AJAX
-      $.ajax({
-            type: "POST",
-
-            cache: false,
-            url: "submission/",
-            datatype: "html",
-            data: $('form').serialize(),
-            success: function(result) {
-
-            alert(result);
-    }
-
-        });
-    });
-  });
-
-
-
-
-
-//ajax for send data
-
-
-  $(document).ready(function(){
-
-     $("#sendchat").click(function(){
-
-          // $("#output").html("Loading ......");
-   });
-
-  });
-//wait for page load to initialize script
-$(document).ready(function(){
-    //listen for form submission
-    $('#sendchat').on('click', function(e){
-
-      e.preventDefault();
-
-      // AJAX
-      $.ajax({
-            type: "POST",
-
-            cache: false,
-            url: "submission/",
-            datatype: "html",
-            data: $('form').serialize(),
-            success: function(result) {
-
-            alert(result);
-    }
-
-        });
-    });
-  });
 
 
 
@@ -356,7 +284,7 @@ function startcollapse(){
 function chatcollapse(id){
     $('#maincollapse').collapse('show');
   $('#startcollapse').collapse('hide');
-  alert(id);
+  loadmainchatsbyid(id);
 
 }
 
@@ -428,11 +356,11 @@ function loadchatintomultiCollapseExample1(){
         datatype: "html",
         data:{id : admin},
         success: function(data) {
-          tempdata = data;
+          var tempdata = data;
         data = JSON.parse(data)
         var size=data['len'];
-      //  if(chatofloadedfrnds!=tempdata)
-        chatofloadedfrnds=tempdata;
+       if(chatofloadedfrnds!=tempdata)
+      {  chatofloadedfrnds=tempdata;
         for (var i = 0;i <size; i++)
         {
           var name = (data['fname'][i] + " "+ data['lname'][i]);
@@ -444,7 +372,7 @@ function loadchatintomultiCollapseExample1(){
           var profile = (data['profile_pic'][i]);
           var ar=[uname];
           $("#multiCollapseExample1").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse("+id1+")'><div class='card-body'><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside("+"`"+profile+"`"+","+"`"+name+"`"+","+"`"+status+"`"+","+"`"+uname+"`"+","+"`"+email+"`"+","+"`"+date+"`"+")'><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div class='text-truncate text-muted' style='text-overflow: ellipsis;'>HI there i am using whatsapppppppppppppppppppppp</div></div></div></div></div></a><!-- Chat link -->");
-        //}
+        }
       }
 
 
@@ -455,3 +383,47 @@ function loadchatintomultiCollapseExample1(){
 });
 
 }
+
+
+
+
+
+
+
+
+
+
+//load message
+function loadmainchatsbyid(secondid){
+var admin=document.getElementById("adminusername").value;
+alert("was loading messages");
+}
+
+
+
+
+//send message
+$(document).ready(function(){
+    //listen for form submission
+    $('#sendchat').on('click', function(e){
+      var text=document.getElementById("chat").value;
+      e.preventDefault();
+
+
+      // AJAX
+      $.ajax({
+            type: "POST",
+
+            cache: false,
+            url: "send_message/",
+            datatype: "html",
+            data :{userid : admin,frienduserid : secondid,message : text},
+            // data: $('form').serialize(),
+            success: function(result) {
+
+            // alert(result);
+    }
+
+        });
+    });
+  });

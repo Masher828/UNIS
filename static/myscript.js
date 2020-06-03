@@ -32,98 +32,93 @@ function resizeDivs() {
 //ajax test
 
 
-  $(document).ready(function(){
-
-     $("#runcode").click(function(){
-
-          // $("#output").html("Loading ......");
-   });
-
-  });
-//wait for page load to initialize script
-$(document).ready(function(){
-    //listen for form submission
-    $('#runcode').on('click', function(e){
-
-      e.preventDefault();
-
-      // AJAX
-      $.ajax({
-            type: "POST",
-
-            cache: false,
-            url: "submission/",
-            datatype: "html",
-            data: $('form').serialize(),
-            success: function(result) {
-
-            alert(result);
-    }
-
-        });
-    });
-  });
-
-
-
+//   $(document).ready(function(){
+//
+//      $("#runcode").click(function(){
+//
+//           // $("#output").html("Loading ......");
+//    });
+//
+//   });
+// //wait for page load to initialize script
+// $(document).ready(function(){
+//     //listen for form submission
+//     $('#runcode').on('click', function(e){
+//
+//       e.preventDefault();
+//
+//       // AJAX
+//       $.ajax({
+//             type: "POST",
+//
+//             cache: false,
+//             url: "submission/",
+//             datatype: "html",
+//             data: $('form').serialize(),
+//             success: function(result) {
+//
+//             alert(result);
+//     }
+//
+//         });
+//     });
+//   });
+//
+//
+//
 
 
 //ajax for send data
-
-
-  $(document).ready(function(){
-
-     $("#sendchat").click(function(){
-
-          // $("#output").html("Loading ......");
-   });
-
-  });
-//wait for page load to initialize script
-$(document).ready(function(){
-    //listen for form submission
-    $('#sendchat').on('click', function(e){
-
-      e.preventDefault();
-
-      // AJAX
-      $.ajax({
-            type: "POST",
-
-            cache: false,
-            url: "submission/",
-            datatype: "html",
-            data: $('form').serialize(),
-            success: function(result) {
-
-            alert(result);
-    }
-
-        });
-    });
-  });
+//
+//
+//   $(document).ready(function(){
+//
+//      $("#sendchat").click(function(){
+//
+//           // $("#output").html("Loading ......");
+//    });
+//
+//   });
+// //wait for page load to initialize script
+// $(document).ready(function(){
+//     //listen for form submission
+//     $('#sendchat').on('click', function(e){
+//
+//       e.preventDefault();
+//
+//       // AJAX
+//       $.ajax({
+//             type: "POST",
+//
+//             cache: false,
+//             url: "submission/",
+//             datatype: "html",
+//             data: $('form').serialize(),
+//             success: function(result) {
+//
+//             alert(result);
+//     }
+//
+//         });
+//     });
+//   });
 
 
 
 //side menu
-function expandside(image,name,username,email,status,date){
+function expandside(profile,name,status,username,email,date){
 
 
 var x=document.getElementById("sidemenuopen").value;
 if(x==0){
+ document.getElementById("chatinsideimagecover").src=profile;
+ document.getElementById("clkonuserid").innerHTML=name;
+  document.getElementById("clkonuserstatus").innerHTML=status;
+  document.getElementById("clkonuserusername").innerHTML=username;
+  document.getElementById("clkonuseremail").innerHTML=email;
+  document.getElementById("clkonuserdate").innerHTML=date;
 	$("#middiv").removeClass("col-sm-8");
    $("#middiv").addClass("col-sm-6");
-
-
-document.getElementById("chatinsideimagecover").src=image;
-document.getElementById("clkonuserid").innerHTML=name;
-document.getElementById("clkonuserstatus").innerHTML=status;
-document.getElementById("clkonuserusername").innerHTML=username;
-document.getElementById("clkonuseremail").innerHTML=email;
-document.getElementById("clkonuserdate").innerHTML=date;
-
-
-
 	$("#sidediv").addClass("col-sm-2");
 	document.getElementById("sidemenuopen").value=1;
 
@@ -358,9 +353,10 @@ function startcollapse(){
 
 }
 
-function chatcollapse(){
+function chatcollapse(id){
     $('#maincollapse').collapse('show');
   $('#startcollapse').collapse('hide');
+  loadmainchatsbyid(id);
 
 }
 
@@ -388,7 +384,7 @@ function loadmyfrndsintocollapse4(){
           var status = (data['status'][i]);
           var profile = (data['profile_pic'][i]);
 
-          $("#multiCollapseExample4").append("<!-- Friend --><div class='card mb-6' style='margin-top: 5%; margin-bottom: 5% ;background-color :#29242a;'><div class='card-body' style='background-color :#29242a; '><div class='media' style='background-color :#29242a;text-align: left;'><div class='avatar ' style='background-color :#29242a;'><img class='avatar-img' src="+profile+" alt='Brian Dawson' id='contactimg' onclick='expandside()'></div><div class='media-body' style='background-color :#29242a; '><h6 class='mb-0 text-light'>"+name+"</h6><small class='text-muted'>"+status+"</small></div><div class='align-self-center ml-auto' style='background-color :#29242a;'><div class='custom-control custom-checkbox' style='background-color :#29242a;'><!-- Message: dropdown --><div class='dropdown' style='background-color :#29242a;'><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' href='#' style='color :white; background-color: #2f2a30;'  onclick='deletefriend("+id1+")'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div></div></div><!-- Label --><label class='stretched-label' for='id-user-2'></label></div><!-- Friend -->");
+          $("#multiCollapseExample4").append("<!-- Friend --><div class='card mb-6' style='margin-top: 5%; margin-bottom: 5% ;background-color :#29242a;'><div class='card-body' style='background-color :#29242a; '><div class='media' style='background-color :#29242a;text-align: left;'><div class='avatar ' style='background-color :#29242a;'><img class='avatar-img' src="+profile+" alt='Brian Dawson' id='contactimg' onclick=''></div><div class='media-body' style='background-color :#29242a; '><h6 class='mb-0 text-light'>"+name+"</h6><small class='text-muted'>"+status+"</small></div><div class='align-self-center ml-auto' style='background-color :#29242a;'><div class='custom-control custom-checkbox' style='background-color :#29242a;'><!-- Message: dropdown --><div class='dropdown' style='background-color :#29242a;'><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' href='#' style='color :white; background-color: #2f2a30;'  onclick='deletefriend("+id1+")'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div></div></div><!-- Label --><label class='stretched-label' for='id-user-2'></label></div><!-- Friend -->");
         }
       }
 
@@ -432,23 +428,23 @@ function loadchatintomultiCollapseExample1(){
         datatype: "html",
         data:{id : admin},
         success: function(data) {
-          tempdata = data;
+          var tempdata = data;
         data = JSON.parse(data)
         var size=data['len'];
-      //  if(chatofloadedfrnds!=tempdata)
-        {chatofloadedfrnds=tempdata;
+       if(chatofloadedfrnds!=tempdata)
+      {  chatofloadedfrnds=tempdata;
         for (var i = 0;i <size; i++)
         {
           var name = (data['fname'][i] + " "+ data['lname'][i]);
           var id1= (data['id'][i]);
-          var status = (data['status0'][i]);
+          var status = (data['status'][i]);
           var email = (data['email'][i]);
           var uname = (data['uname'][i]);
           var date = (data['date'][i]);
           var profile = (data['profile_pic'][i]);
-
-          $("#multiCollapseExample1").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse()'><div class='card-body'><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside(profile,name,uname,email,status,date)'><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div class='text-truncate text-muted' style='text-overflow: ellipsis;'>HI there i am using whatsapppppppppppppppppppppp</div></div></div></div></div></a><!-- Chat link -->");
-        //}
+          var ar=[uname];
+          $("#multiCollapseExample1").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse("+id1+")'><div class='card-body'><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside("+"`"+profile+"`"+","+"`"+name+"`"+","+"`"+status+"`"+","+"`"+uname+"`"+","+"`"+email+"`"+","+"`"+date+"`"+")'><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div class='text-truncate text-muted' style='text-overflow: ellipsis;'>HI there i am using whatsapppppppppppppppppppppp</div></div></div></div></div></a><!-- Chat link -->");
+        }
       }
 
 
@@ -457,5 +453,46 @@ function loadchatintomultiCollapseExample1(){
 }
 
 });
+
+}
+
+
+
+
+
+
+
+
+
+
+//loads main Chats
+function loadmainchatsbyid(secondid){
+var admin=document.getElementById("adminusername").value;
+var text=document.getElementById("chat").value;
+
+$(document).ready(function(){
+    //listen for form submission
+    $('#sendchat').on('click', function(e){
+
+      e.preventDefault();
+      alert(text);
+
+      // AJAX
+      $.ajax({
+            type: "POST",
+
+            cache: false,
+            url: "send_message/",
+            datatype: "html",
+            data :{userid : admin,frienduserid : secondid,message : text},
+            // data: $('form').serialize(),
+            success: function(result) {
+
+            // alert(result);
+    }
+
+        });
+    });
+  });
 
 }
