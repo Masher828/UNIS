@@ -280,11 +280,18 @@ function startcollapse(){
 
 
 }
+global_sendtouser = 0;
 
 function chatcollapse(id){
+
+    global_sendtouser = id;
+    showchatofthatuser(id);
     $('#maincollapse').collapse('show');
   $('#startcollapse').collapse('hide');
-  loadmainchatsbyid(id);
+  //alert("called");
+
+
+  //alert(global_sendtouser);
 
 }
 
@@ -392,23 +399,17 @@ function loadchatintomultiCollapseExample1(){
 
 
 
-
-//load message
-function loadmainchatsbyid(secondid){
-var admin=document.getElementById("adminusername").value;
-alert("was loading messages");
-}
-
-
-
-
 //send message
+
+
 $(document).ready(function(){
     //listen for form submission
     $('#sendchat').on('click', function(e){
+      var admin=document.getElementById("adminusername").value;
       var text=document.getElementById("chat").value;
+      var secondid = global_sendtouser;
       e.preventDefault();
-
+    //  alert(secondid);
 
       // AJAX
       $.ajax({
@@ -427,3 +428,73 @@ $(document).ready(function(){
         });
     });
   });
+
+
+
+
+
+
+
+var chatloadedtiinow="";
+
+//load chats of  that user
+function showchatofthatuser(secondid){
+  var admin=document.getElementById("adminusername").value;
+
+
+  $.ajax({
+        type:"POST",
+        cache: false,
+        url: "get_friends_chat/",
+        datatype: "html",
+        data:{userid : admin,friendid:secondid},
+        success: function(data) {
+          var check= data;
+        data = JSON.parse(data)
+
+        var size=data['len'];
+        var friendname = (data['friend_name']);
+        var friendprofilepic = (data['friend_profile_pic']);
+        var mypic =document.getElementById("chatinsideimagecoveruser2").src;
+        if(chatloadedtiinow!=check)
+        {document.getElementById("chatwindow").innerHTML="";
+          chatloadedtiinow=check;
+               for (var i = 0;i <size; i++)
+        {
+        //  var name = (data['fname'][i] + " "+ data['lname'][i]);
+            var messageid = (data['message_id'][i]);
+            var sender_id = (data['friend_id'][i]);
+            var message = (data['message'][i]);
+            var image_url_id = (data['image_url_id'][i]);
+            var is_image = (data['is_image'][i]);
+            var timestamp = (data['timestamp'][i]);
+
+
+
+            //categorizing messages
+            if(sender_id==secondid && is_image=="false")
+             {
+               $("#chatwindow").append("<!-- Message left --><div style='width: 100%;'><div class='message' id='msgleft' style='width: 55%; margin-top: 1.5% ;margin-bottom: 1.5%;'><!-- Avatar --><img class='avatar-img' src="+friendprofilepic+" alt='' id='contactimgleft'><!-- Message: body --><div class='message-body'><!-- Message: row --><div class='message-row'><div class='d-flex align-items-center'><!-- Message: content --><div class='message-content bg-light' style='border-radius: 12px 12px 12px 0px; min-width: 50%; '><h6 class='mb-2'>"+friendname+"</h6><div>"+message+"</div><div class='mt-1'><small class='opacity-65'>"+timestamp+"</small></div></div><!-- Message: content --><!-- Message: dropdown --><div class='dropdown' ><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' href='#' style='color :white; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div><!-- Message: row --></div><!-- Message: body --></div><!-- Message --></div><!-- Message left ends-->");
+             }
+
+
+             else if(sender_id==admin && is_image=="false")
+             {
+               $("#chatwindow").append("<!-- Message right --><div style='width: 100%;'><div class='message message-right' style='width: 60%; margin-top: 1.5% ;margin-bottom: 1.5%; '><!-- Avatar --><img class='avatar-img' src="+mypic+" alt='' id='contactimgright'><!-- Message: body --><div class='message-body'><!-- Message: row --><div class='message-row'><div class='d-flex align-items-center justify-content-end'><!-- Message: dropdown --><div class='dropdown' ><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' href='#' style='color :white; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --><!-- Message: content --><div class='message-content bg-primary text-white' style='min-width: 50%; '><div>"+message+"</div><div class='mt-1'><small class='opacity-65'>"+timestamp+"</small></div></div><!-- Message: content --></div></div><!-- Message: row --></div><!-- Message: body --></div></div><!-- Message right end-->")
+             }
+
+
+        }
+      }
+
+
+
+
+}
+
+});
+
+
+
+
+}

@@ -29,79 +29,7 @@ function resizeDivs() {
 
 
 
-//ajax test
 
-
-//   $(document).ready(function(){
-//
-//      $("#runcode").click(function(){
-//
-//           // $("#output").html("Loading ......");
-//    });
-//
-//   });
-// //wait for page load to initialize script
-// $(document).ready(function(){
-//     //listen for form submission
-//     $('#runcode').on('click', function(e){
-//
-//       e.preventDefault();
-//
-//       // AJAX
-//       $.ajax({
-//             type: "POST",
-//
-//             cache: false,
-//             url: "submission/",
-//             datatype: "html",
-//             data: $('form').serialize(),
-//             success: function(result) {
-//
-//             alert(result);
-//     }
-//
-//         });
-//     });
-//   });
-//
-//
-//
-
-
-//ajax for send data
-//
-//
-//   $(document).ready(function(){
-//
-//      $("#sendchat").click(function(){
-//
-//           // $("#output").html("Loading ......");
-//    });
-//
-//   });
-// //wait for page load to initialize script
-// $(document).ready(function(){
-//     //listen for form submission
-//     $('#sendchat').on('click', function(e){
-//
-//       e.preventDefault();
-//
-//       // AJAX
-//       $.ajax({
-//             type: "POST",
-//
-//             cache: false,
-//             url: "submission/",
-//             datatype: "html",
-//             data: $('form').serialize(),
-//             success: function(result) {
-//
-//             alert(result);
-//     }
-//
-//         });
-//     });
-//   });
 
 
 
@@ -352,11 +280,18 @@ function startcollapse(){
 
 
 }
+global_sendtouser = 0;
 
 function chatcollapse(id){
+
+    global_sendtouser = id;
+    showchatofthatuser(id);
     $('#maincollapse').collapse('show');
   $('#startcollapse').collapse('hide');
-  loadmainchatsbyid(id);
+  //alert("called");
+
+
+  //alert(global_sendtouser);
 
 }
 
@@ -464,18 +399,17 @@ function loadchatintomultiCollapseExample1(){
 
 
 
+//send message
 
-//loads main Chats
-function loadmainchatsbyid(secondid){
-var admin=document.getElementById("adminusername").value;
-var text=document.getElementById("chat").value;
 
 $(document).ready(function(){
     //listen for form submission
     $('#sendchat').on('click', function(e){
-
+      var admin=document.getElementById("adminusername").value;
+      var text=document.getElementById("chat").value;
+      var secondid = global_sendtouser;
       e.preventDefault();
-      alert(text);
+    //  alert(secondid);
 
       // AJAX
       $.ajax({
@@ -494,5 +428,52 @@ $(document).ready(function(){
         });
     });
   });
+
+
+
+
+
+
+
+
+
+//load chats of  that user
+function showchatofthatuser(secondid){
+  var admin=document.getElementById("adminusername").value;
+
+  $.ajax({
+        type:"POST",
+        cache: false,
+        url: "get_friends_chat/",
+        datatype: "html",
+        data:{userid : admin,friendid:secondid},
+        success: function(data) {
+          var tempdata = data;
+        data = JSON.parse(data)
+        var size=data['len'];
+               for (var i = 0;i <size; i++)
+        {
+        //  var name = (data['fname'][i] + " "+ data['lname'][i]);
+            var messageid = (data['email'][i]);
+            var message = (data['email'][i]);
+            var messageimageurl = (data['email'][i]);
+            var isimage = (data['email'][i]);
+            var is_read = (data['email'][i]);
+            var timestamp = (data['email'][i]);
+            var friendname = (data['email'][i]);
+            var friendprofilepic = (data['email'][i]);
+
+        }
+
+
+
+
+
+}
+
+});
+
+
+
 
 }
