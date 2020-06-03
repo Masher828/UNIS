@@ -219,7 +219,7 @@ def send_message(request):
                                               port = "5433",
                                               database = "unis_{}".format(friend_details_object.user.username))
         insert_message_query = '''INSERT INTO {0} (sender_id , body, ts, is_image, image_url_id, is_read)  VALUES(%s,%s,%s,%s,%s,%s);'''.format(table_name)
-        data = (friend_user_id,message,current_time,'false','-1','false')
+        data = (logged_in_user_id,message,current_time,'false','-1','false')
         cursor= connection.cursor()
 
         cursor.execute("SET timezone = 'Asia/Kolkata';")
@@ -240,7 +240,7 @@ def send_message(request):
 def get_friends_chat(request):
     if request.method == "POST":
         logged_in_user_id = request.POST['userid']
-        friend_user_id = request.POST['frienduserid']
+        friend_user_id = request.POST['friendid']
         logged_in_user_details_object = get_object_or_404(Details,pk=logged_in_user_id)
         friend_details_object = get_object_or_404(Details, pk = friend_user_id)
         table_name = logged_in_user_details_object.user.username +"_chat_"+friend_details_object.user.username
@@ -249,7 +249,27 @@ def get_friends_chat(request):
                                               host = "localhost",
                                               port = "5433",
                                               database = "unis_{}".format(logged_in_user_details_object.user.username))
-        select_friends_query = '''SELECT sender_id,body,ts,is_image,image_url_id,is_read FROM {};'''.format(table_name)
+        select_message_details_query = '''SELECT message_id,sender_id,body,ts,is_image,image_url_id,is_read FROM {} ORDER BY ts;'''.format(table_name)
+
         cursor= connection.cursor()
-        cursor.execute(select_friends_query)
-        return HttpResponse("TO BE ADDED")
+        cursor.execute(select_message_details_query)
+        friends={'len':0,'friend_id':[],'friend_name':"" ,'message':[],'friend_profile_pic':"", 'message_id':[],'is_image': [],'image_url_id':[],'timestamp':[],'is_read':[]}
+        for row in cursor.fetchall():
+            detail_friend_obj = get_object_or_404(Details,pk=row[1])
+            friends['message_id'].append(row[0])
+            friends['friend_id'].append(row[1])
+            friends['message'].append(row[2])
+            friends['image_url_id'].append(row[5])
+
+            friends['is_image'].append(row[4])
+            friends['is_read'].append(row[6])
+            friends['timestamp'].append(str(row[3]))
+        friends['friend_name'] = detail_friend_obj.user.first_name + " "+ detail_friend_obj.user.last_name
+        friends['friend_profile_pic'] = detail_friend_obj.Profile_pic.url
+        friends['len'] = len(friends['message_id'])
+        cursor.close()
+        connection.close()
+        print(friends)
+
+        return HttpResponse(json.dumps(friends))
+        #senderid, frndname,chat in ascending order, frndprofile, message id, is_image,imgae_url, body time date ,isread
