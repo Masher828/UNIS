@@ -3,7 +3,7 @@ $(window).on('load', function() {
 
 
 autosize(document.getElementById("chat"));
-$('#chatwindow').scrollTop($('#chatwindow')[0].scrollHeight);
+
 document.getElementById("startimage").src= document.getElementById("chatinsideimagecoveruser2").src;
 var tt="Hi, "+document.getElementById("notaname").innerHTML;
 document.getElementById("notaname2").innerHTML= tt;
@@ -289,6 +289,12 @@ function chatcollapse(id){
     $('#maincollapse').collapse('show');
   $('#startcollapse').collapse('hide');
   //alert("called");
+  var tt="sn"+id;
+  if(document.getElementById(tt).innerHTML=="new message")
+  {
+    changefbnewmessage(id);
+    document.getElementById(tt).innerHTML="HI there i am using whatsapppppppppppppppppppppp";
+  }
 
 
   //alert(global_sendtouser);
@@ -378,12 +384,12 @@ function loadchatintomultiCollapseExample1(){
           var date = (data['date'][i]);
           var profile = (data['profile_pic'][i]);
           var ar=[uname];
-          $("#multiCollapseExample1").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse("+id1+")'><div class='card-body'><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside("+"`"+profile+"`"+","+"`"+name+"`"+","+"`"+status+"`"+","+"`"+uname+"`"+","+"`"+email+"`"+","+"`"+date+"`"+")'><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div class='text-truncate text-muted' style='text-overflow: ellipsis;'>HI there i am using whatsapppppppppppppppppppppp</div></div></div></div></div></a><!-- Chat link -->");
+          $("#multiCollapseExample1").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse("+id1+")'><div class='card-body'><div class='numberCircle' id='chatnmes"+id1+"' style='visibility:hidden;'></div><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside("+"`"+profile+"`"+","+"`"+name+"`"+","+"`"+status+"`"+","+"`"+uname+"`"+","+"`"+email+"`"+","+"`"+date+"`"+")'><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div id='sn"+id1+"' class='text-truncate text-muted' style='text-overflow: ellipsis;'>HI there i am using whatsapppppppppppppppppppppp</div></div></div></div></div></a><!-- Chat link -->");
         }
       }
 
 
-
+      loadreadstatusonchatload();
 
 }
 
@@ -421,7 +427,9 @@ $(document).ready(function(){
             data :{userid : admin,frienduserid : secondid,message : text},
             // data: $('form').serialize(),
             success: function(result) {
-
+                document.getElementById("chat").value="";
+                showchatofthatuser(secondid);
+                newchatnotifyfb(admin,secondid);
             // alert(result);
     }
 
@@ -456,6 +464,8 @@ function showchatofthatuser(secondid){
         var friendname = (data['friend_name']);
         var friendprofilepic = (data['friend_profile_pic']);
         var mypic =document.getElementById("chatinsideimagecoveruser2").src;
+        document.getElementById("contactimgheader").src=friendprofilepic;
+        document.getElementById("chatheadername").innerHTML=friendname;
         if(chatloadedtiinow!=check)
         {document.getElementById("chatwindow").innerHTML="";
           chatloadedtiinow=check;
@@ -485,6 +495,7 @@ function showchatofthatuser(secondid){
 
 
         }
+          $('#chatwindow').scrollTop($('#chatwindow')[0].scrollHeight);
       }
 
 

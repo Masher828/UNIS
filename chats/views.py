@@ -264,13 +264,12 @@ def get_friends_chat(request):
             friends['is_image'].append(row[4])
             friends['is_read'].append(row[6])
             friends['timestamp'].append(str(row[3]))
+        detail_friend_obj = get_object_or_404(Details,pk=friend_user_id)
         friends['friend_name'] = detail_friend_obj.user.first_name + " "+ detail_friend_obj.user.last_name
         friends['friend_profile_pic'] = detail_friend_obj.Profile_pic.url
         friends['len'] = len(friends['message_id'])
         cursor.close()
         connection.close()
-        print(friends)
-
         return HttpResponse(json.dumps(friends))
         #senderid, frndname,chat in ascending order, frndprofile, message id, is_image,imgae_url, body time date ,isread
 
