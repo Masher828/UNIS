@@ -10,7 +10,7 @@ document.getElementById("notaname2").innerHTML= tt;
 startcollapse();
 
 
-
+checkfbuser();
 });
 
 
@@ -242,6 +242,7 @@ document.getElementById("addfrndresult").style.visibility = "hidden";
 function addfrndfromsearchres(){
   var admin=document.getElementById("adminusername").value;
   var touser=document.getElementById("hiddenresid").value;
+  checkfbuser(touser);
 
   //alert(topass);
 
@@ -254,7 +255,11 @@ function addfrndfromsearchres(){
             success: function(result) {
             // data = JSON.parse(data)
               //var temp = data['name'];
+              var tempres=result;
               alert(result);
+
+              if(tempres=="done"){
+              addfrndsinfirebase(admin,touser);}
 
             }
 
