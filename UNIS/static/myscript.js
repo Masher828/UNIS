@@ -1,3 +1,4 @@
+
 $(window).on('load', function() {
 
 
@@ -11,6 +12,26 @@ startcollapse();
 
 
 checkfbuser();
+
+
+
+
+
+
+
+
+//noty
+
+
+// new Noty({
+//   type: 'error',
+//   theme: 'nest',
+//   layout: 'topCenter',
+//     text: 'switched to Dark Mode',
+//       timeout: 2000,
+// 
+// }).show();
+//noty
 });
 
 
@@ -256,10 +277,36 @@ function addfrndfromsearchres(){
             // data = JSON.parse(data)
               //var temp = data['name'];
               var tempres=result;
-              alert(result);
+              //alert(result);
 
               if(tempres=="done"){
-              addfrndsinfirebase(admin,touser);}
+              addfrndsinfirebase(admin,touser);
+
+              new Noty({
+                type: 'success',
+                theme: 'nest',
+                layout: 'topCenter',
+                  text: 'Friend added Successfully!',
+                    timeout: 2000,
+
+              }).show();
+
+
+            }
+
+            else{
+
+              new Noty({
+                type: 'error',
+                theme: 'nest',
+                layout: 'topCenter',
+                  text: 'Already in friend list!',
+                    timeout: 2000,
+
+              }).show();
+
+
+            }
 
             }
 
@@ -393,7 +440,7 @@ function loadchatintomultiCollapseExample1(){
         }
       }
 
-
+        $('#textmsgcollapsebottom').collapse('show');
       loadreadstatusonchatload();
 
 }
@@ -489,13 +536,13 @@ function showchatofthatuser(secondid){
             //categorizing messages
             if(sender_id==secondid && is_image=="false")
              {
-               $("#chatwindow").append("<!-- Message left --><div style='width: 100%;'><div class='message' id='msgleft' style='width: 55%; margin-top: 1.5% ;margin-bottom: 1.5%;'><!-- Avatar --><img class='avatar-img' src="+friendprofilepic+" alt='' id='contactimgleft'><!-- Message: body --><div class='message-body'><!-- Message: row --><div class='message-row'><div class='d-flex align-items-center'><!-- Message: content --><div class='message-content bg-light' style='border-radius: 12px 12px 12px 0px; min-width: 50%; '><h6 class='mb-2'>"+friendname+"</h6><div>"+message+"</div><div class='mt-1'><small class='opacity-65'>"+timestamp+"</small></div></div><!-- Message: content --><!-- Message: dropdown --><div class='dropdown' ><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' href='#' style='color :white; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div><!-- Message: row --></div><!-- Message: body --></div><!-- Message --></div><!-- Message left ends-->");
+               $("#chatwindow").append("<!-- Message left --><div style='width: 100%;'><div class='message' id='msgleft' style='width: 55%; margin-top: 1.5% ;margin-bottom: 1.5%;'><!-- Avatar --><img class='avatar-img' src="+friendprofilepic+" alt='' id='contactimgleft'><!-- Message: body --><div class='message-body'><!-- Message: row --><div class='message-row'><div class='d-flex align-items-center'><!-- Message: content --><div class='message-content bg-light' style='border-radius: 12px 12px 12px 0px; min-width: 50%; '><h6 class='mb-2'>"+friendname+"</h6><div>"+message+"</div><div class='mt-1'><small class='opacity-65'>"+timestamp+"</small></div></div><!-- Message: content --><!-- Message: dropdown --><div class='dropdown' ><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' onclick='deletechatmsgbyid("+messageid+")' style='color :white; cursor:pointer; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div><!-- Message: row --></div><!-- Message: body --></div><!-- Message --></div><!-- Message left ends-->");
              }
 
 
              else if(sender_id==admin && is_image=="false")
              {
-               $("#chatwindow").append("<!-- Message right --><div style='width: 100%;'><div class='message message-right' style='width: 60%; margin-top: 1.5% ;margin-bottom: 1.5%; '><!-- Avatar --><img class='avatar-img' src="+mypic+" alt='' id='contactimgright'><!-- Message: body --><div class='message-body'><!-- Message: row --><div class='message-row'><div class='d-flex align-items-center justify-content-end'><!-- Message: dropdown --><div class='dropdown' ><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' href='#' style='color :white; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --><!-- Message: content --><div class='message-content bg-primary text-white' style='min-width: 50%; '><div>"+message+"</div><div class='mt-1'><small class='opacity-65'>"+timestamp+"</small></div></div><!-- Message: content --></div></div><!-- Message: row --></div><!-- Message: body --></div></div><!-- Message right end-->")
+               $("#chatwindow").append("<!-- Message right --><div style='width: 100%;'><div class='message message-right' style='width: 60%; margin-top: 1.5% ;margin-bottom: 1.5%; '><!-- Avatar --><img class='avatar-img' src="+mypic+" alt='' id='contactimgright'><!-- Message: body --><div class='message-body'><!-- Message: row --><div class='message-row'><div class='d-flex align-items-center justify-content-end'><!-- Message: dropdown --><div class='dropdown' ><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' onclick='deletechatmsgbyid("+messageid+")' style='color :white; cursor:pointer; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --><!-- Message: content --><div class='message-content bg-primary text-white' style='min-width: 50%; '><div>"+message+"</div><div class='mt-1'><small class='opacity-65'>"+timestamp+"</small></div></div><!-- Message: content --></div></div><!-- Message: row --></div><!-- Message: body --></div></div><!-- Message right end-->")
              }
 
 
@@ -512,5 +559,71 @@ function showchatofthatuser(secondid){
 
 
 
+
+}
+
+
+
+
+
+//show bottom image input
+function showimageinputdiv(){
+  $("#id_image").click();
+
+}
+
+function hideimagebottomdiv1()
+{ $('#textmsgcollapsebottom').collapse('show');
+  $('#imgmsgcollapsebottom').collapse('hide');
+
+document.getElementById("sampleimageupload").src="";
+document.getElementById("id_image").value = "";
+}
+
+
+
+//setting images
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#sampleimageupload').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+
+    $('#imgmsgcollapsebottom').collapse('show');
+  $('#textmsgcollapsebottom').collapse('hide');
+}
+
+$("#id_image").change(function(){
+    readURL(this);
+
+});
+//setting image ends
+
+
+
+
+
+
+
+//delete msg by id
+function deletechatmsgbyid(msgid)
+{   var admin=document.getElementById("adminusername").value;
+  var seconduser = global_sendtouser;
+
+  alert(admin+"-"+msgid+"-"+seconduser);
+
+}
+
+
+//delete whole Chats
+function deletewholechatsbyids(){
+var foo = prompt('To confirm enter DELETE below in all caps');
+if(foo=="DELETE"){alert("ok");}
+else{alert("Operation cancelled by user.")}
 
 }
