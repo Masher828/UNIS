@@ -287,3 +287,86 @@ var localpath = "contact_table/"+global_sendtouser+"/"+adminid+"/";
 
 
 });
+
+
+
+//check if user is there or not
+// function checkfbuser(){
+//   //alert(adminid);
+//   var chk= "contact_table/";
+//   try{
+//   return firebase.database().ref(chk).once('value').then(function(snapshot) {
+//       if(snapshot.hasChild(adminid)){alert("hai bhai");} else{
+//         var localpath="contact_table/"+adminid+"/";
+//        usersRef = firebase.database().ref(chk);
+//         usersRef.push("name");
+//
+//         }
+//
+//
+//       });}
+//
+//   catch(error){alert(error);}
+//
+// }
+
+
+function checkfbuser(useridtocheck=adminid){
+
+  var chk="global_users/"
+
+  try{
+   return firebase.database().ref(chk).once('value').then(function(snapshot) {
+       if(snapshot.hasChild(useridtocheck)){ } else{
+
+
+
+
+//code to add user in global accounts
+              var t21 = "global_users/"+useridtocheck+"/";
+                  database.ref(t21).set({
+                  isonline:"no",
+
+                  });
+//code to add user in chat db
+        var t22 = "contact_table/"+useridtocheck+"/"+"postgresfrnd/";
+
+        database.ref(t22).set({
+        newmessage: "no",
+        istyping:"no",
+
+        });
+
+
+
+         }
+
+
+       });}
+
+   catch(error){alert(error);}
+
+ }
+
+
+
+
+function addfrndsinfirebase(firstid,secondid)
+{
+  var chk1 = "contact_table/"+firstid+"/"+secondid+"/";
+  var chk2 = "contact_table/"+secondid+"/"+firstid+"/";
+  database.ref(chk1).set({
+  newmessage: "no",
+  istyping:"no",
+
+  });
+
+
+  database.ref(chk2).set({
+  newmessage: "no",
+  istyping:"no",
+
+  });
+
+
+}

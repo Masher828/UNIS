@@ -5,7 +5,7 @@ from django.contrib import auth
 import psycopg2
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-import firebase
+
 
 # Create your views here.
 def login(request):
@@ -45,7 +45,7 @@ def signup(request):
             print("password verified")
             user = auth.authenticate(username = lower_case_username, password = request.POST['password1'])
             if not user is None:
-                return(request,'accounts/signup.html',{'error':'user already exists'})
+                return render(request,'accounts/signup.html',{'error':'user already exists'})
 
             else:
 
@@ -79,9 +79,8 @@ def signup(request):
                     cursor.close()
                     connection.close()
                     detail.save()
-                    
                     return redirect('chats:chat_home')
         else:
-            return(request,'accounts/signup.html',{'error':'Passwords should match'})
+            return render(request,'accounts/signup.html',{'error':'Passwords should match'})
     else:
         return render(request,'accounts/signup.html')
