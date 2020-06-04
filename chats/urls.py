@@ -10,5 +10,8 @@ urlpatterns = [
     path('get_friends/',views.get_friends,name = "get_friends"),
     path('get_chat_list/',views.get_chat_list,name="get_chat_list"),
     path('get_friends_chat/',views.get_friends_chat, name ="get_friends_chat"),
-    path("send_message/",views.send_message, name = "send_message"),
+    path('send_message/',views.send_message, name = "send_message"),
+    path('delete_message/',views.delete_message,name="delete_message"),
+    path('clear_chat/',views.clear_chat,name="clear_chat"),
+    path('update_profile/',views.update_profile,name="update_profile"),
 ]
