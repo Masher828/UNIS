@@ -3,7 +3,7 @@ $(window).on('load', function() {
 
 
 autosize(document.getElementById("chat"));
-$('#chatwindow').scrollTop($('#chatwindow')[0].scrollHeight);
+
 document.getElementById("startimage").src= document.getElementById("chatinsideimagecoveruser2").src;
 var tt="Hi, "+document.getElementById("notaname").innerHTML;
 document.getElementById("notaname2").innerHTML= tt;
@@ -289,6 +289,12 @@ function chatcollapse(id){
     $('#maincollapse').collapse('show');
   $('#startcollapse').collapse('hide');
   //alert("called");
+  var tt="sn"+id;
+  if(document.getElementById(tt).innerHTML=="new message")
+  {
+    changefbnewmessage(id);
+    document.getElementById(tt).innerHTML="HI there i am using whatsapppppppppppppppppppppp";
+  }
 
 
   //alert(global_sendtouser);
@@ -378,12 +384,12 @@ function loadchatintomultiCollapseExample1(){
           var date = (data['date'][i]);
           var profile = (data['profile_pic'][i]);
           var ar=[uname];
-          $("#multiCollapseExample1").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse("+id1+")'><div class='card-body'><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside("+"`"+profile+"`"+","+"`"+name+"`"+","+"`"+status+"`"+","+"`"+uname+"`"+","+"`"+email+"`"+","+"`"+date+"`"+")'><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div class='text-truncate text-muted' style='text-overflow: ellipsis;'>HI there i am using whatsapppppppppppppppppppppp</div></div></div></div></div></a><!-- Chat link -->");
+          $("#multiCollapseExample1").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse("+id1+")'><div class='card-body'><div class='numberCircle' id='chatnmes"+id1+"' style='visibility:hidden;'></div><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside("+"`"+profile+"`"+","+"`"+name+"`"+","+"`"+status+"`"+","+"`"+uname+"`"+","+"`"+email+"`"+","+"`"+date+"`"+")'><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div id='sn"+id1+"' class='text-truncate text-muted' style='text-overflow: ellipsis;'>HI there i am using whatsapppppppppppppppppppppp</div></div></div></div></div></a><!-- Chat link -->");
         }
       }
 
 
-
+      loadreadstatusonchatload();
 
 }
 
@@ -421,7 +427,9 @@ $(document).ready(function(){
             data :{userid : admin,frienduserid : secondid,message : text},
             // data: $('form').serialize(),
             success: function(result) {
-
+                document.getElementById("chat").value="";
+                showchatofthatuser(secondid);
+                newchatnotifyfb(admin,secondid);
             // alert(result);
     }
 
@@ -435,11 +443,12 @@ $(document).ready(function(){
 
 
 
-
+var chatloadedtiinow="";
 
 //load chats of  that user
 function showchatofthatuser(secondid){
   var admin=document.getElementById("adminusername").value;
+
 
   $.ajax({
         type:"POST",
@@ -448,23 +457,46 @@ function showchatofthatuser(secondid){
         datatype: "html",
         data:{userid : admin,friendid:secondid},
         success: function(data) {
-          var tempdata = data;
+          var check= data;
         data = JSON.parse(data)
+
         var size=data['len'];
+        var friendname = (data['friend_name']);
+        var friendprofilepic = (data['friend_profile_pic']);
+        var mypic =document.getElementById("chatinsideimagecoveruser2").src;
+        document.getElementById("contactimgheader").src=friendprofilepic;
+        document.getElementById("chatheadername").innerHTML=friendname;
+        if(chatloadedtiinow!=check)
+        {document.getElementById("chatwindow").innerHTML="";
+          chatloadedtiinow=check;
                for (var i = 0;i <size; i++)
         {
         //  var name = (data['fname'][i] + " "+ data['lname'][i]);
-            var messageid = (data['email'][i]);
-            var message = (data['email'][i]);
-            var messageimageurl = (data['email'][i]);
-            var isimage = (data['email'][i]);
-            var is_read = (data['email'][i]);
-            var timestamp = (data['email'][i]);
-            var friendname = (data['email'][i]);
-            var friendprofilepic = (data['email'][i]);
+            var messageid = (data['message_id'][i]);
+            var sender_id = (data['friend_id'][i]);
+            var message = (data['message'][i]);
+            var image_url_id = (data['image_url_id'][i]);
+            var is_image = (data['is_image'][i]);
+            var timestamp = (data['timestamp'][i]);
+
+
+
+            //categorizing messages
+            if(sender_id==secondid && is_image=="false")
+             {
+               $("#chatwindow").append("<!-- Message left --><div style='width: 100%;'><div class='message' id='msgleft' style='width: 55%; margin-top: 1.5% ;margin-bottom: 1.5%;'><!-- Avatar --><img class='avatar-img' src="+friendprofilepic+" alt='' id='contactimgleft'><!-- Message: body --><div class='message-body'><!-- Message: row --><div class='message-row'><div class='d-flex align-items-center'><!-- Message: content --><div class='message-content bg-light' style='border-radius: 12px 12px 12px 0px; min-width: 50%; '><h6 class='mb-2'>"+friendname+"</h6><div>"+message+"</div><div class='mt-1'><small class='opacity-65'>"+timestamp+"</small></div></div><!-- Message: content --><!-- Message: dropdown --><div class='dropdown' ><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' href='#' style='color :white; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div><!-- Message: row --></div><!-- Message: body --></div><!-- Message --></div><!-- Message left ends-->");
+             }
+
+
+             else if(sender_id==admin && is_image=="false")
+             {
+               $("#chatwindow").append("<!-- Message right --><div style='width: 100%;'><div class='message message-right' style='width: 60%; margin-top: 1.5% ;margin-bottom: 1.5%; '><!-- Avatar --><img class='avatar-img' src="+mypic+" alt='' id='contactimgright'><!-- Message: body --><div class='message-body'><!-- Message: row --><div class='message-row'><div class='d-flex align-items-center justify-content-end'><!-- Message: dropdown --><div class='dropdown' ><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' href='#' style='color :white; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --><!-- Message: content --><div class='message-content bg-primary text-white' style='min-width: 50%; '><div>"+message+"</div><div class='mt-1'><small class='opacity-65'>"+timestamp+"</small></div></div><!-- Message: content --></div></div><!-- Message: row --></div><!-- Message: body --></div></div><!-- Message right end-->")
+             }
+
 
         }
-
+          $('#chatwindow').scrollTop($('#chatwindow')[0].scrollHeight);
+      }
 
 
 

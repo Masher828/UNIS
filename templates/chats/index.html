@@ -10,6 +10,9 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 	<script src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
+
+
 
 
 
@@ -255,10 +258,10 @@
 
                                                         <div class="media-body overflow-hidden">
                                                             <div class="d-flex align-items-center mb-1">
-                                                                <h6 class="text-truncate mb-0 mr-auto text-light">Anna Bridges <span style="color: green; font-size: 20px;">.</span></h6>
+                                                                <h6 class="text-truncate mb-0 mr-auto text-light" id="chatheadername">Anna Bridges <span style="color: green; font-size: 20px;">.</span></h6>
 
                                                             </div>
-                                                            <div class="text-truncate text-muted">Status</div>
+                                                            <div class="text-truncate text-muted" id="chatheaderstatus">Status</div>
                                                         </div>
                                                     </div>
 
@@ -276,7 +279,7 @@
 
 
 
-    
+
 
 			</div>
 
@@ -509,6 +512,7 @@
 
 
 <script  src="{% static 'myscript.js' %}"></script>
+<script  src="{% static 'firebasescript.js' %}"></script>
 
 
 </html>
