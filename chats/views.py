@@ -277,19 +277,21 @@ def get_friends_chat(request):
 @login_required()
 def delete_message(request):
     if request.method == "POST":
+        print("jhj")
         user_id = request.POST['user_id']
         friend_id = request.POST['friend_id']
         message_id = request.POST['message_id']
         friend_details_object = get_object_or_404(Details,pk = friend_id)
-        table_name = request.username+"_chat_"+friend_details_object.user.username
+        table_name = request.user.username+"_chat_"+friend_details_object.user.username
         connection = psycopg2.connect(user = "postgres",
                                               password = "I*p96U#o4eID^Ubc$R*Y",
                                               host = "localhost",
                                               port = "5433",
-                                              database = "unis_{}".format(request.username))
+                                              database = "unis_{}".format(request.user.username))
         delete_message_query = '''DELETE FROM {0} WHERE message_id = {1};'''.format(table_name,message_id)
         cursor= connection.cursor()
         cursor.execute(delete_message_query)
+        connection.commit()
         cursor.close()
         connection.close()
         return HttpResponse('done')
@@ -300,19 +302,20 @@ def delete_message(request):
 @login_required()
 def clear_chat(request):
     if request.method == "POST":
+        print("hhh")
         user_id = request.POST['user_id']
         friend_id = request.POST['friend_id']
-        message_id = request.POST['message_id']
         friend_details_object = get_object_or_404(Details,pk = friend_id)
-        table_name = request.username+"_chat_"+friend_details_object.user.username
+        table_name = request.user.username+"_chat_"+friend_details_object.user.username
         connection = psycopg2.connect(user = "postgres",
                                               password = "I*p96U#o4eID^Ubc$R*Y",
                                               host = "localhost",
                                               port = "5433",
-                                              database = "unis_{}".format(request.username))
+                                              database = "unis_{}".format(request.user.username))
         clear_chat_query = '''DELETE FROM {0};'''.format(table_name)
         cursor= connection.cursor()
         cursor.execute(clear_chat_query)
+        connection.commit()
         cursor.close()
         connection.close()
         return HttpResponse('done')

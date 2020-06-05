@@ -29,7 +29,7 @@ checkfbuser();
 //   layout: 'topCenter',
 //     text: 'switched to Dark Mode',
 //       timeout: 2000,
-// 
+//
 // }).show();
 //noty
 });
@@ -615,7 +615,28 @@ function deletechatmsgbyid(msgid)
 {   var admin=document.getElementById("adminusername").value;
   var seconduser = global_sendtouser;
 
-  alert(admin+"-"+msgid+"-"+seconduser);
+
+  // e.preventDefault();
+//  alert(secondid);
+
+  // AJAX
+  $.ajax({
+        type: "POST",
+
+        cache: false,
+        url: "delete_message/",
+        datatype: "html",
+        data :{user_id : admin,friend_id : seconduser,message_id : msgid},
+        // data: $('form').serialize(),
+        success: function(result) {
+
+            document.getElementById("chat").value="";
+            showchatofthatuser(seconduser);
+            // newchatnotifyfb(admin,secondid);            don't know purpose added by manish
+
+}
+
+    });
 
 }
 
@@ -623,7 +644,32 @@ function deletechatmsgbyid(msgid)
 //delete whole Chats
 function deletewholechatsbyids(){
 var foo = prompt('To confirm enter DELETE below in all caps');
-if(foo=="DELETE"){alert("ok");}
+if(foo=="DELETE"){
+    var admin=document.getElementById("adminusername").value;
+    var seconduser = global_sendtouser;
+  alert("ok");
+  $.ajax({
+        type: "POST",
+
+        cache: false,
+        url: "clear_chat/",
+        datatype: "html",
+        data :{user_id : admin,friend_id : seconduser},
+        // data: $('form').serialize(),
+        success: function(result) {
+
+            document.getElementById("chat").value="";
+            showchatofthatuser(seconduser);
+            // newchatnotifyfb(admin,secondid);            don't know purpose added by manish
+
+
+}
+
+    });
+
+
+
+}
 else{alert("Operation cancelled by user.")}
 
 }

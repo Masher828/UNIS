@@ -116,6 +116,16 @@ if(child.val().istyping=="no")
        }
        else{document.getElementById(tt).innerHTML="new message";
        document.getElementById(imgtt).style.visibility = "visible";
+       //Noty
+       new Noty({
+         type: 'success',
+         theme: 'nest',
+         layout: 'topRight',
+           text: 'New Message!',
+             timeout: 2000,
+
+       }).show();
+       //noty
 
      }
    });
