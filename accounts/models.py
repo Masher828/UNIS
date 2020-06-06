@@ -9,6 +9,3 @@ class Details(models.Model):
     created_at = models.DateTimeField(default = datetime.now())
     isOnline = models.CharField(max_length = 20, default="false")
     lastseen = models.CharField(max_length = 50, default='not available')
-
-class Chatimages(models.Model):
-    image = models.ImageField(upload_to = 'chat_images/')

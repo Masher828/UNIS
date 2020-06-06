@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import json
 import psycopg2
-global userlist
+global userlist,starting
 import datetime
 
 
@@ -105,8 +105,6 @@ def addcontact(request):
         #id2 -> user to be added
         account_id1 = get_object_or_404(Details, pk=request.POST['id1'])
         account_id2 = get_object_or_404(Details, pk=request.POST['id2'])
-        print(account_id1.user.username)
-        print(account_id2.user.username)
         try:
             connection_logged_in = psycopg2.connect(user = "postgres",
                                                   password = "I*p96U#o4eID^Ubc$R*Y",
@@ -114,7 +112,7 @@ def addcontact(request):
                                                   port = "5433",
                                                   database = "unis_{}".format(account_id1.user.username))
             connection_logged_in.autocommit = True
-            create_table_query_logged_in = '''CREATE TABLE {}( message_id  SERIAL PRIMARY KEY, sender_id INT, body VARCHAR(2000), ts TIMESTAMP, align VARCHAR(10), is_image VARCHAR(6), image_url_id INT, is_read VARCHAR(8)); '''.format(account_id1.user.username+"_chat_"+account_id2.user.username)
+            create_table_query_logged_in = '''CREATE TABLE {}( message_id  SERIAL PRIMARY KEY, sender_id INT, body VARCHAR(2000), ts TIMESTAMP, align VARCHAR(10), is_image VARCHAR(6), image_data bytea, image_type VARCHAR(50)); '''.format(account_id1.user.username+"_chat_"+account_id2.user.username)
             cursor_logged_in= connection_logged_in.cursor()
             cursor_logged_in.execute(create_table_query_logged_in)
             insert_contact_logged_in = '''INSERT INTO contacts (contact_id , isRead, isTyping , unread_count) VALUES({0},{1},{2},{3})'''.format(request.POST['id2'],'false','false',0)
@@ -128,7 +126,7 @@ def addcontact(request):
                                                   port = "5433",
                                                   database = "unis_{}".format(account_id2.user.username))
             connection_other_user.autocommit = True
-            create_table_query_other_user = '''CREATE TABLE {}(message_id  SERIAL PRIMARY KEY, sender_id INT, body VARCHAR(2000), ts TIMESTAMP, align VARCHAR(10), is_image VARCHAR(6), image_url_id INT, is_read VARCHAR(8)); '''.format(account_id2.user.username+"_chat_"+account_id1.user.username)
+            create_table_query_other_user = '''CREATE TABLE {}(message_id  SERIAL PRIMARY KEY, sender_id INT, body VARCHAR(2000), ts TIMESTAMP, align VARCHAR(10), is_image VARCHAR(6), image_data bytea, image_type VARCHAR(50)); '''.format(account_id2.user.username+"_chat_"+account_id1.user.username)
             cursor_other_user= connection_other_user.cursor()
             cursor_other_user.execute(create_table_query_other_user)
             insert_contact_other_user = '''INSERT INTO contacts (contact_id , isRead, isTyping , unread_count)  VALUES({0},{1},{2},{3})'''.format(request.POST['id1'],'false','false',0)
@@ -180,16 +178,11 @@ def get_chat_list(request):
 @login_required()
 def send_message(request):
     if request.method == "POST":
-
         current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        print(current_time)
         current_time=str(current_time)
         logged_in_user_id = request.POST['userid']
-
         friend_user_id = request.POST['frienduserid']
-        message = request.POST['message']
-
-
+        img_status = request.POST['isimage']
         logged_in_user_details_object = get_object_or_404(Details,pk=logged_in_user_id)
         friend_details_object = get_object_or_404(Details, pk = friend_user_id)
         table_name = logged_in_user_details_object.user.username +"_chat_"+friend_details_object.user.username
@@ -199,9 +192,25 @@ def send_message(request):
                                               port = "5433",
                                               database = "unis_{}".format(logged_in_user_details_object.user.username))
         connection.autocommit = True
+        if request.POST['isimage'] == "yes":
+            img = request.POST['image']
+            print(img)
+            index= img.index(",")+1
+            image_type = request.POST['image'][0:index]
+            # starting = request.POST['image'][0:index]
+            img = img[index:len(img)]
+            imgdata = base64.b64decode(img)
+            insert_message_query = '''INSERT INTO {0} (sender_id, ts, is_image, image_data, image_type,body)  VALUES(%s,%s,%s,%s,%s,%s);'''.format(table_name)
+            data = (logged_in_user_id,current_time,img_status,imgdata,image_type,"null")
 
-        insert_message_query = '''INSERT INTO {0} (sender_id , body, ts, is_image, image_url_id, is_read)  VALUES(%s,%s,%s,%s,%s,%s);'''.format(table_name)
-        data = (logged_in_user_id,message,current_time,'false','-1','false')
+        else:
+            message = request.POST['message']
+            insert_message_query = '''INSERT INTO {0} (sender_id , body, ts, is_image,image_data,image_type)  VALUES(%s,%s,%s,%s,%s,%s);'''.format(table_name)
+            data = (logged_in_user_id,message,current_time,img_status,"null","null")
+
+
+
+
         cursor= connection.cursor()
 
         cursor.execute("SET timezone = 'Asia/Kolkata';")
@@ -218,8 +227,15 @@ def send_message(request):
                                               host = "localhost",
                                               port = "5433",
                                               database = "unis_{}".format(friend_details_object.user.username))
-        insert_message_query = '''INSERT INTO {0} (sender_id , body, ts, is_image, image_url_id, is_read)  VALUES(%s,%s,%s,%s,%s,%s);'''.format(table_name)
-        data = (logged_in_user_id,message,current_time,'false','-1','false')
+
+        if request.POST['isimage'] == "yes":
+            insert_message_query = '''INSERT INTO {0} (sender_id, ts, is_image, image_data, image_type,body)  VALUES(%s,%s,%s,%s,%s,%s);'''.format(table_name)
+            data = (logged_in_user_id,current_time,img_status,imgdata,image_type,"null")
+
+        else:
+            insert_message_query = '''INSERT INTO {0} (sender_id , body, ts, is_image,image_data,image_type)  VALUES(%s,%s,%s,%s,%s,%s);'''.format(table_name)
+            data = (logged_in_user_id,message,current_time,img_status,"null","null")
+
         cursor= connection.cursor()
 
         cursor.execute("SET timezone = 'Asia/Kolkata';")
@@ -234,7 +250,7 @@ def send_message(request):
 
 
 
-
+import base64
 @csrf_exempt
 @login_required()
 def get_friends_chat(request):
@@ -249,20 +265,21 @@ def get_friends_chat(request):
                                               host = "localhost",
                                               port = "5433",
                                               database = "unis_{}".format(logged_in_user_details_object.user.username))
-        select_message_details_query = '''SELECT message_id,sender_id,body,ts,is_image,image_url_id,is_read FROM {} ORDER BY ts;'''.format(table_name)
+        select_message_details_query = '''SELECT message_id,sender_id,body,ts,is_image,image_data,image_type FROM {} ORDER BY ts;'''.format(table_name)
 
         cursor= connection.cursor()
         cursor.execute(select_message_details_query)
-        friends={'len':0,'friend_id':[],'friend_name':"" ,'message':[],'friend_profile_pic':"", 'message_id':[],'is_image': [],'image_url_id':[],'timestamp':[],'is_read':[]}
+        friends={'len':0,'friend_id':[],'friend_name':"" ,'message':[],'friend_profile_pic':"", 'message_id':[],'is_image': [],'image_data':[],'timestamp':[]}
         for row in cursor.fetchall():
             detail_friend_obj = get_object_or_404(Details,pk=row[1])
             friends['message_id'].append(row[0])
             friends['friend_id'].append(row[1])
             friends['message'].append(row[2])
-            friends['image_url_id'].append(row[5])
-
+            strr = str(base64.b64encode(row[5]))
+            strr = row[6]+strr[2:len(strr)-1]
+            friends['image_data'].append(strr)
             friends['is_image'].append(row[4])
-            friends['is_read'].append(row[6])
+
             friends['timestamp'].append(str(row[3]))
         detail_friend_obj = get_object_or_404(Details,pk=friend_user_id)
         friends['friend_name'] = detail_friend_obj.user.first_name + " "+ detail_friend_obj.user.last_name
@@ -277,7 +294,7 @@ def get_friends_chat(request):
 @login_required()
 def delete_message(request):
     if request.method == "POST":
-        print("jhj")
+
         user_id = request.POST['user_id']
         friend_id = request.POST['friend_id']
         message_id = request.POST['message_id']
@@ -297,12 +314,18 @@ def delete_message(request):
         return HttpResponse('done')
 
 
+import base64
+@csrf_exempt
+def sendimagemsg(request):
+    if request.method == "POST":
+        pass
+
 
 @csrf_exempt
 @login_required()
 def clear_chat(request):
     if request.method == "POST":
-        print("hhh")
+
         user_id = request.POST['user_id']
         friend_id = request.POST['friend_id']
         friend_details_object = get_object_or_404(Details,pk = friend_id)

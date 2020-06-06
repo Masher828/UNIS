@@ -38,23 +38,18 @@ def logout(request):
 
 def signup(request):
     if request.method == 'POST':
-        print("post")
-        print(request.POST)
         lower_case_username = request.POST['username'].lower()
         if request.POST['password1'] == request.POST['password2']:
-            print("password verified")
             user = auth.authenticate(username = lower_case_username, password = request.POST['password1'])
             if not user is None:
                 return render(request,'accounts/signup.html',{'error':'user already exists'})
 
             else:
-
-                    print(lower_case_username)
                     user = User.objects.create_user(username=lower_case_username,first_name = request.POST['firstname'],email=request.POST['email'], last_name = request.POST['lastname'], password=request.POST['password1'])
                     detail = Details()
                     detail.user = user
                     detail.Profile_pic = request.FILES['Profile_pic']
-                    print(detail.Profile_pic.url)
+                    print(request.FILES['Profile_pic'])
                     detail.status = "Available"
                     connection = psycopg2.connect(user = "postgres",
                                                       password = "I*p96U#o4eID^Ubc$R*Y",

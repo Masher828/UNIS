@@ -14,4 +14,5 @@ urlpatterns = [
     path('delete_message/',views.delete_message,name="delete_message"),
     path('clear_chat/',views.clear_chat,name="clear_chat"),
     path('update_profile/',views.update_profile,name="update_profile"),
+    path('sendimagemsg/',views.sendimagemsg,name ="sendimagemsg/"),
 ]
