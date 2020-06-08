@@ -1,4 +1,3 @@
-
 $(window).on('load', function() {
 
 
@@ -476,7 +475,7 @@ $(document).ready(function(){
             cache: false,
             url: "send_message/",
             datatype: "html",
-            data :{userid : admin,frienduserid : secondid,message : text},
+            data :{userid : admin,frienduserid : secondid,message : text,isimage : "no",image:"-" },
             // data: $('form').serialize(),
             success: function(result) {
                 document.getElementById("chat").value="";
@@ -527,23 +526,29 @@ function showchatofthatuser(secondid){
             var messageid = (data['message_id'][i]);
             var sender_id = (data['friend_id'][i]);
             var message = (data['message'][i]);
-            var image_url_id = (data['image_url_id'][i]);
+            var image_url_id = (data['image_data'][i]);
             var is_image = (data['is_image'][i]);
             var timestamp = (data['timestamp'][i]);
 
 
 
             //categorizing messages
-            if(sender_id==secondid && is_image=="false")
+            if(sender_id==secondid && is_image=="no")
              {
                $("#chatwindow").append("<!-- Message left --><div style='width: 100%;'><div class='message' id='msgleft' style='width: 55%; margin-top: 1.5% ;margin-bottom: 1.5%;'><!-- Avatar --><img class='avatar-img' src="+friendprofilepic+" alt='' id='contactimgleft'><!-- Message: body --><div class='message-body'><!-- Message: row --><div class='message-row'><div class='d-flex align-items-center'><!-- Message: content --><div class='message-content bg-light' style='border-radius: 12px 12px 12px 0px; min-width: 50%; '><h6 class='mb-2'>"+friendname+"</h6><div>"+message+"</div><div class='mt-1'><small class='opacity-65'>"+timestamp+"</small></div></div><!-- Message: content --><!-- Message: dropdown --><div class='dropdown' ><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' onclick='deletechatmsgbyid("+messageid+")' style='color :white; cursor:pointer; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div><!-- Message: row --></div><!-- Message: body --></div><!-- Message --></div><!-- Message left ends-->");
              }
 
 
-             else if(sender_id==admin && is_image=="false")
+             else if(sender_id==admin && is_image=="no")
              {
                $("#chatwindow").append("<!-- Message right --><div style='width: 100%;'><div class='message message-right' style='width: 60%; margin-top: 1.5% ;margin-bottom: 1.5%; '><!-- Avatar --><img class='avatar-img' src="+mypic+" alt='' id='contactimgright'><!-- Message: body --><div class='message-body'><!-- Message: row --><div class='message-row'><div class='d-flex align-items-center justify-content-end'><!-- Message: dropdown --><div class='dropdown' ><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' onclick='deletechatmsgbyid("+messageid+")' style='color :white; cursor:pointer; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --><!-- Message: content --><div class='message-content bg-primary text-white' style='min-width: 50%; '><div>"+message+"</div><div class='mt-1'><small class='opacity-65'>"+timestamp+"</small></div></div><!-- Message: content --></div></div><!-- Message: row --></div><!-- Message: body --></div></div><!-- Message right end-->")
              }
+
+
+             else if(sender_id==admin && is_image=="yes")
+             {
+               $("#chatwindow").append("<!-- Message Image right --><div style='width: 100%;'><div class='message message-right' style='width: 60%; margin-top: 1.5% ;margin-bottom: 1.5%; '><!-- Avatar --><img class='avatar-img' src='https://i.ytimg.com/vi/_nGpPFtkLR0/hqdefault.jpg' alt='' id='contactimgright'><!-- Message: body --><div class='message-body'><!-- Message: row --><div class='message-row'><div class='d-flex align-items-center justify-content-end'><!-- Message: dropdown --><div class='dropdown' ><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' href='#' style='color :white; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --><!-- Message: content --><div class='message-content bg-primary text-white'><div><img src="+image_url_id+" id='chatinsideimage2' ></div><div class='mt-1'><small class='opacity-65'>8 mins ago</small></div></div><!-- Message: content --></div></div><!-- Message: row --></div><!-- Message: body --></div></div><!-- Message right end-->"); }
+
 
 
         }
@@ -581,13 +586,14 @@ document.getElementById("id_image").value = "";
 }
 
 
-
+var globalimageschoosed = ""
 //setting images
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
+          globalimageschoosed = e.target.result;
             $('#sampleimageupload').attr('src', e.target.result);
         }
 
@@ -615,28 +621,7 @@ function deletechatmsgbyid(msgid)
 {   var admin=document.getElementById("adminusername").value;
   var seconduser = global_sendtouser;
 
-
-  // e.preventDefault();
-//  alert(secondid);
-
-  // AJAX
-  $.ajax({
-        type: "POST",
-
-        cache: false,
-        url: "delete_message/",
-        datatype: "html",
-        data :{user_id : admin,friend_id : seconduser,message_id : msgid},
-        // data: $('form').serialize(),
-        success: function(result) {
-
-            document.getElementById("chat").value="";
-            showchatofthatuser(seconduser);
-            // newchatnotifyfb(admin,secondid);            don't know purpose added by manish
-
-}
-
-    });
+  alert(admin+"-"+msgid+"-"+seconduser);
 
 }
 
@@ -644,32 +629,38 @@ function deletechatmsgbyid(msgid)
 //delete whole Chats
 function deletewholechatsbyids(){
 var foo = prompt('To confirm enter DELETE below in all caps');
-if(foo=="DELETE"){
-    var admin=document.getElementById("adminusername").value;
-    var seconduser = global_sendtouser;
-  alert("ok");
-  $.ajax({
-        type: "POST",
-
-        cache: false,
-        url: "clear_chat/",
-        datatype: "html",
-        data :{user_id : admin,friend_id : seconduser},
-        // data: $('form').serialize(),
-        success: function(result) {
-
-            // document.getElementById("chat").value="";
-            // showchatofthatuser(seconduser);
-            // newchatnotifyfb(admin,secondid);            don't know purpose added by manish
-            alert(result);
-
-}
-
-    });
-
-
-
-}
+if(foo=="DELETE"){alert("ok");}
 else{alert("Operation cancelled by user.")}
 
 }
+
+
+
+//send image by idea
+$(document).ready(function(){
+    //listen for form submission
+    $('#submitformforimage').on('click', function(e){
+
+      e.preventDefault();
+      var admin=document.getElementById("adminusername").value;
+
+      var secondid = global_sendtouser;
+
+      // AJAX
+      $.ajax({
+            type: "POST",
+
+            cache: false,
+            url: "send_message/",
+            datatype: "html",
+            data:{userid : admin,frienduserid : secondid,message : "null",isimage : "yes",image : globalimageschoosed},
+            success: function(data) {
+              showchatofthatuser(secondid);
+              newchatnotifyfb(admin,secondid);
+            //  document.getElementById("contactimgheader").src=data;
+
+    }
+
+        });
+    });
+  });

@@ -6,7 +6,9 @@
   </head>
   <body>
     <h1>sign up</h1>
+    {% if error %}
     {{error}}
+    {% endif %}
     <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       USERNAME:<br>
@@ -27,6 +29,7 @@
       <input type="file" name="Profile_pic" value="">
       <br><br>
       <input type="submit" name="login" value="Log In">
+
     </form>
   </body>
 </html>

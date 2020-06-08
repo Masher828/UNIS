@@ -5,7 +5,9 @@
     <title>Log In</title>
   </head>
   <body>
+    {% if error %}
     {{error}}
+    {% endif %}
     <h1>sign in</h1>
     <form action="{% url 'accounts:login' %}" method="POST">
       {% csrf_token %}
