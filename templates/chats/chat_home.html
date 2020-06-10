@@ -14,6 +14,7 @@
 
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js" type="text/javascript"></script>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
 
 
 
@@ -226,7 +227,7 @@
 							                                             </div>
 							                       </div>
 							                      <!--cards--><br>
-																		<a href="{% url 'accounts:logout' %}"><button type="button" class="btn btn-danger align-self-center" >Logout</button></a> <br>
+																		<a href="{% url 'accounts:logout' %}"><button type="button" class="btn btn-danger align-self-center"  onclick='updatecurrentuseronlinestatus("no")'>Logout</button></a> <br>
 
 
 										</div>
@@ -258,6 +259,7 @@
                                                             <img src="https://www.pixelstalk.net/wp-content/uploads/2016/03/Download-free-Deadpool-Wallpaper-HD.jpg" alt="..." class=" " id="contactimgheader" style="border: none; object-fit: cover;">
 
 
+																															 <span class='badge badge-pill badge-success text-success' id="chatheaderonlinebubble" style='position: absolute;  font-size: 50%;'>.</span>
 
                                                         <div class="media-body overflow-hidden">
                                                             <div class="d-flex align-items-center mb-1">
@@ -336,6 +338,9 @@
                                 </form>
 																		</div>
 																		<div class="collapse multi-collapse" id="imgmsgcollapsebottom">
+																			<div class="loader" style="width: 100%; margin-top:0px; margin-bottom:2%; visibility: hidden;"  id="loaderforimg">
+																			  <div class="loaderBar" style="width: 100%; margin-top : 0px;"></div>
+																			</div>
 																			<span class="iconify" data-icon="emojione:cross-mark-button" data-inline="false" onclick="hideimagebottomdiv1()" style="float:right; position: relative; margin-right: 5%;cursor: pointer; width: 44px; height: 44px; "></span>
 																			<!--form for image-->
 																			<form action="" method="post" enctype="multipart/form-data" id="imgform">{% csrf_token %}
@@ -480,7 +485,7 @@
 </button>
 </div>
 <div class="modal-body" style="background-color:#29242a;">
-<h5 class="text-light">Logged in as {{name}}</h5><a href="{% url 'accounts:logout' %}"><button type="button" class="btn btn-danger align-self-center" >Logout</button></a> <br> <hr> <br>
+<h5 class="text-light">Logged in as {{name}}</h5><a href="{% url 'accounts:logout' %}"><button type="button" class="btn btn-danger align-self-center"  onclick='updatecurrentuseronlinestatus("no")'>Logout</button></a> <br> <hr> <br>
 
 <table class="table table-dark">
 
@@ -508,8 +513,11 @@
       <td>the Bird</td>
 
     </tr>
+
   </tbody>
 </table>
+
+
 
 </div>
 <div class="modal-footer">
