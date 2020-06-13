@@ -14,6 +14,7 @@
 
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js" type="text/javascript"></script>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
 
 
 
@@ -21,6 +22,7 @@
 
 </head>
 <body style="overflow: hidden;">
+	<div class="se-pre-con"><h1 data-text="It's loading…" id="startloader">It's loading…</h1></div>
 <div class="row ">
 
 	<div class="col-sm-1" style="background-color: #29242a; height: 100vh; padding: 0px;">
@@ -71,9 +73,11 @@
                                     </form>
           <!-- Search -->
 
+
+					<div id="multiCollapseExample1chat">
+
         	<!--chatlink was here-->
-
-
+				</div>
 
 								</div>
 
@@ -226,7 +230,7 @@
 							                                             </div>
 							                       </div>
 							                      <!--cards--><br>
-																		<a href="{% url 'accounts:logout' %}"><button type="button" class="btn btn-danger align-self-center" >Logout</button></a> <br>
+																		<a href="{% url 'accounts:logout' %}"><button type="button" class="btn btn-danger align-self-center"  onclick='updatecurrentuseronlinestatus("no")'>Logout</button></a> <br>
 
 
 										</div>
@@ -258,6 +262,7 @@
                                                             <img src="https://www.pixelstalk.net/wp-content/uploads/2016/03/Download-free-Deadpool-Wallpaper-HD.jpg" alt="..." class=" " id="contactimgheader" style="border: none; object-fit: cover;">
 
 
+																															 <span class='badge badge-pill badge-success text-success' id="chatheaderonlinebubble" style='position: absolute; visibility: hidden; font-size: 50%;'>.</span>
 
                                                         <div class="media-body overflow-hidden">
                                                             <div class="d-flex align-items-center mb-1">
@@ -277,7 +282,7 @@
 		</div>
 
 
-			<div  style="height: 80vh;  width: 100%; overflow-y: auto; padding-left: 2%; padding-right: 2%; padding-bottom: 2%;" id="chatwindow" class="row">
+			<div  style="height: 80vh;  width: 100%; overflow-y: auto; padding-left: 2%; padding-right: 2%; padding-bottom: 2%;" id="chatwindow"">
 
 
 			<!--messages were here-->
@@ -336,6 +341,9 @@
                                 </form>
 																		</div>
 																		<div class="collapse multi-collapse" id="imgmsgcollapsebottom">
+																			<div class="loader" style="width: 100%; margin-top:0px; margin-bottom:2%; visibility: hidden;"  id="loaderforimg">
+																			  <div class="loaderBar" style="width: 100%; margin-top : 0px;"></div>
+																			</div>
 																			<span class="iconify" data-icon="emojione:cross-mark-button" data-inline="false" onclick="hideimagebottomdiv1()" style="float:right; position: relative; margin-right: 5%;cursor: pointer; width: 44px; height: 44px; "></span>
 																			<!--form for image-->
 																			<form action="" method="post" enctype="multipart/form-data" id="imgform">{% csrf_token %}
@@ -480,48 +488,142 @@
 </button>
 </div>
 <div class="modal-body" style="background-color:#29242a;">
-<h5 class="text-light">Logged in as {{name}}</h5><a href="{% url 'accounts:logout' %}"><button type="button" class="btn btn-danger align-self-center" >Logout</button></a> <br> <hr> <br>
+<h5 class="text-light">Logged in as {{name}}</h5><a href="{% url 'accounts:logout' %}"><button type="button" class="btn btn-danger align-self-center"  onclick='updatecurrentuseronlinestatus("no")'>Logout</button></a> <br> <hr>
 
-<table class="table table-dark">
 
-  <tbody>
-    <tr>
-    <td>Name :</td>
-      <td><input type="text" placeholder="{{name}}" > </td>
 
-    </tr>
-    <tr>
 
-      <td>Status :</td>
-      <td>Thornton</td>
 
-    </tr>
-    <tr>
+<!--accordian-->
 
-      <td>Display Pic :</td>
-      <td>the Bird</td>
+<div class="accordion" id="accordionExample">
+  <div class="card">
+    <div class="card-header bg-dark" id="headingOne">
+      <h2 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Account Settings.
+        </button>
+      </h2>
+    </div>
 
-    </tr>
-		<tr>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div class="card-body bg-dark">
+				<table class="table table-dark">
+				  <tbody>
+				    <tr>
+				    <td>Name :</td>
+				      <td><input type="text" placeholder="{{name}}" > </td>
 
-      <td>Password :</td>
-      <td>the Bird</td>
+				    </tr>
+				    <tr>
 
-    </tr>
-  </tbody>
-</table>
+				      <td>Status :</td>
+				      <td>Thornton</td>
+
+				    </tr>
+				    <tr>
+
+				      <td>Display Pic :</td>
+				      <td>the Bird</td>
+
+				    </tr>
+						<tr>
+
+				      <td>Password :</td>
+				      <td>the Bird</td>
+
+				    </tr>
+
+				  </tbody>
+				</table><button type="button" class="btn btn-success">Save</button><button type="button" class="btn btn-secondary ml-2">Discard</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          General Settings.
+        </button>
+      </h2>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+      <div class="card-body bg-dark">
+
+				<table class="table table-dark">
+					<tr>
+						<td>New Message Sounds : </td>
+						<td><input id="chkToggle1" type="checkbox" data-toggle="toggle" checked></td>
+					</tr>
+					<tr>
+						<td>In chat Sounds : </td>
+						<td><input id="chkToggle2" type="checkbox" data-toggle="toggle" checked></td>
+					</tr>
+				</table>
+				<small class="text-light">This settings will change if you open incognito mode or change browser.</small>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+<!--accordian-->
+
+
+
 
 </div>
-<div class="modal-footer">
-<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-<button type="button" class="btn btn-primary">Save changes</button>
-</div>
+
 </div>
 </div>
 </div>
 
 
 
+
+
+
+
+
+
+
+
+<!--offlinediv-->
+
+
+<div class="modal fade" id="offlinemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark">
+        <h5 class="modal-title text-light" id="exampleModalLongTitle">OOPS!</h5>
+      </div>
+      <div class="modal-body bg-dark" style="text-align: center; font-weight: bold;  font-size: 120%;">
+
+  <p id="erroroffline">E<span>r</span>ror</p>
+  <p id="codeoffline">5<span>0</span><span>2</span></p>
+	<p class="text-light">Trying to Reconnect to Unis Server.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--offlinedivends-->
+
+
+
+<!--audio for msg-->
+<audio id="myAudio1">
+  <source src="{% static 'assets/newchat.mp3' %}" type="audio/mpeg">
+</audio>
+<audio id="myAudio2">
+  <source src="{% static 'assets/inchatmyside.mp3' %}" type="audio/mpeg">
+</audio>
+<audio id="myAudio3">
+  <source src="{% static 'assets/inchatotherside.mp3' %}" type="audio/mpeg">
+</audio>
+
+<!--audio ends-->
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -533,6 +635,8 @@
 
 <script  src="{% static 'myscript.js' %}"></script>
 <script  src="{% static 'firebasescript.js' %}"></script>
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
 
 </html>

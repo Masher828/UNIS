@@ -10,6 +10,5 @@ class Details(models.Model):
     isOnline = models.CharField(max_length = 20, default="false")
     lastseen = models.CharField(max_length = 50, default='not available')
 
-
 class Customprofilepic(models.Model):
     custom_DP = models.ImageField(upload_to='custom_DP/')

@@ -155,10 +155,12 @@ def get_chat_list(request):
         select_friends_query = '''SELECT contact_id FROM contacts;'''
         cursor= connection.cursor()
         cursor.execute(select_friends_query)
-        friends={'len':0,'id':[],'status':[],'profile_pic':[],'fname':[], 'lname':[],'email': [],'uname':[],'date':[]}
+        cursor1= connection.cursor()
+        friends={'len':0,'id':[],'status':[],'profile_pic':[],'fname':[], 'lname':[],'email': [],'uname':[],'date':[],'last_message':[],'is_image':[]}
         for row in cursor.fetchall():
             detail_friend_obj = get_object_or_404(Details,pk=row[0])
             friends['id'].append(row[0])
+            print(str(request.user)+"_chat_"+detail_friend_obj.user.username)
             friends['status'].append(detail_friend_obj.status)
             friends['profile_pic'].append(detail_friend_obj.Profile_pic.url)
             friends['fname'].append(detail_friend_obj.user.first_name)
@@ -166,11 +168,27 @@ def get_chat_list(request):
             friends['email'].append(detail_friend_obj.user.email)
             friends['uname'].append(detail_friend_obj.user.username)
             friends['date'].append(str(detail_friend_obj.created_at))
+            select_last_message = '''SELECT body, is_image from {0} WHERE ts = ( SELECT MAX(ts) FROM {0} );'''.format(str(request.user)+"_chat_"+detail_friend_obj.user.username)
+            cursor1.execute(select_last_message)
+            last_chat_object = cursor1.fetchone()
+            tmp = last_chat_object[1]
+            msg = last_chat_object[0]
+            print(tmp)
+            if tmp != 'no':
+                friends['last_message'].append('Photo')
+            else:
+
+                print(msg)
+                friends['last_message'].append(msg)
+
+
 
 
         friends['len']=len(friends['id'])
+        cursor1.close()
         cursor.close()
         connection.close()
+        print(friends)
         return HttpResponse(json.dumps(friends))
 
 
