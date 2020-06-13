@@ -113,14 +113,20 @@ if(child.val().istyping=="no")
         document.getElementById(tt).innerHTML="HI there i am using";
          document.getElementById(imgtt).style.visibility = "visible";
          changefbnewmessage(entry);
+         if(globalaudiosettingsforinchat==1){var xt = document.getElementById("myAudio3");
+         xt.play();}
 
 
 
        }
        else{
 //adding code so new msg doesnt show if already new messages are there
-      if(istypinglist.includes(entry)  ||  document.getElementById(tt).innerHTML=='<span style="color : blue">new message.</span>'){}else{
+      if(  document.getElementById(tt).innerHTML=='<span style="color : blue">new message.</span>'){}else{
       //  var trs=document.getElementById(tt).innerHTML;
+      // var positiond= "#mdivid"+entry;
+      // $('positiond').prependTo('#multiCollapseExample1chat');
+      var positiond= "#mdivid"+entry;
+      $(positiond).prependTo('#multiCollapseExample1chat');
 
         //alert(trs);
 
@@ -137,6 +143,9 @@ if(child.val().istyping=="no")
 
        }).show();
        //noty
+       if(globalaudiosettingsfornewmessage==1){var x = document.getElementById("myAudio1");
+       x.play();}
+
 
      }
 
@@ -209,8 +218,7 @@ if(check3==1)
 
 
 function loadreadstatusonchatload(){
-  var starCountRef = firebase.database().ref(pathfornewmessage);
-  starCountRef.on('value', function(snapshot) {
+  firebase.database().ref(pathfornewmessage).once('value').then(function(snapshot)  {
     var list=[];
     //var ilist=[];
     var check=0;

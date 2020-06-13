@@ -1,6 +1,6 @@
 $(window).on('load', function() {
 
-
+$(".se-pre-con").fadeOut("slow");
 
 autosize(document.getElementById("chat"));
 
@@ -32,7 +32,39 @@ checkfbuser();
 //noty
 
 updatecurrentuseronlinestatus("yes");
+
+
+
+
+//local storage for audio Settings
+
+if (localStorage.getItem("nmsgaudio") != null) {
+  var audio1 = localStorage.getItem('nmsgaudio');
+  var audio2 = localStorage.getItem('inchataudio');
+  if(audio1=='no'){
+    $('#chkToggle1').bootstrapToggle('off');
+    globalaudiosettingsfornewmessage=0;
+  }
+  if(audio2=='no'){
+    $('#chkToggle2').bootstrapToggle('off');
+    globalaudiosettingsforinchat=0;
+  }
+
+}
+else{
+  localStorage.setItem('nmsgaudio', 'yes');
+  localStorage.setItem('inchataudio', 'yes');
+}
+//local storage ends
+
+
+
 });
+
+var globalaudiosettingsfornewmessage=1;
+var globalaudiosettingsforinchat=1;
+
+
 
 
 
@@ -420,6 +452,7 @@ alert(id);
 var chatofloadedfrnds="";
 var listoffriendsforfirebase=[];
 
+
 //load chats into chat menu
 function loadchatintomultiCollapseExample1(){
 
@@ -448,10 +481,13 @@ function loadchatintomultiCollapseExample1(){
           var date = (data['date'][i]);
           var profile = (data['profile_pic'][i]);
           var ar=[uname];
+          var lmsg = (data['last_message'][i]);
+          if(lmsg=='Photo'){lmsg="<span class='iconify' data-icon='ic:baseline-photo' data-inline='false'></span>"+'&nbsp;Photo';}
           var badge="badgeonline"+id1;
           var typingbyid ="typingbyid"+id1;
+          var  mdivid="mdivid"+id1;
           listoffriendsforfirebase.push(id1);
-          $("#multiCollapseExample1").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse("+id1+")'><span class='badge badge-pill badge-primary' style='position: absolute; visibility:hidden; ' id='"+typingbyid+"'>Typing..</span><div class='card-body'><div class='numberCircle' id='chatnmes"+id1+"' style='visibility:hidden;'></div><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside("+"`"+profile+"`"+","+"`"+name+"`"+","+"`"+status+"`"+","+"`"+uname+"`"+","+"`"+email+"`"+","+"`"+date+"`"+")'><span class='badge badge-pill badge-success text-success' id="+badge+" style='position: absolute; left: 5%'>.</span><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div id='sn"+id1+"' class='text-truncate text-muted' style='text-overflow: ellipsis;'>HI there i am using whatsapppppppppppppppppppppp</div></div></div></div></div></a><!-- Chat link -->");
+          $("#multiCollapseExample1chat").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' id='"+mdivid+"' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse("+id1+")'><span class='badge badge-pill badge-primary' style='position: absolute; visibility:hidden; ' id='"+typingbyid+"'>Typing..</span><div class='card-body'><div class='numberCircle' id='chatnmes"+id1+"' style='visibility:hidden;'></div><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside("+"`"+profile+"`"+","+"`"+name+"`"+","+"`"+status+"`"+","+"`"+uname+"`"+","+"`"+email+"`"+","+"`"+date+"`"+")'><span class='badge badge-pill badge-success text-success' id="+badge+" style='position: absolute; visibility: hidden;  left: 5%;'>.</span><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div id='sn"+id1+"' class='text-truncate text-muted' style='text-overflow: ellipsis;'>"+lmsg+"</div></div></div></div></div></a><!-- Chat link -->");
         }
       }
 
@@ -504,6 +540,8 @@ $(document).ready(function(){
                 //trial hree
               autosize.destroy(document.getElementById("chat"));
               autosize(document.getElementById("chat"));
+              if(globalaudiosettingsforinchat==1){var x = document.getElementById("myAudio2");
+              x.play();}
 
           //alert(OriginalHeight);
           //  $("#chat").height(OriginalHeight);
@@ -531,7 +569,7 @@ var globalchatsdate ="";
 //load chats of  that user
 function showchatofthatuser(secondid){
   var admin=document.getElementById("adminusername").value;
-
+  globalchatsdate="";
 
   $.ajax({
         type:"POST",
@@ -568,7 +606,7 @@ function showchatofthatuser(secondid){
             //date categorization
             if(date != globalchatsdate )
             {
-              globalchatsdate=date;
+             globalchatsdate=date;
               $("#chatwindow").append("<!--datecategorizer--><div style='width: 100%; height: 5vh; margin-top: 2%; align-items: center;text-align: center;'><div class='rounded-pill bg-success align-middle' style='display: inline-block; height: 5vh; text-align: center; margin: 0 auto; padding: 1%'><b><h6 class='text-light'>"+date+"</h6></b></div></div><!--datecategorizerends-->");
             }
 
@@ -785,8 +823,58 @@ $(document).ready(function(){
 
 
               event.preventDefault();
+
               $('#sendchat').click();
+
             // alert("hi");
         }
 
   });
+
+
+//trial
+
+
+//detect offline connection_logged_in
+window.addEventListener('offline', function(e) { console.log('offline');
+$('#offlinemodal').modal('show');
+
+window.addEventListener('online', function(e) { console.log('online');
+$('#offlinemodal').modal('hide');
+ });
+
+ });
+//ends
+
+
+
+
+//toggle button change on startup
+$(function() {
+   $('#chkToggle1').change(function() {
+     var x= $(this).prop('checked');
+     if(x==true){
+       localStorage.setItem('nmsgaudio', 'yes');
+       globalaudiosettingsfornewmessage=1;
+   }
+     else{localStorage.setItem('nmsgaudio', 'no');
+     globalaudiosettingsfornewmessage=0;
+   }
+   })
+ })
+
+
+
+ $(function() {
+    $('#chkToggle2').change(function() {
+      var x= $(this).prop('checked');
+      if(x==true){
+        localStorage.setItem('inchataudio', 'yes');
+        globalaudiosettingsforinchat=1;
+    }
+      else{localStorage.setItem('inchataudio', 'no');
+      globalaudiosettingsforinchat=0;
+    }
+    })
+  })
+//toggle button change ends
