@@ -15,4 +15,5 @@ urlpatterns = [
     path('clear_chat/',views.clear_chat,name="clear_chat"),
     path('update_profile/',views.update_profile,name="update_profile"),
     path('sendimagemsg/',views.sendimagemsg,name ="sendimagemsg/"),
+    path('store_chat_order/',views.store_chat_order, name ="store_chat_order/"),
 ]

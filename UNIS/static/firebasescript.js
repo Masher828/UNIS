@@ -81,8 +81,10 @@ starCountRef.on('value', function(snapshot) {
   var check=0;
   var check2=0;
   var check3=0;
+  var dict2 = {};
   snapshot.forEach((child) => {
   // console.log(child.key, child.val().newmessage);
+     dict2[child.key] = child.val().newmessage;
    if(child.val().newmessage=="yes" || child.val().newmessage=="yesss" )
           { check=1;
             list.push(child.key);
@@ -116,10 +118,43 @@ if(child.val().istyping=="no")
          if(globalaudiosettingsforinchat==1){var xt = document.getElementById("myAudio3");
          xt.play();}
 
-
+         var positiond1= "#mdivid"+entry;
+         $(positiond1).prependTo('#multiCollapseExample1chat');
+         var index = dataorderstlist.indexOf(entry);
+         while(index!=-1){
+           index = dataorderstlist.indexOf(entry);
+            if (index > -1) {
+              dataorderstlist.splice(index, 1);
+            }}
+         dataorderstlist.unshift(entry);
+         storechatorder();
+         console.log(dataorderstlist);
 
        }
        else{
+
+
+
+          if(dict[entry] != dict2[entry] ){
+            dict[entry]=dict2[entry];
+            var positiond1= "#mdivid"+entry;
+            $(positiond1).prependTo('#multiCollapseExample1chat');
+
+          var index = dataorderstlist.indexOf(entry);
+          while(index!=-1){
+            index = dataorderstlist.indexOf(entry);
+             if (index > -1) {
+               dataorderstlist.splice(index, 1);
+             }}
+            dataorderstlist.unshift(entry);
+            storechatorder();
+
+
+          }
+
+
+
+
 //adding code so new msg doesnt show if already new messages are there
       if(  document.getElementById(tt).innerHTML=='<span style="color : blue">new message.</span>'){}else{
       //  var trs=document.getElementById(tt).innerHTML;
@@ -214,7 +249,8 @@ if(check3==1)
 
 
 
-
+//changes start
+var dict = {};
 
 
 function loadreadstatusonchatload(){
@@ -224,6 +260,8 @@ function loadreadstatusonchatload(){
     var check=0;
     snapshot.forEach((child) => {
      console.log(child.key, child.val().newmessage);
+     dict[child.key] = child.val().newmessage;
+     dataorderstlist.push(child.key);
      if(child.val().newmessage=="yes" || child.val().newmessage=="yesss")
             { check=1;
               list.push(child.key);}
@@ -275,6 +313,8 @@ function changefbnewmessage(id){
 
       });
         document.getElementById(imgtt).style.visibility = "hidden";
+         dict[id] = "no";
+         console.log(dict);
     });
 
 

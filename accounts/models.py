@@ -9,6 +9,7 @@ class Details(models.Model):
     created_at = models.DateTimeField(default = datetime.now())
     isOnline = models.CharField(max_length = 20, default="false")
     lastseen = models.CharField(max_length = 50, default='not available')
+    chat_order = models.TextField(default="null")
 
 class Customprofilepic(models.Model):
     custom_DP = models.ImageField(upload_to='custom_DP/')

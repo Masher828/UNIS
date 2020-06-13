@@ -16,8 +16,6 @@ checkfbuser();
 
 
 
-
-
 //noty
 
 
@@ -61,6 +59,9 @@ else{
 
 });
 
+
+
+var dataorderstlist=[];
 var globalaudiosettingsfornewmessage=1;
 var globalaudiosettingsforinchat=1;
 
@@ -471,7 +472,7 @@ function loadchatintomultiCollapseExample1(){
         var size=data['len'];
        if(chatofloadedfrnds!=tempdata)
       {  chatofloadedfrnds=tempdata;
-        for (var i = 0;i <size; i++)
+        for (var i = size-1;i >=0; i--)
         {
           var name = (data['fname'][i] + " "+ data['lname'][i]);
           var id1= (data['id'][i]);
@@ -878,3 +879,37 @@ $(function() {
     })
   })
 //toggle button change ends
+
+
+
+
+
+
+
+
+
+//send data order for chats
+function storechatorder(){
+  var adminidforstorage= document.getElementById("adminusername").value;
+  var dts="";
+for(var i=0;i<dataorderstlist.length;i++)
+{
+dts=dts+dataorderstlist[i]+'_';
+
+}
+
+
+$.ajax({
+      type: "POST",
+
+      cache: false,
+      url: "store_chat_order/",
+      datatype: "html",
+      data:{user_id : adminidforstorage,order_list : dts },
+      success: function(data) {
+
+
+}
+
+});}
+//send data order ends
