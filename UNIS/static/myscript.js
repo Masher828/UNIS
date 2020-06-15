@@ -56,8 +56,12 @@ else{
 //local storage ends
 
 
-
+ $('[data-toggle="tooltip"]').tooltip();
 });
+
+
+
+
 
 
 
@@ -389,6 +393,8 @@ function chatcollapse(id){
   //{
     changefbnewmessage(id);
     document.getElementById(tt).innerHTML="HI there i am using whatsapppppppppppppppppppppp";
+    var temvar = "#rsn"+id;
+    $(temvar).css("font-weight", "normal");
 //  }
 
 
@@ -401,6 +407,7 @@ var dataofloadedfriends="";
 
 function loadmyfrndsintocollapse4(){
   var admin=document.getElementById("adminusername").value;
+  var startingchar = "";
   $.ajax({
         type:"POST",
         cache: false,
@@ -419,6 +426,13 @@ function loadmyfrndsintocollapse4(){
           var id1= (data['id'][i]);
           var status = (data['status'][i]);
           var profile = (data['profile_pic'][i]);
+          var  startingchartemp = name.charAt(0);
+
+          if(startingchartemp!=startingchar)
+          {
+            startingchar=startingchartemp;
+            $('#multiCollapseExample4').append(" <div style='width: 100%; margin: 2%;' class='text-light'><b>"+startingchartemp+"</b></div>");
+          }
 
           $("#multiCollapseExample4").append("<!-- Friend --><div class='card mb-6' style='margin-top: 5%; margin-bottom: 5% ;background-color :#29242a;'><div class='card-body' style='background-color :#29242a; '><div class='media' style='background-color :#29242a;text-align: left;'><div class='avatar ' style='background-color :#29242a;'><img class='avatar-img' src="+profile+" alt='Brian Dawson' id='contactimg' onclick=''></div><div class='media-body' style='background-color :#29242a; '><h6 class='mb-0 text-light'>"+name+"</h6><small class='text-muted'>"+status+"</small></div><div class='align-self-center ml-auto' style='background-color :#29242a;'><div class='custom-control custom-checkbox' style='background-color :#29242a;'><!-- Message: dropdown --><div class='dropdown' style='background-color :#29242a;'><a class='text-muted opacity-60 ml-3' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' href='#' style='color :white; background-color: #2f2a30;'  onclick='deletefriend("+id1+")'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div></div></div><!-- Label --><label class='stretched-label' for='id-user-2'></label></div><!-- Friend -->");
         }
@@ -472,6 +486,7 @@ function loadchatintomultiCollapseExample1(){
         var size=data['len'];
        if(chatofloadedfrnds!=tempdata)
       {  chatofloadedfrnds=tempdata;
+        document.getElementById('multiCollapseExample1chat').innerHTML="";
         for (var i = size-1;i >=0; i--)
         {
           var name = (data['fname'][i] + " "+ data['lname'][i]);
@@ -484,11 +499,16 @@ function loadchatintomultiCollapseExample1(){
           var ar=[uname];
           var lmsg = (data['last_message'][i]);
           if(lmsg=='Photo'){lmsg="<span class='iconify' data-icon='ic:baseline-photo' data-inline='false'></span>"+'&nbsp;Photo';}
+          if(lmsg==' ' || lmsg==''){lmsg="<b>Start a Chat</b>"}
           var badge="badgeonline"+id1;
           var typingbyid ="typingbyid"+id1;
+          var time = (data['timestamp'][i]);
+          var etime= time;
+          time = time.slice(11,16);
+          var id4tym = "tymchatheader"+id1;
           var  mdivid="mdivid"+id1;
           listoffriendsforfirebase.push(id1);
-          $("#multiCollapseExample1chat").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' id='"+mdivid+"' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse("+id1+")'><span class='badge badge-pill badge-primary' style='position: absolute; visibility:hidden; ' id='"+typingbyid+"'>Typing..</span><div class='card-body'><div class='numberCircle' id='chatnmes"+id1+"' style='visibility:hidden;'></div><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside("+"`"+profile+"`"+","+"`"+name+"`"+","+"`"+status+"`"+","+"`"+uname+"`"+","+"`"+email+"`"+","+"`"+date+"`"+")'><span class='badge badge-pill badge-success text-success' id="+badge+" style='position: absolute; visibility: hidden;  left: 5%;'>.</span><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div id='sn"+id1+"' class='text-truncate text-muted' style='text-overflow: ellipsis;'>"+lmsg+"</div></div></div></div></div></a><!-- Chat link -->");
+          $("#multiCollapseExample1chat").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6 tec' id='"+mdivid+"'><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse("+id1+")'><span class='badge badge-pill badge-primary' style='position: absolute; visibility:hidden; ' id='"+typingbyid+"'>Typing..</span><div class='card-body'><div class='numberCircle' id='chatnmes"+id1+"' style='visibility:hidden;'></div><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside("+"`"+profile+"`"+","+"`"+name+"`"+","+"`"+status+"`"+","+"`"+uname+"`"+","+"`"+email+"`"+","+"`"+date+"`"+")'><span class='badge badge-pill badge-success text-success' id="+badge+" style='position: absolute; visibility: hidden;  left: 5%;'>.</span><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4' id='"+id4tym+"'  data-toggle='tooltip' data-placement='right' title='"+etime+"' >"+time+"<font class='onlinestaus'><B></B></font></p></div><div id='sn"+id1+"' class='text-truncate text-muted' style='text-overflow: ellipsis;visibility:hidden;height:0px;width:0px;'>"+lmsg+"</div><div id='rsn"+id1+"' class='text-truncate text-muted' style='text-overflow: ellipsis;'>"+lmsg+"</div></div></div></div></div></a><!-- Chat link -->");
         }
       }
 
@@ -602,6 +622,7 @@ function showchatofthatuser(secondid){
             var is_image = (data['is_image'][i]);
             var timestamp = (data['timestamp'][i]);
             var date = timestamp.slice(0,10);
+            var dividfordelete= "ider"+messageid;
             var time = timestamp.slice(11,16)
 
             //date categorization
@@ -615,34 +636,35 @@ function showchatofthatuser(secondid){
             //categorizing messages
             if(sender_id==secondid && is_image=="no")
              {
-               $("#chatwindow").append("<!--msgleft--><div class='mainouterdiv' style='overflow:auto;margin-top: 2%'><div class='imgdiv' style='width: 5%; float: left; '><img src="+friendprofilepic+" class='img-fluid rounded-circle'></div><div class='content-div' style=' width: 58%; float: left; margin-left: 2%;'><span class='text-light' style=''><b>"+friendname+"</b><span style='margin-left: 3%; '><small class='text-muted'>"+time+"</small></span></span><br><div class='bg-light .d-flex' style='border-radius: 0px 12px 12px 12px; min-width: 30%; max-width: 92%;padding: 3%; margin-top: 0.5%; word-wrap: break-word; white-space: pre-line; display: inline-block;'>"+message+"</div><!-- Message: dropdown --><div class='dropdown align-middle' style=' display: inline-block; ' ><a class='text-muted opacity-60 ' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' onclick='deletechatmsgbyid("+messageid+")' style='color :white; cursor:pointer; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div><!--msgleft ends-->");
+               $("#chatwindow").append("<!--msgleft--><div class='mainouterdiv' id='"+dividfordelete+"'   style='overflow:auto;margin-top: 2%'><div class='imgdiv' style='width: 5%; float: left; '><img src="+friendprofilepic+" class='img-fluid rounded-circle'></div><div class='content-div' style=' width: 58%; float: left; margin-left: 2%;'><span class='text-light' style=''><b>"+friendname+"</b><span style='margin-left: 3%; '><small class='text-muted'>"+time+"</small></span></span><br><div class='bg-light .d-flex' style='border-radius: 0px 12px 12px 12px; min-width: 30%; max-width: 92%;padding: 3%; margin-top: 0.5%; word-wrap: break-word; white-space: pre-line; display: inline-block;'>"+message+"</div><!-- Message: dropdown --><div class='dropdown align-middle' style=' display: inline-block; ' ><a class='text-muted opacity-60 ' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' onclick='deletechatmsgbyid("+messageid+")' style='color :white; cursor:pointer; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div><!--msgleft ends-->");
              }
 
 
              else if(sender_id==admin && is_image=="no")
              {
-               $("#chatwindow").append("<!--msgright--><div class='mainouterdiv' style='overflow:auto;margin-top: 2%;'><div class='imgdiv' style='width: 5%; float: right; '><img src="+mypic+" class='img-fluid rounded-circle'></div><div class='content-div' style=' width: 60%; float: left; margin-right: 2%; float: right; '><span class='text-light' style='float: right; margin-right: 1%; '><b>"+mynameforchat+"</b>&nbsp;&nbsp;&nbsp;<small class='text-muted'>"+time+"</small></span><br><div class='bg-primary text-light .d-flex' style='border-radius: 12px 0px 12px 12px; min-width: 30%; max-width: 90%;padding: 3%; margin-top: 0.5%; word-wrap: break-word;  white-space: pre-line;  display: inline-block; float: right;'>"+message+"</div><!-- Message: dropdown --><div class='dropdown ' style=' float: right;' ><a class='text-muted opacity-60 ' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' onclick='deletechatmsgbyid("+messageid+")' style='color :white; cursor:pointer; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div><!--msgright ends-->");
+               $("#chatwindow").append("<!--msgright--><div class='mainouterdiv' id='"+dividfordelete+"'   style='overflow:auto;margin-top: 2%;'><div class='imgdiv' style='width: 5%; float: right; '><img src="+mypic+" class='img-fluid rounded-circle'></div><div class='content-div' style=' width: 60%; float: left; margin-right: 2%; float: right; '><span class='text-light' style='float: right; margin-right: 1%; '><b>"+mynameforchat+"</b>&nbsp;&nbsp;&nbsp;<small class='text-muted'>"+time+"</small></span><br><div class='bg-primary text-light .d-flex' style='border-radius: 12px 0px 12px 12px; min-width: 30%; max-width: 90%;padding: 3%; margin-top: 0.5%; word-wrap: break-word;  white-space: pre-line;  display: inline-block; float: right;'>"+message+"</div><!-- Message: dropdown --><div class='dropdown ' style=' float: right;' ><a class='text-muted opacity-60 ' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' onclick='deletechatmsgbyid("+messageid+")' style='color :white; cursor:pointer; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div><!--msgright ends-->");
              }
 
 
              else if(sender_id==admin && is_image=="yes")
              {
-               $("#chatwindow").append("<!--imgmsgright--><div class='mainouterdiv' style='overflow:auto;margin-top: 2%;'><div class='imgdiv' style='width: 5%; float: right; '><img src="+mypic+" class='img-fluid rounded-circle'></div><div class='content-div' style=' width: 50%; float: left; margin-right: 2%; float: right;'><span class='text-light' style='float: right; margin-right: 1%; '><b>"+mynameforchat+"</b>&nbsp;&nbsp;&nbsp;<small class='text-muted'>"+time+"</small></span><br><div class='bg-primary .d-flex' style='border-radius: 0px 12px 12px 12px; max-width: 70%; padding: 3%; margin-top: 0.5%; float: right;'><img src="+image_url_id+" class='img-fluid' ></div><!-- Message: dropdown --><div class='dropdown align-middle' style=' display: inline-block; float: right;' ><a class='text-muted opacity-60 ' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' onclick='deletechatmsgbyid("+messageid+")' style='color :white; cursor:pointer; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div><!--imgmsgrighendst-->");
+               $("#chatwindow").append("<!--imgmsgright--><div class='mainouterdiv' id='"+dividfordelete+"'  style='overflow:auto;margin-top: 2%;'><div class='imgdiv' style='width: 5%; float: right; '><img src="+mypic+" class='img-fluid rounded-circle'></div><div class='content-div' style=' width: 50%; float: left; margin-right: 2%; float: right;'><span class='text-light' style='float: right; margin-right: 1%; '><b>"+mynameforchat+"</b>&nbsp;&nbsp;&nbsp;<small class='text-muted'>"+time+"</small></span><br><div class='bg-primary .d-flex' style='border-radius: 0px 12px 12px 12px; max-width: 50%; padding: 3%; margin-top: 0.5%; float: right;'><img src="+image_url_id+" class='img-fluid' ></div><!-- Message: dropdown --><div class='dropdown align-middle' style=' display: inline-block; float: right;' ><a class='text-muted opacity-60 ' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' onclick='deletechatmsgbyid("+messageid+")' style='color :white; cursor:pointer; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div><!--imgmsgrighendst-->");
              }
 
              else if(sender_id==secondid && is_image=="yes")
              {
-               $("#chatwindow").append("<!--imagemsgleft--><div class='mainouterdiv' style='overflow:auto;margin-top: 2% ;'><div class='imgdiv' style='width: 5%; float: left; '><img src="+friendprofilepic+" class='img-fluid rounded-circle'></div><div class='content-div' style=' width: 40%; float: left; margin-left: 2%; '><span class='text-light' style=''><b>"+friendname+"</b><span style='margin-left: 3%; '><small class='text-muted'>"+time+"</small></span></span><br><div class='bg-light .d-flex' style='border-radius: 0px 12px 12px 12px; max-width: 85%; padding: 3%; margin-top: 0.5%; display: inline-block; '><img src="+image_url_id+" class='img-fluid' ></div><!-- Message: dropdown --><div class='dropdown align-middle' style=' display: inline-block; ' ><a class='text-muted opacity-60 ' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' onclick='deletechatmsgbyid("+messageid+")' style='color :white; cursor:pointer; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div><!--imagemsgleftends-->");
+               $("#chatwindow").append("<!--imagemsgleft--><div class='mainouterdiv' id='"+dividfordelete+"'   style='overflow:auto;margin-top: 2% ;'><div class='imgdiv' style='width: 5%; float: left; '><img src="+friendprofilepic+" class='img-fluid rounded-circle'></div><div class='content-div' style=' width: 40%; float: left; margin-left: 2%; '><span class='text-light' style=''><b>"+friendname+"</b><span style='margin-left: 3%; '><small class='text-muted'>"+time+"</small></span></span><br><div class='bg-light .d-flex' style='border-radius: 0px 12px 12px 12px; max-width: 65%; padding: 3%; margin-top: 0.5%; display: inline-block; '><img src="+image_url_id+" class='img-fluid' ></div><!-- Message: dropdown --><div class='dropdown align-middle' style=' display: inline-block; ' ><a class='text-muted opacity-60 ' href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='iconify text-muted' data-icon='eva:more-vertical-fill' data-inline='false'></span></a><div class='dropdown-menu' style='background-color: #2f2a30;' ><a class='dropdown-item d-flex align-items-center' onclick='deletechatmsgbyid("+messageid+")' style='color :white; cursor:pointer; background-color: #2f2a30;'> Delete<span class='ml-auto fe-trash-2'></span></a></div></div><!-- Message: dropdown --></div></div><!--imagemsgleftends-->");
              }
 
 
 
         }
           $('#chatwindow').scrollTop($('#chatwindow')[0].scrollHeight);
+
       }
 
 
-
+    loadmsgonchatmenuevent(secondid);
 
 }
 
@@ -707,7 +729,7 @@ function deletechatmsgbyid(msgid)
 {   var admin=document.getElementById("adminusername").value;
   var seconduser = global_sendtouser;
 
-  alert(admin+"-"+msgid+"-"+seconduser);
+//  alert(admin+"-"+msgid+"-"+seconduser);
 
   $.ajax({
          type: "POST",
@@ -719,8 +741,11 @@ function deletechatmsgbyid(msgid)
          // data: $('form').serialize(),
          success: function(result) {
 
-             document.getElementById("chat").value="";
-             showchatofthatuser(seconduser);
+          //   document.getElementById("chat").value="";
+            // showchatofthatuser(seconduser);
+            var ter = "#ider"+msgid;
+          //  $(ter).remove();
+            $(ter).fadeOut(300, function(){ $(this).remove();});
              // newchatnotifyfb(admin,secondid);            don't know purpose added by manish
 
  }
@@ -899,17 +924,205 @@ dts=dts+dataorderstlist[i]+'_';
 }
 
 
-$.ajax({
-      type: "POST",
+// $.ajax({
+//       type: "POST",
+//
+//       cache: false,
+//       url: "store_chat_order/",
+//       datatype: "html",
+//       data:{user_id : adminidforstorage,order_list : dts },
+//       success: function(data) {
+//
+//
+// }
+//
+// });
+}
+//send data order ends
 
-      cache: false,
-      url: "store_chat_order/",
-      datatype: "html",
-      data:{user_id : adminidforstorage,order_list : dts },
-      success: function(data) {
+
+
+
+//status div
+function expandstatusflex(){
+  $('#statusmodal').modal('show');
+
+}
+$(".use-address").click(function() {
+    var $row = $(this).closest("tr");    // Find the row
+    var $text = $row.find(".nr").text(); // Find the text
+
+    // Let's test it out
+      document.getElementById("flexstatus").innerHTML=$text;
+        updatestatuswhenselected($text);
+});
+
+$("#textforstatuscustom").click(function() {
+
+  var $text=document.getElementById("cst").value;
+  if($text=="" || $text==" "){alert("status cant be blank");}
+    // Let's test it out
+    else{
+      document.getElementById("flexstatus").innerHTML=$text;
+      updatestatuswhenselected($text);
+    }
+});
+
+
+
+
+function updatestatuswhenselected(string){
+    var adminidforstorage= document.getElementById("adminusername").value;
+  $.ajax({
+        type: "POST",
+
+        cache: false,
+        url: "update_profile/",
+        datatype: "html",
+        data:{update : 'status',user_id: adminidforstorage,status : string},
+        success: function(data) {
+
+
+  }
+
+  });
 
 
 }
 
-});}
-//send data order ends
+
+
+function iisa(str){
+      var rrq= document.getElementById("cst").value;
+      rrq+=str;
+      document.getElementById("cst").value=rrq;
+  }
+
+
+
+function aptostatus(id)
+{
+  // var tx=document.getElementById("cst").value;
+  // tx=tx+id;
+  // document.getElementById("cst").value=tx;
+  alert("hi");
+}
+
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+        placement : 'top',
+        html : true,
+        title : 'Emojis <a href="#" class="close" data-dismiss="alert">&times;</a>',
+        content : '<span id="img1" onclick="aptostatus(1)">hi</span> '
+    });
+    $(document).on("click", ".popover .close" , function(){
+        $(this).parents(".popover").popover('hide');
+    });
+});
+
+
+
+//status div ends
+
+
+
+
+
+
+
+
+//insert emoji into chat box
+function iica(str){
+      var rrq= document.getElementById("chat").value;
+      rrq+=str;
+      document.getElementById("chat").value=rrq;
+  }
+
+  $('#dropdownforem').click(function(e) {
+  e.stopPropagation();
+});
+//insert emoji ends
+
+
+
+
+
+
+
+
+//show last chat in chat menu when new msg arrives
+function loadmsgonchatmenuevent(sndid){
+  var adminidforstorage= document.getElementById("adminusername").value;
+var sid = "rsn"+sndid;
+var tymchathalf= "tymchatheader"+sndid;
+  $.ajax({
+        type: "POST",
+
+        cache: false,
+        url: "get_last_chat/",
+        datatype: "html",
+        data:{user_id: adminidforstorage,friend_id:sndid },
+        success: function(data) {
+
+
+
+        try{
+
+            data = JSON.parse(data);
+            var dataq= data['last_message'];
+            var dataqt = data['timestamp'];
+            //alert(dataq+"ts- " + dataqt);
+             document.getElementById(sid).innerHTML=dataq;
+             document.getElementById(tymchathalf).innerHTML=dataqt.slice(11,16);
+          //   document.getElementById(tymchathalf).attr('data-original-title',dataqt);
+        //  $(tymchathalf).data('tooltip').getTip().html("New string!") ;
+        document.getElementById(tymchathalf).setAttribute('title', dataqt);
+
+          }
+        catch(error){}
+
+
+  }
+
+  });
+
+
+
+
+
+}
+
+//shie last msg ends
+
+
+
+//search chat headers for chats
+
+$(document).ready(function(){
+ $('#searchfieldforchatmenu').keyup(function(){
+$('.serachcharcancelbtn').css('visibility','visible');
+$('.serachcharcancelbtn').css('height','100%');
+$('#searchfieldforchatmenu').css('width','70%');
+  // Search text
+  var text = $(this).val();
+
+  // Hide all content class element
+  $('.tec').hide();
+
+  // Search and show
+  $('.tec:contains("'+text+'")').show();
+
+ });
+});
+
+
+
+$('.serachcharcancelbtn').click(function(){
+  $('.tec').show();
+document.getElementById('searchfieldforchatmenu').value="";
+$('.serachcharcancelbtn').css('visibility','hidden');
+ $('#searchfieldforchatmenu').css('width','100%');
+ $('.serachcharcancelbtn').css('height','0px');
+});
+
+//search chat header ends

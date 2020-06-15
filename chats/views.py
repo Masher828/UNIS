@@ -160,7 +160,7 @@ def get_chat_list(request):
         for row in cursor.fetchall():
             detail_friend_obj = get_object_or_404(Details,pk=row[0])
             friends['id'].append(row[0])
-            print(str(request.user)+"_chat_"+detail_friend_obj.user.username)
+
             friends['status'].append(detail_friend_obj.status)
             friends['profile_pic'].append(detail_friend_obj.Profile_pic.url)
             friends['fname'].append(detail_friend_obj.user.first_name)
@@ -178,8 +178,6 @@ def get_chat_list(request):
             if is_image != 'no':
                 friends['last_message'].append('Photo')
             else:
-
-                print(msg)
                 friends['last_message'].append(msg)
 
 
@@ -221,7 +219,6 @@ def get_chat_list(request):
         cursor1.close()
         cursor.close()
         connection.close()
-        print(friends)
         return HttpResponse(json.dumps(friends))
 
 
@@ -245,7 +242,7 @@ def send_message(request):
         connection.autocommit = True
         if request.POST['isimage'] == "yes":
             img = request.POST['image']
-            print(img)
+
             index= img.index(",")+1
             image_type = request.POST['image'][0:index]
             # starting = request.POST['image'][0:index]
@@ -397,36 +394,57 @@ def clear_chat(request):
 @csrf_exempt
 @login_required()
 def update_profile(request):
-    name,status ,profilepic,password
+
     if request.method == "POST":
-        user_id= request.POST['user_id']
-        user_details_object = get_object_or_404(Details,pk=user_id)
-        if request.POST['username_status'] ==1:
-            user_details_object.user.username = request.POST['username']
-        if request.POST['profile_pic_status'] ==1:
-            user_details_object.Profile_pic = request.POST['profile_pic']
-        if request.POST['status_status'] ==1:
+        if request.POST['update'] == 'status':
+            user_id= request.POST['user_id']
+            user_details_object = Details.objects.get(id = user_id)
             user_details_object.status = request.POST['status']
-        if request.POST['password_status'] ==1:
+            user_details_object.save()
+        elif request.POST['update'] ==1:
+            user_details_object.Profile_pic = request.POST['profile_pic']
+        elif request.POST['update'] ==1:
+            user_details_object.status = request.POST['status']
+        elif request.POST['update'] ==1:
             user_details_object.user.set_password(request.POST['password'])
 
         return HttpResponse("Return")
 
+# @csrf_exempt
+# @login_required()
+# def store_chat_order(request):
+#     if request.method == "POST":
+#         user_id = request.POST['user_id']
+#         user_details_object = Details.objects.get(id= user_id)
+#         order_list = request.POST['order_list'].split("_")
+#         if "postgresfrnd" in order_list:
+#             order_list.remove("postgresfrnd")
+#         if '' in order_list:
+#             order_list.remove('')
+#         order_list = set(order_list)
+#         user_details_object.chat_order = order_list
+#         user_details_object.save()
+
+
 @csrf_exempt
 @login_required()
-def store_chat_order(request):
-    print("in")
+def get_last_chat(request):
     if request.method == "POST":
-        print("out")
-        user_id = request.POST['user_id']
-        user_details_object = Details.objects.get(id= user_id)
-        order_list = request.POST['order_list'].split("_")
-        if "postgresfrnd" in order_list:
-            order_list.remove("postgresfrnd")
-        if '' in order_list:
-            order_list.remove('')
-        order_list = set(order_list)
-        user_details_object.chat_order = order_list
-        print("done")
-        print(order_list)
-        user_details_object.save()
+        logged_in_user_id = request.POST['user_id']
+        friend_id = request.POST['friend_id']
+        logged_in_user_details_object = get_object_or_404(Details,pk = logged_in_user_id)
+        friend_details_object= get_object_or_404(Details,pk = friend_id)
+        connection = psycopg2.connect(user = "postgres",
+                                              password = "I*p96U#o4eID^Ubc$R*Y",
+                                              host = "localhost",
+                                              port = "5433",
+                                              database = "unis_{}".format(logged_in_user_details_object.user.username))
+
+        cursor = connection.cursor()
+        select_last_message = '''SELECT body, is_image, ts from {0} WHERE ts = ( SELECT MAX(ts) FROM {0} );'''.format(str(logged_in_user_details_object.user.username)+"_chat_"+friend_details_object.user.username)
+        cursor.execute(select_last_message)
+        data = cursor.fetchone()
+        data_dict = {'last_message':data[0],'timestamp':str(data[2])}
+        if data[1] == "yes":
+            data_dict['last_message']= "Photo"
+        return HttpResponse(json.dumps(data_dict))

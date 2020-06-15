@@ -139,7 +139,7 @@ if(child.val().istyping=="no")
             dict[entry]=dict2[entry];
             var positiond1= "#mdivid"+entry;
             $(positiond1).prependTo('#multiCollapseExample1chat');
-
+            loadmsgonchatmenuevent(entry);
           var index = dataorderstlist.indexOf(entry);
           while(index!=-1){
             index = dataorderstlist.indexOf(entry);
@@ -162,11 +162,16 @@ if(child.val().istyping=="no")
       // $('positiond').prependTo('#multiCollapseExample1chat');
       var positiond= "#mdivid"+entry;
       $(positiond).prependTo('#multiCollapseExample1chat');
-
+      loadmsgonchatmenuevent(entry);
         //alert(trs);
 
          document.getElementById(tt).innerHTML="<span style='color : blue'>new message.</span>";
        document.getElementById(imgtt).style.visibility = "visible";
+       var temvar = "#rsn"+entry;
+       $(temvar).css("font-weight", "bold");
+
+
+
        //Noty
     //   alert("new msg");
        new Noty({
@@ -180,6 +185,7 @@ if(child.val().istyping=="no")
        //noty
        if(globalaudiosettingsfornewmessage==1){var x = document.getElementById("myAudio1");
        x.play();}
+
 
 
      }
@@ -277,6 +283,8 @@ function loadreadstatusonchatload(){
 
           document.getElementById(tt).innerHTML="<span style='color : blue'>new message.</span>";
            document.getElementById(imgtt).style.visibility = "visible";
+           var temvar = "#rsn"+entry;
+           $(temvar).css("font-weight", "bold");
 
         //   alert("noe i m called");
      });
