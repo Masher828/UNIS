@@ -369,7 +369,9 @@ def update_profile(request):
         user_id= request.POST['user_id']
         user_details_object = get_object_or_404(Details,pk=user_id)
         if request.POST['username_status'] ==1:
-            user_details_object.user.username = request.POST['username']
+            index_of_space = request.POST['username'].index(" ")
+            user_details_object.user.first_name = request.POST['username'][0:index_of_space]
+            user_details_object.user.last_name = request.POST['username'][index_of_space+1:len(request.POST['username'])]
         if request.POST['profile_pic_status'] ==1:
             user_details_object.Profile_pic = request.POST['profile_pic']
         if request.POST['status_status'] ==1:
