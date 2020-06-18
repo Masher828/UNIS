@@ -61,16 +61,16 @@
 		<h2 class="text-light" style="margin-top: 3%;">Chats</h2><br>
 
 		 <!-- Search -->
-                                    <form class="mb-6">
+
                                         <div class="input-group">
-                                            <input type="text" style="background-color: #2d3238; color: #889dad; border: none; " class="form-control form-control-lg " placeholder="Search for messages or users..." aria-label="Search for messages or users...">
+                                            <input type="text" id="searchfieldforchatmenu"  style="background-color: #2d3238; color: #889dad; border: none; width: 100%;" class="form-control form-control-lg " placeholder="Search for Users" aria-label="Search for messages or users...">
                                             <div class="input-group-append">
-                                                <button class="btn btn-lg btn-ico btn-secondary btn-minimal" type="submit" style="background-color: #2d3238; border: none;">
-                                                    <span class="iconify" data-icon="fe-search" data-inline="false" ></span>
+                                                <button class="btn btn-lg btn-ico btn-secondary btn-minimal serachcharcancelbtn" style="background-color: #2d3238; border: none; visibility:hidden; height:0px;"  >
+                                                    <span class="iconify serachcharcancelbtn" data-icon="entypo:cross" data-inline="false" ></span>
                                                 </button>
                                             </div>
                                         </div>
-                                    </form>
+
           <!-- Search -->
 
 
@@ -171,7 +171,7 @@
 							                                            	<img src="{{img}}" id="chatinsideimagecoveruser2" class="tyb">
 																			<br><br>
 																			<h3 style="color: white;" id="notaname">{{name}}</h3>
-																			<h6 class="text text-muted" style="">{{status}}</h6>
+																			<h6 class="text text-muted" style=""><span  id="flexstatus">{{status}}</span> <span class="iconify" data-icon="jam:write" data-inline="false" style="cursor:pointer;" onclick="expandstatusflex()"></span></h6>
 							                                          </div>
 							                       </div>
 							                      <!--cards-->
@@ -270,8 +270,29 @@
 
                                                             </div>
                                                             <div class="text-truncate text-muted" id="chatheaderstatus">Status</div>
-                                                        </div>
-																													<span class="iconify  align-middle" id="delchaticon" onclick="deletewholechatsbyids()" data-icon="mdi:delete-alert" data-inline="false" style="float: right;height:29px; width:29px;margin-right: 3%;margin-top:1%;cursor:pointer;color:white;" data-toggle="tooltip" data-placement="left" title="Delete Chat"></span>
+                                                        	</div>
+																															<div class="searchBox mr-3">
+
+																												            <input class="searchInput"type="text" name="" placeholder="Search">
+																												            <button class="searchButton" href="#">
+																												                <span class="iconify" data-icon="fe-search" data-inline="false"></span>
+																												            </button>
+																												        </div>
+
+
+																																<div class="btn-group dropleft mr-2" >
+																																  <button type="button" class="btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color:#29242a;">
+																																    <span class="iconify" data-icon="carbon:overflow-menu-vertical" data-inline="false"></span>
+																																  </button>
+																																  <div class="dropdown-menu bg-dark">
+																																     <a class="dropdown-item"><span class="iconify  align-middle" id="delchaticon" onclick="deletewholechatsbyids()" data-icon="mdi:delete-alert" data-inline="false" style="float: right;height:29px; width:29px;margin-right: 3%;margin-top:1%;cursor:pointer;color:white;" data-toggle="tooltip" data-placement="left" title="Delete Chat"></span></a>
+																																  </div>
+																																</div>
+
+
+
+
+
                                                     </div>
 
 
@@ -313,9 +334,19 @@
 
                                                 <!-- Emoji button -->
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-ico btn-secondary btn-minimal bg-transparent border-0" type="button" data-emoji-btn="">
-                                                        <img src="{% static 'assets/smile.svg' %}" data-inject-svg="" alt="" style="color: red;">
-                                                    </button>
+
+																		<div class="btn-group dropup">
+                              <button type="button" class="btn btn-ico btn-secondary btn-minimal bg-transparent border-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                 <img src="{% static 'assets/smile.svg' %}" data-inject-svg="" alt="" style="color: red;">
+                              </button>
+                              <div class="dropdown-menu" style="margin-right: 25%;" id="dropdownforem">
+                                <span class="dropdown-item" ><span onclick="iica('&#128512;')" style="cursor: pointer;">&#128512;</span><span onclick="iica('&#128513;')" style="cursor: pointer;">&#128513;</span><span onclick="iica('&#128514;')" style="cursor: pointer;">&#128514;</span><span onclick="iica('&#128515;')" style="cursor: pointer;">&#128515;</span></span>
+                               <span class="dropdown-item" ><span onclick="iica('&#128516;')" style="cursor: pointer;">&#128516;</span><span onclick="iica('&#128517;')" style="cursor: pointer;">&#128517;</span><span onclick="iica('&#128518;')" style="cursor: pointer;">&#128518;</span><span onclick="iica('&#128519;')" style="cursor: pointer;">&#128519;</span></span>
+                               <span class="dropdown-item" ><span onclick="iica('&#128520;')" style="cursor: pointer;">&#128520;</span><span onclick="iica('&#128521;')" style="cursor: pointer;">&#128521;</span><span onclick="iica('&#128522;')" style="cursor: pointer;">&#128522;</span><span onclick="iica('&#128523;')" style="cursor: pointer;">&#128523;</span></span>
+                                <span class="dropdown-item" ><span onclick="iica('&#128524;')" style="cursor: pointer;">&#128524;</span><span onclick="iica('&#128525;')" style="cursor: pointer;">&#128525;</span><span onclick="iica('&#128526;')" style="cursor: pointer;">&#128526;</span><span onclick="iica('&#128527;')" style="cursor: pointer;">&#128527;</span></span>
+                                 <span class="dropdown-item" ><span onclick="iica('&#128528;')" style="cursor: pointer;">&#128528;</span><span onclick="iica('&#128529;')" style="cursor: pointer;">&#128529;</span><span onclick="iica('&#128530;')" style="cursor: pointer;">&#128530;</span><span onclick="iica('&#128531;')" style="cursor: pointer;">&#128531;</span></span>
+                              </div>
+                                    </div>
                                                 </div>
 
                                                 <!-- Upload button -->
@@ -518,19 +549,26 @@
 				    <tr>
 
 				      <td>Status :</td>
-				      <td>Thornton</td>
+				      <td><input type="text" placeholder="{{status}}" ></td>
 
 				    </tr>
 				    <tr>
 
-				      <td>Display Pic :</td>
-				      <td>the Bird</td>
+				      <td>Pic :</td>
+				      <td><input type="file" id="img" name="img" accept="image/*"></td>
 
 				    </tr>
 						<tr>
 
 				      <td>Password :</td>
-				      <td>the Bird</td>
+				      <td><input type="password" placeholder="****" ></td>
+
+				    </tr>
+
+						<tr>
+
+				      <td>Re Password :</td>
+				      <td><input type="password" placeholder="****" ></td>
 
 				    </tr>
 
@@ -624,6 +662,78 @@
 </audio>
 
 <!--audio ends-->
+
+
+
+<!--modal for status-->
+
+<div class="modal fade" id="statusmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Select Status</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h7><b>Select Status or create one.<b></h7>
+				<table class="table">
+					<tbody>
+											<tr>
+					<td>Current status</td>
+					<td>{{status}}</td>
+					<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td ><input type="text" id="cst" placeholder="Custom Status here." style="display:inline-block; float: left;" >
+
+
+						  <span class="iconify ml-1" data-icon="entypo:emoji-happy" data-inline="false"   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;"></span>
+
+						<div class="dropdown-menu" style="margin-right: 25%;" id="dropdownforem">
+							<span class="dropdown-item" ><span onclick="iisa('&#128512;')" style="cursor: pointer;">&#128512;</span><span onclick="iisa('&#128513;')" style="cursor: pointer;">&#128513;</span><span onclick="iisa('&#128514;')" style="cursor: pointer;">&#128514;</span><span onclick="iisa('&#128515;')" style="cursor: pointer;">&#128515;</span></span>
+							<span class="dropdown-item" ><span onclick="iisa('&#128516;')" style="cursor: pointer;">&#128516;</span><span onclick="iisa('&#128517;')" style="cursor: pointer;">&#128517;</span><span onclick="iisa('&#128518;')" style="cursor: pointer;">&#128518;</span><span onclick="iisa('&#128519;')" style="cursor: pointer;">&#128519;</span></span>
+							<span class="dropdown-item" ><span onclick="iisa('&#128520;')" style="cursor: pointer;">&#128520;</span><span onclick="iisa('&#128521;')" style="cursor: pointer;">&#128521;</span><span onclick="iisa('&#128522;')" style="cursor: pointer;">&#128522;</span><span onclick="iisa('&#128523;')" style="cursor: pointer;">&#128523;</span></span>
+							<span class="dropdown-item" ><span onclick="iisa('&#128524;')" style="cursor: pointer;">&#128524;</span><span onclick="iisa('&#128525;')" style="cursor: pointer;">&#128525;</span><span onclick="iisa('&#128526;')" style="cursor: pointer;">&#128526;</span><span onclick="iisa('&#128527;')" style="cursor: pointer;">&#128527;</span></span>
+							<span class="dropdown-item" ><span onclick="iisa('&#128528;')" style="cursor: pointer;">&#128528;</span><span onclick="iisa('&#128529;')" style="cursor: pointer;">&#128529;</span><span onclick="iisa('&#128530;')" style="cursor: pointer;">&#128530;</span><span onclick="iisa('&#128531;')" style="cursor: pointer;">&#128531;</span></span>
+							</div>
+
+ </td>
+						<td><button type="button" class="btn btn-success" id="textforstatuscustom">Use</button></td>
+					</tr>
+					<tr>
+					  <td></td>
+					  <td class="nr">I am on &#128512;</td>
+					  <td><button type="button" class="btn btn-success use-address">Use</button></td>
+					</tr>
+					<tr>
+					  <td></td>
+					  <td class="nr">Yo whats up &#128516;</td>
+					  <td><button type="button" class="btn btn-success use-address">Use</button></td>
+					</tr>
+					<tr>
+					  <td></td>
+					  <td class="nr">Ready to hang out &#128514;</td>
+					  <td><button type="button" class="btn btn-success use-address">Use</button></td>
+					</tr>
+					<tr>
+					  <td></td>
+					  <td class="nr">Busy &#128579;</td>
+					  <td><button type="button" class="btn btn-success use-address">Use</button></td>
+					</tr>
+					</tbody>
+				</table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!--modal status ends-->
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

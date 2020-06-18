@@ -81,8 +81,10 @@ starCountRef.on('value', function(snapshot) {
   var check=0;
   var check2=0;
   var check3=0;
+  var dict2 = {};
   snapshot.forEach((child) => {
   // console.log(child.key, child.val().newmessage);
+     dict2[child.key] = child.val().newmessage;
    if(child.val().newmessage=="yes" || child.val().newmessage=="yesss" )
           { check=1;
             list.push(child.key);
@@ -116,10 +118,43 @@ if(child.val().istyping=="no")
          if(globalaudiosettingsforinchat==1){var xt = document.getElementById("myAudio3");
          xt.play();}
 
-
+         var positiond1= "#mdivid"+entry;
+         $(positiond1).prependTo('#multiCollapseExample1chat');
+         var index = dataorderstlist.indexOf(entry);
+         while(index!=-1){
+           index = dataorderstlist.indexOf(entry);
+            if (index > -1) {
+              dataorderstlist.splice(index, 1);
+            }}
+         dataorderstlist.unshift(entry);
+         storechatorder();
+         console.log(dataorderstlist);
 
        }
        else{
+
+
+
+          if(dict[entry] != dict2[entry] ){
+            dict[entry]=dict2[entry];
+            var positiond1= "#mdivid"+entry;
+            $(positiond1).prependTo('#multiCollapseExample1chat');
+            loadmsgonchatmenuevent(entry);
+          var index = dataorderstlist.indexOf(entry);
+          while(index!=-1){
+            index = dataorderstlist.indexOf(entry);
+             if (index > -1) {
+               dataorderstlist.splice(index, 1);
+             }}
+            dataorderstlist.unshift(entry);
+            storechatorder();
+
+
+          }
+
+
+
+
 //adding code so new msg doesnt show if already new messages are there
       if(  document.getElementById(tt).innerHTML=='<span style="color : blue">new message.</span>'){}else{
       //  var trs=document.getElementById(tt).innerHTML;
@@ -127,11 +162,16 @@ if(child.val().istyping=="no")
       // $('positiond').prependTo('#multiCollapseExample1chat');
       var positiond= "#mdivid"+entry;
       $(positiond).prependTo('#multiCollapseExample1chat');
-
+      loadmsgonchatmenuevent(entry);
         //alert(trs);
 
          document.getElementById(tt).innerHTML="<span style='color : blue'>new message.</span>";
        document.getElementById(imgtt).style.visibility = "visible";
+       var temvar = "#rsn"+entry;
+       $(temvar).css("font-weight", "bold");
+
+
+
        //Noty
     //   alert("new msg");
        new Noty({
@@ -145,6 +185,7 @@ if(child.val().istyping=="no")
        //noty
        if(globalaudiosettingsfornewmessage==1){var x = document.getElementById("myAudio1");
        x.play();}
+
 
 
      }
@@ -214,7 +255,8 @@ if(check3==1)
 
 
 
-
+//changes start
+var dict = {};
 
 
 function loadreadstatusonchatload(){
@@ -224,6 +266,8 @@ function loadreadstatusonchatload(){
     var check=0;
     snapshot.forEach((child) => {
      console.log(child.key, child.val().newmessage);
+     dict[child.key] = child.val().newmessage;
+     dataorderstlist.push(child.key);
      if(child.val().newmessage=="yes" || child.val().newmessage=="yesss")
             { check=1;
               list.push(child.key);}
@@ -239,6 +283,8 @@ function loadreadstatusonchatload(){
 
           document.getElementById(tt).innerHTML="<span style='color : blue'>new message.</span>";
            document.getElementById(imgtt).style.visibility = "visible";
+           var temvar = "#rsn"+entry;
+           $(temvar).css("font-weight", "bold");
 
         //   alert("noe i m called");
      });
@@ -275,6 +321,8 @@ function changefbnewmessage(id){
 
       });
         document.getElementById(imgtt).style.visibility = "hidden";
+         dict[id] = "no";
+         console.log(dict);
     });
 
 

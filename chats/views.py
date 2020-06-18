@@ -156,11 +156,11 @@ def get_chat_list(request):
         cursor= connection.cursor()
         cursor.execute(select_friends_query)
         cursor1= connection.cursor()
-        friends={'len':0,'id':[],'status':[],'profile_pic':[],'fname':[], 'lname':[],'email': [],'uname':[],'date':[],'last_message':[],'is_image':[]}
+        friends={'len':0,'id':[],'status':[],'profile_pic':[],'fname':[], 'lname':[],'email': [],'uname':[],'date':[],'last_message':[], 'timestamp':[]}
         for row in cursor.fetchall():
             detail_friend_obj = get_object_or_404(Details,pk=row[0])
             friends['id'].append(row[0])
-            print(str(request.user)+"_chat_"+detail_friend_obj.user.username)
+
             friends['status'].append(detail_friend_obj.status)
             friends['profile_pic'].append(detail_friend_obj.Profile_pic.url)
             friends['fname'].append(detail_friend_obj.user.first_name)
@@ -168,27 +168,57 @@ def get_chat_list(request):
             friends['email'].append(detail_friend_obj.user.email)
             friends['uname'].append(detail_friend_obj.user.username)
             friends['date'].append(str(detail_friend_obj.created_at))
-            select_last_message = '''SELECT body, is_image from {0} WHERE ts = ( SELECT MAX(ts) FROM {0} );'''.format(str(request.user)+"_chat_"+detail_friend_obj.user.username)
+            select_last_message = '''SELECT body, is_image, ts from {0} WHERE ts = ( SELECT MAX(ts) FROM {0} );'''.format(str(request.user)+"_chat_"+detail_friend_obj.user.username)
             cursor1.execute(select_last_message)
+
             last_chat_object = cursor1.fetchone()
-            tmp = last_chat_object[1]
+            is_image = last_chat_object[1]
             msg = last_chat_object[0]
-            print(tmp)
-            if tmp != 'no':
+            friends['timestamp'].append(str(last_chat_object[2]))
+            if is_image != 'no':
                 friends['last_message'].append('Photo')
             else:
-
-                print(msg)
                 friends['last_message'].append(msg)
 
 
-
-
         friends['len']=len(friends['id'])
+        for i in range(1, friends['len']):
+            key = friends['timestamp'][i]
+            key_last_message = friends['last_message'][i]
+            key_email = friends['email'][i]
+            key_uname = friends['uname'][i]
+            key_fname = friends['fname'][i]
+            key_lname = friends['lname'][i]
+            key_date = friends['date'][i]
+            key_id = friends['id'][i]
+            key_status = friends['status'][i]
+            key_profile = friends['profile_pic'][i]
+            j = i-1
+            while j >= 0 and key < friends['timestamp'][j] :
+                    friends['fname'][j + 1] = friends['fname'][j]
+                    friends['lname'][j + 1] = friends['lname'][j]
+                    friends['id'][j + 1] = friends['id'][j]
+                    friends['status'][j + 1] = friends['status'][j]
+                    friends['profile_pic'][j + 1] = friends['profile_pic'][j]
+                    friends['timestamp'][j+1]= friends['timestamp'][j]
+                    friends['uname'][j + 1] = friends['uname'][j]
+                    friends['last_message'][j + 1] = friends['last_message'][j]
+                    friends['date'][j + 1] = friends['date'][j]
+                    friends['email'][j + 1] = friends['email'][j]
+                    j -= 1
+            friends['timestamp'][j+1]= key
+            friends['uname'][j + 1] = key_uname
+            friends['email'][j + 1] = key_email
+            friends['last_message'][j + 1] = key_last_message
+            friends['fname'][j + 1] = key_fname
+            friends['lname'][j + 1] = key_lname
+            friends['date'][j + 1] = key_date
+            friends['id'][j + 1] = key_id
+            friends['status'][j + 1] = key_status
+            friends['profile_pic'][j + 1] = key_profile
         cursor1.close()
         cursor.close()
         connection.close()
-        print(friends)
         return HttpResponse(json.dumps(friends))
 
 
@@ -212,7 +242,7 @@ def send_message(request):
         connection.autocommit = True
         if request.POST['isimage'] == "yes":
             img = request.POST['image']
-            print(img)
+
             index= img.index(",")+1
             image_type = request.POST['image'][0:index]
             # starting = request.POST['image'][0:index]
@@ -364,19 +394,57 @@ def clear_chat(request):
 @csrf_exempt
 @login_required()
 def update_profile(request):
-    name,status ,profilepic,password
+
     if request.method == "POST":
-        user_id= request.POST['user_id']
-        user_details_object = get_object_or_404(Details,pk=user_id)
-        if request.POST['username_status'] ==1:
-            index_of_space = request.POST['username'].index(" ")
-            user_details_object.user.first_name = request.POST['username'][0:index_of_space]
-            user_details_object.user.last_name = request.POST['username'][index_of_space+1:len(request.POST['username'])]
-        if request.POST['profile_pic_status'] ==1:
-            user_details_object.Profile_pic = request.POST['profile_pic']
-        if request.POST['status_status'] ==1:
+        if request.POST['update'] == 'status':
+            user_id= request.POST['user_id']
+            user_details_object = Details.objects.get(id = user_id)
             user_details_object.status = request.POST['status']
-        if request.POST['password_status'] ==1:
+            user_details_object.save()
+        elif request.POST['update'] ==1:
+            user_details_object.Profile_pic = request.POST['profile_pic']
+        elif request.POST['update'] ==1:
+            user_details_object.status = request.POST['status']
+        elif request.POST['update'] ==1:
             user_details_object.user.set_password(request.POST['password'])
 
         return HttpResponse("Return")
+
+# @csrf_exempt
+# @login_required()
+# def store_chat_order(request):
+#     if request.method == "POST":
+#         user_id = request.POST['user_id']
+#         user_details_object = Details.objects.get(id= user_id)
+#         order_list = request.POST['order_list'].split("_")
+#         if "postgresfrnd" in order_list:
+#             order_list.remove("postgresfrnd")
+#         if '' in order_list:
+#             order_list.remove('')
+#         order_list = set(order_list)
+#         user_details_object.chat_order = order_list
+#         user_details_object.save()
+
+
+@csrf_exempt
+@login_required()
+def get_last_chat(request):
+    if request.method == "POST":
+        logged_in_user_id = request.POST['user_id']
+        friend_id = request.POST['friend_id']
+        logged_in_user_details_object = get_object_or_404(Details,pk = logged_in_user_id)
+        friend_details_object= get_object_or_404(Details,pk = friend_id)
+        connection = psycopg2.connect(user = "postgres",
+                                              password = "I*p96U#o4eID^Ubc$R*Y",
+                                              host = "localhost",
+                                              port = "5433",
+                                              database = "unis_{}".format(logged_in_user_details_object.user.username))
+
+        cursor = connection.cursor()
+        select_last_message = '''SELECT body, is_image, ts from {0} WHERE ts = ( SELECT MAX(ts) FROM {0} );'''.format(str(logged_in_user_details_object.user.username)+"_chat_"+friend_details_object.user.username)
+        cursor.execute(select_last_message)
+        data = cursor.fetchone()
+        data_dict = {'last_message':data[0],'timestamp':str(data[2])}
+        if data[1] == "yes":
+            data_dict['last_message']= "Photo"
+        return HttpResponse(json.dumps(data_dict))

@@ -1,6 +1,6 @@
 $(window).on('load', function() {
 
-
+$(".se-pre-con").fadeOut("slow");
 
 autosize(document.getElementById("chat"));
 
@@ -11,8 +11,6 @@ startcollapse();
 
 
 checkfbuser();
-
-
 
 
 
@@ -58,10 +56,12 @@ else{
 //local storage ends
 
 
-var x = document.getElementById("myAudio");
-x.play();
+
 });
 
+
+
+var dataorderstlist=[];
 var globalaudiosettingsfornewmessage=1;
 var globalaudiosettingsforinchat=1;
 
@@ -453,6 +453,7 @@ alert(id);
 var chatofloadedfrnds="";
 var listoffriendsforfirebase=[];
 
+
 //load chats into chat menu
 function loadchatintomultiCollapseExample1(){
 
@@ -481,11 +482,13 @@ function loadchatintomultiCollapseExample1(){
           var date = (data['date'][i]);
           var profile = (data['profile_pic'][i]);
           var ar=[uname];
+          var lmsg = (data['last_message'][i]);
+          if(lmsg=='Photo'){lmsg="<span class='iconify' data-icon='ic:baseline-photo' data-inline='false'></span>"+'&nbsp;Photo';}
           var badge="badgeonline"+id1;
           var typingbyid ="typingbyid"+id1;
           var  mdivid="mdivid"+id1;
           listoffriendsforfirebase.push(id1);
-          $("#multiCollapseExample1chat").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' id='"+mdivid+"' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse("+id1+")'><span class='badge badge-pill badge-primary' style='position: absolute; visibility:hidden; ' id='"+typingbyid+"'>Typing..</span><div class='card-body'><div class='numberCircle' id='chatnmes"+id1+"' style='visibility:hidden;'></div><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside("+"`"+profile+"`"+","+"`"+name+"`"+","+"`"+status+"`"+","+"`"+uname+"`"+","+"`"+email+"`"+","+"`"+date+"`"+")'><span class='badge badge-pill badge-success text-success' id="+badge+" style='position: absolute; visibility: hidden;  left: 5%;'>.</span><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div id='sn"+id1+"' class='text-truncate text-muted' style='text-overflow: ellipsis;'>HI there i am using whatsapppppppppppppppppppppp</div></div></div></div></div></a><!-- Chat link -->");
+          $("#multiCollapseExample1chat").append("<!-- Chat link --><a class='text-reset nav-link p-0 mb-6' id='"+mdivid+"' ><div class='card card-active-listener' style='background-color: #29242a; margin-top: 4%; border: none; cursor: pointer;' onclick='chatcollapse("+id1+")'><span class='badge badge-pill badge-primary' style='position: absolute; visibility:hidden; ' id='"+typingbyid+"'>Typing..</span><div class='card-body'><div class='numberCircle' id='chatnmes"+id1+"' style='visibility:hidden;'></div><div class='media'><img src="+profile+" alt='...' class=' ' id='contactimg' style='border: none; object-fit: cover; cursor: pointer;' onclick='expandside("+"`"+profile+"`"+","+"`"+name+"`"+","+"`"+status+"`"+","+"`"+uname+"`"+","+"`"+email+"`"+","+"`"+date+"`"+")'><span class='badge badge-pill badge-success text-success' id="+badge+" style='position: absolute; visibility: hidden;  left: 5%;'>.</span><div class='media-body overflow-hidden'><div class='d-flex align-items-center mb-1'><h6 class='text-truncate mb-0 mr-auto text-light'>"+name+"</h6><p class='small text-muted text-nowrap ml-4'>10:42 am<font class='onlinestaus'><B>.</B></font></p></div><div id='sn"+id1+"' class='text-truncate text-muted' style='text-overflow: ellipsis;'>"+lmsg+"</div></div></div></div></div></a><!-- Chat link -->");
         }
       }
 
@@ -538,6 +541,8 @@ $(document).ready(function(){
                 //trial hree
               autosize.destroy(document.getElementById("chat"));
               autosize(document.getElementById("chat"));
+              if(globalaudiosettingsforinchat==1){var x = document.getElementById("myAudio2");
+              x.play();}
 
           //alert(OriginalHeight);
           //  $("#chat").height(OriginalHeight);
@@ -874,3 +879,38 @@ $(function() {
     })
   })
 //toggle button change ends
+
+
+
+
+
+
+
+
+
+//send data order for chats
+function storechatorder(){
+alert("func called");
+  var adminidforstorage= document.getElementById("adminusername").value;
+  var dts="";
+for(var i=0;i<dataorderstlist.length;i++)
+{
+dts=dts+dataorderstlist[i]+'_';
+
+}
+
+
+$.ajax({
+      type: "POST",
+
+      cache: false,
+      url: "store_chat_order/",
+      datatype: "html",
+      data:{user_id : adminidforstorage,order_list : dts },
+      success: function(data) {
+
+
+}
+
+});}
+//send data order ends
