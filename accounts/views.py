@@ -68,6 +68,7 @@ def signup(request):
                             detail.Profile_pic = get_object_or_404(Customprofilepic,pk= 1).custom_DP
 
                     detail.status = "Available"
+                    print("lastr")
                     connection = psycopg2.connect(user = db_user,
                                                   password = db_pass,
                                                   host = db_host,
@@ -75,9 +76,12 @@ def signup(request):
                     connection.autocommit = True
                     create_database_query = "CREATE DATABASE unis_{};".format(lower_case_username)
                     cursor= connection.cursor()
+                    print("lastr")
                     cursor.execute(create_database_query)
+                    print("lastr")
                     cursor.close()
                     connection.close()
+                    print("lastr")
                     connection = psycopg2.connect(user = db_user,
                                                   password = db_pass,
                                                   host = db_host,
@@ -86,11 +90,13 @@ def signup(request):
                     connection.autocommit = True
                     create_table_query = '''CREATE TABLE contacts(contact_id INT PRIMARY KEY, last_chat VARCHAR(60), isRead VARCHAR(6), isTyping VARCHAR(6), unread_count INT, isFriend VARCHAR(5)); '''
                     cursor= connection.cursor()
+                    print("lastr")
                     cursor.execute(create_table_query)
                     connection.commit()
                     cursor.close()
                     connection.close()
                     detail.save()
+                    print("lastr")
                     return redirect('chats:chat_home')
                 except Exception as error:
                     return render(request,'accounts/signup.html',{'error':error,'images':customprofilepic_obj})
