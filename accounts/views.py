@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 db_name = "dcdh9hmuq5hbbd"
 db_user = "odinofeyjfxvir"
 db_port= 5433
-db_Host= "ec2-34-200-15-192.compute-1.amazonaws.com"
+db_host= "ec2-34-200-15-192.compute-1.amazonaws.com"
 db_online_password = "d35eb0785321fb5b5788c4322f1c442d80936cbe75fa2e439835f53a556697d2"
 db_offline_password =  "I*p96U#o4eID^Ubc$R*Y"
 db_pass = db_online_password
