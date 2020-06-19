@@ -36,9 +36,10 @@ def chat_home(request):
                 userlist['id'].append(obj.id)
     userlist['len']= len(userlist['id'])
     # userlist[0]= len(userlist[1])
-
-    return render(request,'chats/chat_home.html',{'uname':uname,'status':status, 'name':name, 'date':date, 'img': img, 'email':email,'idd': idd, 'userlist' : userlist})
-
+    if userlist['len']>0:
+        return render(request,'chats/chat_home.html',{'uname':uname,'status':status, 'name':name, 'date':date, 'img': img, 'email':email,'idd': idd, 'userlist' : userlist})
+    else:
+        return render(request,'chats/chat_home.html')
 
 
 def get_users(request):
