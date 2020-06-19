@@ -92,8 +92,8 @@ def signup(request):
                     connection.close()
                     detail.save()
                     return redirect('chats:chat_home')
-                except:
-                    return render(request,'accounts/signup.html',{'error':'user already exists','images':customprofilepic_obj})
+                except Exception as error:
+                    return render(request,'accounts/signup.html',{'error':error,'images':customprofilepic_obj})
         else:
             return render(request,'accounts/signup.html',{'error':'Passwords should match','images':customprofilepic_obj})
     else:
