@@ -96,7 +96,8 @@ def signup(request):
                     cursor.close()
                     connection.close()
                     detail.save()
-                    print("lastr")
+                    user = auth.authenticate(username = lower_case_username, password = request.POST['password1'])
+                    auth.login(request,user)
                     return redirect('chats:chat_home')
                 except Exception as error:
                     return render(request,'accounts/signup.html',{'error':error,'images':customprofilepic_obj})
