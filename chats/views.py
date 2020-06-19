@@ -9,8 +9,8 @@ import psycopg2
 global userlist,starting
 import datetime
 
-db_name = "dcdh9hmuq5hbbd"
-db_user = "odinofeyjfxvir"
+db_user = "dcdh9hmuq5hbbd"
+db_name = "odinofeyjfxvir"
 db_port= 5432
 db_host= "ec2-34-200-15-192.compute-1.amazonaws.com"
 db_online_password = "d35eb0785321fb5b5788c4322f1c442d80936cbe75fa2e439835f53a556697d2"
