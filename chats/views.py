@@ -9,7 +9,13 @@ import psycopg2
 global userlist,starting
 import datetime
 
-
+db_name = "dcdh9hmuq5hbbd"
+db_user = "odinofeyjfxvir"
+db_port= 5433
+db_Host= "ec2-34-200-15-192.compute-1.amazonaws.com"
+db_online_password = "d35eb0785321fb5b5788c4322f1c442d80936cbe75fa2e439835f53a556697d2"
+db_offline_password =  "I*p96U#o4eID^Ubc$R*Y"
+db_pass = db_online_password
 
 @login_required()
 def chat_home(request):
@@ -53,11 +59,11 @@ def get_user_details(request):
 @login_required()
 def get_friends(request):
     if request.method == "POST":
-        connection = psycopg2.connect(user = "postgres",
-                                              password = "I*p96U#o4eID^Ubc$R*Y",
-                                              host = "localhost",
-                                              port = "5433",
-                                              database = "unis_{}".format(request.user.username))
+        connection = psycopg2.connect(user = db_user,
+                                      password = db_pass,
+                                      host = db_host,
+                                      port = db_port,
+                                      database = "unis_{}".format(request.user.username))
         # connection_other_user.autocommit = True
         select_friends_query = '''SELECT contact_id,isFriend FROM contacts;'''
         cursor= connection.cursor()
@@ -112,10 +118,10 @@ def addcontact(request):
         account_id1 = get_object_or_404(Details, pk=request.POST['id1'])
         account_id2 = get_object_or_404(Details, pk=request.POST['id2'])
         try:
-            connection_logged_in = psycopg2.connect(user = "postgres",
-                                                  password = "I*p96U#o4eID^Ubc$R*Y",
-                                                  host = "localhost",
-                                                  port = "5433",
+            connection_logged_in = psycopg2.connect(user = db_user,
+                                          password = db_pass,
+                                          host = db_host,
+                                          port = db_port,
                                                   database = "unis_{}".format(account_id1.user.username))
             connection_logged_in.autocommit = True
             create_table_query_logged_in = '''CREATE TABLE {}( message_id  SERIAL PRIMARY KEY, sender_id INT, body VARCHAR(2000), ts TIMESTAMP, align VARCHAR(10), is_image VARCHAR(6), image_data bytea, image_type VARCHAR(50)); '''.format(account_id1.user.username+"_chat_"+account_id2.user.username)
@@ -126,10 +132,10 @@ def addcontact(request):
             connection_logged_in.commit()
             cursor_logged_in.close()
             connection_logged_in.close()
-            connection_other_user = psycopg2.connect(user = "postgres",
-                                                  password = "I*p96U#o4eID^Ubc$R*Y",
-                                                  host = "localhost",
-                                                  port = "5433",
+            connection_other_user = psycopg2.connect(user = db_user,
+                                          password = db_pass,
+                                          host = db_host,
+                                          port = db_port,
                                                   database = "unis_{}".format(account_id2.user.username))
             connection_other_user.autocommit = True
             create_table_query_other_user = '''CREATE TABLE {}(message_id  SERIAL PRIMARY KEY, sender_id INT, body VARCHAR(2000), ts TIMESTAMP, align VARCHAR(10), is_image VARCHAR(6), image_data bytea, image_type VARCHAR(50)); '''.format(account_id2.user.username+"_chat_"+account_id1.user.username)
@@ -155,10 +161,10 @@ def get_chat_list(request):
     if request.method == "POST":
         logged_in_user_id = request.POST['id']
         logged_in_user_details_object = get_object_or_404(Details,pk=logged_in_user_id)
-        connection = psycopg2.connect(user = "postgres",
-                                              password = "I*p96U#o4eID^Ubc$R*Y",
-                                              host = "localhost",
-                                              port = "5433",
+        connection = psycopg2.connect(user = db_user,
+                                      password = db_pass,
+                                      host = db_host,
+                                      port = db_port,
                                               database = "unis_{}".format(logged_in_user_details_object.user.username))
         select_friends_query = '''SELECT contact_id,isFriend FROM contacts;'''
         cursor= connection.cursor()
@@ -250,10 +256,10 @@ def send_message(request):
         logged_in_user_details_object = get_object_or_404(Details,pk=logged_in_user_id)
         friend_details_object = get_object_or_404(Details, pk = friend_user_id)
         table_name = logged_in_user_details_object.user.username +"_chat_"+friend_details_object.user.username
-        connection = psycopg2.connect(user = "postgres",
-                                              password = "I*p96U#o4eID^Ubc$R*Y",
-                                              host = "localhost",
-                                              port = "5433",
+        connection = psycopg2.connect(user = db_user,
+                                      password = db_pass,
+                                      host = db_host,
+                                      port = db_port,
                                               database = "unis_{}".format(logged_in_user_details_object.user.username))
         connection.autocommit = True
         if request.POST['isimage'] == "yes":
@@ -286,10 +292,10 @@ def send_message(request):
         cursor.close()
         connection.close()
         table_name = friend_details_object.user.username +"_chat_"+logged_in_user_details_object.user.username
-        connection = psycopg2.connect(user = "postgres",
-                                              password = "I*p96U#o4eID^Ubc$R*Y",
-                                              host = "localhost",
-                                              port = "5433",
+        connection = psycopg2.connect(user = db_user,
+                                      password = db_pass,
+                                      host = db_host,
+                                      port = db_port,
                                               database = "unis_{}".format(friend_details_object.user.username))
 
         if request.POST['isimage'] == "yes":
@@ -324,10 +330,10 @@ def get_friends_chat(request):
         logged_in_user_details_object = get_object_or_404(Details,pk=logged_in_user_id)
         friend_details_object = get_object_or_404(Details, pk = friend_user_id)
         table_name = logged_in_user_details_object.user.username +"_chat_"+friend_details_object.user.username
-        connection = psycopg2.connect(user = "postgres",
-                                              password = "I*p96U#o4eID^Ubc$R*Y",
-                                              host = "localhost",
-                                              port = "5433",
+        connection = psycopg2.connect(user = db_user,
+                                      password = db_pass,
+                                      host = db_host,
+                                      port = db_port,
                                               database = "unis_{}".format(logged_in_user_details_object.user.username))
         select_message_details_query = '''SELECT message_id,sender_id,body,ts,is_image,image_data,image_type FROM {} ORDER BY ts;'''.format(table_name)
 
@@ -364,10 +370,10 @@ def delete_message(request):
         message_id = request.POST['message_id']
         friend_details_object = get_object_or_404(Details,pk = friend_id)
         table_name = request.user.username+"_chat_"+friend_details_object.user.username
-        connection = psycopg2.connect(user = "postgres",
-                                              password = "I*p96U#o4eID^Ubc$R*Y",
-                                              host = "localhost",
-                                              port = "5433",
+        connection = psycopg2.connect(user = db_user,
+                                      password = db_pass,
+                                      host = db_host,
+                                      port = db_port,
                                               database = "unis_{}".format(request.user.username))
         delete_message_query = '''DELETE FROM {0} WHERE message_id = {1};'''.format(table_name,message_id)
         cursor= connection.cursor()
@@ -394,10 +400,10 @@ def clear_chat(request):
         friend_id = request.POST['friend_id']
         friend_details_object = get_object_or_404(Details,pk = friend_id)
         table_name = request.user.username+"_chat_"+friend_details_object.user.username
-        connection = psycopg2.connect(user = "postgres",
-                                              password = "I*p96U#o4eID^Ubc$R*Y",
-                                              host = "localhost",
-                                              port = "5433",
+        connection = psycopg2.connect(user = db_user,
+                                      password = db_pass,
+                                      host = db_host,
+                                      port = db_port,
                                               database = "unis_{}".format(request.user.username))
         clear_chat_query = '''DELETE FROM {0};'''.format(table_name)
         cursor= connection.cursor()
@@ -450,10 +456,10 @@ def get_last_chat(request):
         friend_id = request.POST['friend_id']
         logged_in_user_details_object = get_object_or_404(Details,pk = logged_in_user_id)
         friend_details_object= get_object_or_404(Details,pk = friend_id)
-        connection = psycopg2.connect(user = "postgres",
-                                              password = "I*p96U#o4eID^Ubc$R*Y",
-                                              host = "localhost",
-                                              port = "5433",
+        connection = psycopg2.connect(user = db_user,
+                                      password = db_pass,
+                                      host = db_host,
+                                      port = db_port,
                                               database = "unis_{}".format(logged_in_user_details_object.user.username))
 
         cursor = connection.cursor()
@@ -474,17 +480,17 @@ def get_last_chat(request):
 def delete_friend(request):
     if request.method == "POST":
         # 12 means that loggedin user has unfriended the another user and 21 means that other user has unfriended logged in user it represents the status respectively
-        #2 represents 0 
+        #2 represents 0
         logged_in_user_id = request.POST['userid']
         friendid = request.POST['friendid']
         friendship_status = str(request.POST['friendship_status'])
         print(friendship_status)
         logged_in_user_details_object = get_object_or_404(Details,pk = logged_in_user_id)
         friend_details_object = get_object_or_404(Details,pk=friendid)
-        connection = psycopg2.connect(user = "postgres",
-                                              password = "I*p96U#o4eID^Ubc$R*Y",
-                                              host = "localhost",
-                                              port = "5433",
+        connection = psycopg2.connect(user = db_user,
+                                      password = db_pass,
+                                      host = db_host,
+                                      port = db_port,
                                               database = "unis_{}".format(logged_in_user_details_object.user.username))
         connection.autocommit = True
         cursor = connection.cursor()
@@ -497,10 +503,10 @@ def delete_friend(request):
         connection.commit()
         cursor.close()
         connection.close()
-        connection = psycopg2.connect(user = "postgres",
-                                              password = "I*p96U#o4eID^Ubc$R*Y",
-                                              host = "localhost",
-                                              port = "5433",
+        connection = psycopg2.connect(user = db_user,
+                                      password = db_pass,
+                                      host = db_host,
+                                      port = db_port,
                                               database = "unis_{}".format(friend_details_object.user.username))
         connection.autocommit = True
         cursor = connection.cursor()

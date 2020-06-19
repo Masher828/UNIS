@@ -8,7 +8,13 @@ from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-
+db_name = "dcdh9hmuq5hbbd"
+db_user = "odinofeyjfxvir"
+db_port= 5433
+db_Host= "ec2-34-200-15-192.compute-1.amazonaws.com"
+db_online_password = "d35eb0785321fb5b5788c4322f1c442d80936cbe75fa2e439835f53a556697d2"
+db_offline_password =  "I*p96U#o4eID^Ubc$R*Y"
+db_pass = db_online_password
 def login(request):
     if request.method == 'POST':
             print(User.objects.all())
@@ -62,20 +68,20 @@ def signup(request):
                             detail.Profile_pic = get_object_or_404(Customprofilepic,pk= 1).custom_DP
 
                     detail.status = "Available"
-                    connection = psycopg2.connect(user = "postgres",
-                                                      password = "I*p96U#o4eID^Ubc$R*Y",
-                                                      host = "localhost",
-                                                      port = "5433")
+                    connection = psycopg2.connect(user = db_user,
+                                                  password = db_pass,
+                                                  host = db_host,
+                                                  port = db_port)
                     connection.autocommit = True
                     create_database_query = "CREATE DATABASE unis_{};".format(lower_case_username)
                     cursor= connection.cursor()
                     cursor.execute(create_database_query)
                     cursor.close()
                     connection.close()
-                    connection = psycopg2.connect(user = "postgres",
-                                                      password = "I*p96U#o4eID^Ubc$R*Y",
-                                                      host = "localhost",
-                                                      port = "5433",
+                    connection = psycopg2.connect(user = db_user,
+                                                  password = db_pass,
+                                                  host = db_host,
+                                                  port = db_port,
                                                       database = "unis_{}".format(lower_case_username))
                     connection.autocommit = True
                     create_table_query = '''CREATE TABLE contacts(contact_id INT PRIMARY KEY, last_chat VARCHAR(60), isRead VARCHAR(6), isTyping VARCHAR(6), unread_count INT, isFriend VARCHAR(5)); '''

@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
+import dj_database_url
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'UNIS.wsgi.application'
 DATABASES = {
     'default': {
          'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'unis_db',
-        'USER': 'postgres',
-        'PASSWORD' : 'I*p96U#o4eID^Ubc$R*Y',
-        'HOST' : 'localhost',
-        'PORT' : '5433',
+        'NAME': 'dcdh9hmuq5hbbd',
+        'USER': 'odinofeyjfxvir',
+        'PASSWORD' : 'd35eb0785321fb5b5788c4322f1c442d80936cbe75fa2e439835f53a556697d2',
+        'HOST' : 'ec2-34-200-15-192.compute-1.amazonaws.com',
+        'PORT' : '5432',
     }
 }
 
