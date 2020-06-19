@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>SIGN UP</title>
+  </head>
+  <body>
+    <h1>sign up</h1>
+    {% if error %}
+    {{error}}
+    {% endif %}
+    <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      USERNAME:<br>
+      <input type="text" name="username" value="" required><br>
+      EMAIL:<br>
+      <input type="email" name="email" value="" required><br>
+      FIRSTNAME:<br>
+      <input type="text" name="firstname" value="" required><br>
+      LASTNAME:<br>
+      <input type="text" name="lastname" value="" required><br>
+      PASSWORD:<br>
+      <input type="password" name="password1" value="" required><br>
+      enter PASSWORD:<br>
+      <input type="password" name="password2" value="" required><br>
+      Phone number :
+      <input type="text" name="phone_number" value="" required><br>
+      Profile picture:<br>
+      <input type="file" name="Profile_pic" value="">
+      <br><br>
+      img id:
+      <input type="text" name="imgid" value="" ><br>
+
+      <input type="submit" name="login" value="Log In">
+      {% for img in images %}
+
+      {{img.id}}
+      <img src="{{img.custom_DP.url}}" alt="">
+
+      <br>
+      {% endfor %}
+
+
+
+    </form>
+  </body>
+</html>
