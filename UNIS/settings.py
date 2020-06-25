@@ -23,10 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ag(vnz*d)e^3a4z*r)_sn+5ql%y+_kx0lqw66+$wg6&2z-@+2v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'masher-chatting.herokuapp.com']
-
+# ALLOWED_HOSTS =['*']
 
 # Application definition
 
@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'UNIS.wsgi.application'
 DATABASES = {
     'default': {
          'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dcdh9hmuq5hbbd',
-        'USER': 'odinofeyjfxvir',
-        'PASSWORD' : 'd35eb0785321fb5b5788c4322f1c442d80936cbe75fa2e439835f53a556697d2',
-        'HOST' : 'ec2-34-200-15-192.compute-1.amazonaws.com',
-        'PORT' : '5432',
+        'NAME': 'unis_db',
+        'USER': 'postgres',
+        'PASSWORD' : 'I*p96U#o4eID^Ubc$R*Y',
+        'HOST' : 'localhost',
+        'PORT' : '5433',
     }
 }
 

@@ -14,7 +14,6 @@ urlpatterns = [
     path('delete_message/',views.delete_message,name="delete_message"),
     path('clear_chat/',views.clear_chat,name="clear_chat"),
     path('update_profile/',views.update_profile,name="update_profile"),
-    path('sendimagemsg/',views.sendimagemsg,name ="sendimagems/"),
     path('get_last_chat/',views.get_last_chat, name ="get_last_chat"),
     path('delete_friend/',views.delete_friend, name ="delete_friend"),
 ]

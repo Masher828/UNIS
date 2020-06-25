@@ -605,7 +605,7 @@ $(document).ready(function(){
           //alert(OriginalHeight);
           //  $("#chat").height(OriginalHeight);
                 //trial ends here
-
+                correctionforonline();
               //  document.getElementById('chat').style.height = hota+"px";
                 //resizeDivs();
                 //document.getElementById("chat").value="";

@@ -3,29 +3,51 @@ from django.contrib.auth.models import User
 from .models import Details,Customprofilepic
 from django.contrib import auth
 import psycopg2
+from django.http import HttpResponse, Http404
+import secrets
+import string
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 
 
-# Create your views here.
-db_user = "odinofeyjfxvir"
-db_name = "dcdh9hmuq5hbbd"
-db_port= 5432
-db_host= "ec2-34-200-15-192.compute-1.amazonaws.com"
-db_online_password = "d35eb0785321fb5b5788c4322f1c442d80936cbe75fa2e439835f53a556697d2"
-db_offline_password =  "I*p96U#o4eID^Ubc$R*Y"
-db_pass = db_online_password
+class connect_DB:
+    def __init__(self):
+        self.connection= psycopg2.connect(user = "postgres", host="localhost",database ="unis_db",password="I*p96U#o4eID^Ubc$R*Y", port= 5433)
+        self.cursor = self.connection.cursor()
+
+    def execute(self,query,autocommit=False,returnRows=False):
+        if autocommit:
+            self.connection.autocommit=True
+        self.cursor.execute(query)
+        if returnRows == "all":
+            return self.cursor.fetchall()
+        elif returnRows == "one":
+            return self.cursor.fetchone()
+
+    def returnCursor(self):
+        return self.cursor
+
+    def commit(self):
+        self.connection.commit()
+    
+    def multipleExecute(self,queries):
+        for query in queries:
+            self.cursor.execute(query)
+
+    def close(self):
+        self.cursor.close()
+        self.connection.close()
+
+
 def login(request):
-    if request.method == 'POST':
-            print(User.objects.all())
+    if request.method == 'POST' and request.user.is_anonymous:
             username_lowercase = request.POST['username'].lower()
             user = auth.authenticate(username = username_lowercase, password = request.POST['password'])
-            print(user)
             if user is not None:
                 auth.login(request,user)
-                print(user.id)
-                # for obj in Details.objects.all():
-                #     print(obj.user.username)
                 return redirect('chats:chat_home')
 
             else:
@@ -34,31 +56,27 @@ def login(request):
         return render(request,'accounts/signin.html')
 
 
-
-
-
-
-@login_required()
 def logout(request):
-    auth.logout(request)
-    return redirect('index')
+    if request.user.is_anonymous:
+        raise Http404
+    else:
+        auth.logout(request)
+        return redirect('index')
 
 def signup(request):
     customprofilepic_obj = Customprofilepic.objects.all()
-    if request.method == 'POST':
+    if request.method == 'POST' and not(request.user.is_anonymous):
         lower_case_username = request.POST['username'].lower()
 
         if request.POST['password1'] == request.POST['password2']:
             user = auth.authenticate(username = lower_case_username, password = request.POST['password1'])
             if not user is None:
                 return render(request,'accounts/signup.html',{'error':'user already exists','images':customprofilepic_obj})
-
             else:
                 try:
                     user = User.objects.create_user(username=lower_case_username,first_name = request.POST['firstname'],email=request.POST['email'], last_name = request.POST['lastname'], password=request.POST['password1'])
                     detail = Details()
                     detail.user = user
-                    print(request.POST)
                     try:
                         detail.Profile_pic = request.FILES['Profile_pic']
                     except:
@@ -68,36 +86,13 @@ def signup(request):
                             detail.Profile_pic = get_object_or_404(Customprofilepic,pk= 1).custom_DP
 
                     detail.status = "Available"
-                    print("lastr")
-                    connection = psycopg2.connect(user = db_user,
-                                                  password = db_pass,
-                                                  host = db_host,
-                                                  port = db_port)
-                    connection.autocommit = True
-                    create_database_query = "CREATE DATABASE unis_{};".format(lower_case_username)
-                    cursor= connection.cursor()
-                    print("lastr")
-                    cursor.execute(create_database_query)
-                    print("lastr")
-                    cursor.close()
-                    connection.close()
-                    print("lastr")
-                    connection = psycopg2.connect(user = db_user,
-                                                  password = db_pass,
-                                                  host = db_host,
-                                                  port = db_port,
-                                                      database = "unis_{}".format(lower_case_username))
-                    connection.autocommit = True
-                    create_table_query = '''CREATE TABLE contacts(contact_id INT PRIMARY KEY, last_chat VARCHAR(60), isRead VARCHAR(6), isTyping VARCHAR(6), unread_count INT, isFriend VARCHAR(5)); '''
-                    cursor= connection.cursor()
-                    print("lastr")
-                    cursor.execute(create_table_query)
-                    connection.commit()
-                    cursor.close()
-                    connection.close()
+                    create_table_query = '''CREATE TABLE {}_contacts(contact_id INT PRIMARY KEY, last_chat VARCHAR(60), isRead VARCHAR(6), isTyping VARCHAR(6), unread_count INT, isFriend VARCHAR(5)); '''.format(lower_case_username)
+                    postgres_db = connect_DB()
+                    postgres_db.execute(create_table_query,autocommit=True)
+                    postgres_db.close()
                     detail.save()
-                    user = auth.authenticate(username = lower_case_username, password = request.POST['password1'])
-                    auth.login(request,user)
+                    # user = auth.authenticate(username = lower_case_username, password = request.POST['password1'])
+                    # auth.login(request,user)
                     return redirect('chats:chat_home')
                 except Exception as error:
                     return render(request,'accounts/signup.html',{'error':error,'images':customprofilepic_obj})
@@ -107,3 +102,33 @@ def signup(request):
 
         # customprofilepic_obj = customprofilepic_obj.objects.all()
         return render(request,'accounts/signup.html',{'images':customprofilepic_obj})
+
+def sendCode(request):
+    print(request.user.is_anonymous)
+    if not request.user.is_anonymous:
+        raise Http404
+    else:
+        alphabet = string.ascii_letters + string.digits
+        resetToken = ''.join(secrets.choice(alphabet) for i in range(6))
+        s = smtplib.SMTP('smtp.gmail.com', 587)
+        s.starttls()
+        s.login('unisnoreply.chatting@gmail.com', 'd@j6jQ7mofRdXGJ^iUoS4cX!')
+        msg = MIMEMultipart()
+        msg['From'] = 'unisnoreply.chatting@gmail.com'
+        msg['To'] = str(request.user.email)
+        msg['Subject'] = "OTP for Password Change"
+        text = 'Here is your Password Reset OTP : \n'
+        html = "<h1> OTP : "+ resetToken + "</h1>"
+        text2 = "\nThis OTP will expire in 5 minutes.\nIgnore, if you have not requested for password change."
+        part1 = MIMEText(text,'plain')
+        part2 = MIMEText(html,"html")
+        part3 = MIMEText(text2,"plain")
+        msg.attach(part1)
+        msg.attach(part2)
+        msg.attach(part3)
+        s.send_message(msg)
+        del msg
+        s.quit()
+        print(resetToken)
+        return HttpResponse(resetToken)
+    

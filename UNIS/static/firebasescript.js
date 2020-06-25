@@ -353,12 +353,6 @@ $( "#chat" )
   });
 });
 
-
-
-
-
-
-
   });
 
 
@@ -377,12 +371,22 @@ var localpath = "contact_table/"+global_sendtouser+"/"+adminid+"/";
   // ...
 });
 
-
-
-
 });
 
+//correction
+function correctionforonline(){
+  var localpath = "contact_table/"+global_sendtouser+"/"+adminid+"/";
 
+  return firebase.database().ref(localpath).once('value').then(function(snapshot) {
+  var tt =snapshot.val().newmessage;
+  // ...
+  database.ref(localpath).set({
+    newmessage: tt,
+    istyping: "no",
+
+  });
+});
+}
 
 //check if user is there or not
 // function checkfbuser(){
@@ -548,7 +552,7 @@ else if(ttx=="no")
 
 //update current user online status
 function updatecurrentuseronlinestatus(value)
-{
+{ alert(adminid);
   var pathhere = "global_users/"+adminid;
   firebase.database().ref(pathhere).once('value').then(function(snapshot) {
 var tempdata1 = snapshot.val().firsttime;
@@ -610,13 +614,31 @@ database.ref(pathlr).set({
 function exceptionhandlerblock(str)
 {
   //alert(str);
+  if(blockedlist.includes(str)){
+    const index = blockedlist.indexOf(str);
+      if (index > -1) {
+      blockedlist.splice(index, 1);
+      }
+
+  }
+  else
+  { blockedlist.push(str);
+    var trew = 'rsn'+str;
+  try { document.getElementById(trew).innerHTML="<b class='text-danger'>Muted<b>";}catch(error){}
+
+  }
+
+
 if(global_sendtouser==str)
 {
   showchatofthatuser(str,'yes');
+if(blockedlist.includes(str)){ $('#textmsgcollapsebottom').collapse('hide');}
+else{ $('#textmsgcollapsebottom').collapse('show');}
+try { document.getElementById(trew).innerHTML="<b class='text-danger'>Muted<b>";}catch(error){}
+
+
 }
 
-var trew = 'rsn'+str;
-document.getElementById(trew).innerHTML="<b class='text-danger'>Muted<b>";
 
 
 }
